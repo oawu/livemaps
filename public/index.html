@@ -18,7 +18,7 @@
     <meta property="og:description" content="LiveMaps是一個即時地圖聊天室，讓你在世界上任何位置都可以發出自己的感想動態，也可以在地圖上其他人的心情寫照、分享，利用Firebase的RealtimeDatabase以及GoogleMapsJavaScriptAPI實作出來的地圖聊天室。" />
     <meta property="og:url" content="https://livemaps.ioa.tw/index.html" />
 
-    <meta property="fb:admins" content="100000100541088" />
+    <meta property="fb:admins" content="1623452611281139" />
     <meta property="fb:app_id" content="" />
 
     <meta property="og:locale" content="zh_TW" />
@@ -56,18 +56,21 @@
     <header>
       <div>
         <a class='icon-menu'></a><a class='icon-pin-alt a' href='index.html'>地圖</a><a class='icon-question' href='about.html'>說明</a>
-        <span><a class='icon-share' id='share' title='分享至 Facebook'></a><a href='http://www.ioa.tw/' class='icon-user' title='網站作者' target='_blank'></a></span>
+        <span><a class='icon-share header_tip' id='share' title='分享至 Facebook'></a><a href='http://www.ioa.tw/' class='icon-user header_tip' title='網站作者' target='_blank'></a></span>
       </div>
     </header>
 
     <div id='maps'></div>
+    <div id='fb-like' class='fb-like' data-href='https://livemaps.ioa.tw/' data-send='false' data-layout='button_count' data-action='like' data-show-faces='false' data-share='true'></div>
 
     <a id='notification'></a>
-    <a id='my_location' class='icon-my_location' title='定位，我的位置'></a>
-    <a id='zoom_in' class='icon-zoom-in' title='放大，地圖拉近'></a>
-    <a id='zoom_out' class='icon-zoom-out' title='縮小，地圖拉遠'></a>
-    <a id='plus' class='icon-plus' title='發文，分享動態'></a>
+    <a id='see_comments' class='icon-chat-3 feature_tip' title='留言，給予建議'></a>
+    <a id='my_location' class='icon-my_location feature_tip' title='定位，我的位置'></a>
+    <a id='zoom_in' class='icon-zoom-in feature_tip t2' title='放大，地圖拉近'></a>
+    <a id='zoom_out' class='icon-zoom-out feature_tip t2' title='縮小，地圖拉遠'></a>
+    <a id='plus' class='icon-plus feature_tip t2' title='發文，分享動態'></a>
 
+    <div id='comments' class='popbox'><div class='cover'></div><div class='wrapper'><h4>留言、建議與討論</h4><div class='panel_content'><div class="fb-comments" data-order-by='reverse_time' width='100%' data-href="https://livemaps.ioa.tw/" data-numposts="5"></div></div><div class='btns'><a class='cancel'>關閉</a></div></div></div>
     <div id='firebase_error' class='popbox'><div class='cover'></div><div class='wrapper'><h4>發生錯誤</h4><div class='panel_content'><p>載入 Firebase 設定檔錯誤，請檢查網路連線或重新整理頁面吧！</p></div><div class='btns'><a class='ok'>好的，了解</a></div></div></div>
     <div id='relogin' class='popbox'><div class='cover'></div><div class='wrapper'><h4>重複登入</h4><div class='panel_content'><p>您可能在其他瀏覽器登入過或閒置太久了，請重新整理頁面重新登入吧！</p></div><div class='btns'><a class='ok'>好的，了解</a></div></div></div>
     <div id='form'><input type='text' id='my_message' placeholder='在想些什麼呢？' /><button type='button' id='send'>送出</button></div>
@@ -100,5 +103,7 @@
       </ul>
     </aside>
     <div class='cover'></div>
+    
+    <div id='fb-root'></div>
   </body>
 </html>

@@ -26,13 +26,15 @@ $(function () {
   window.vars.$.myLocation = $('#my_location');
   window.vars.$.firebaseError = $('#firebase_error');
   window.vars.$.notification = $('#notification');
+  window.vars.$.see_comments = $('#see_comments');
+  window.vars.$.comments = $('#comments');
 
   window.vars.$.markerMenu = $('#marker_menu');
 
   window.vars.hasOpenGeo = false;
   window.vars.content = '';
   window.vars.name = '遊客';
-  window.vars.src = 'img/d4_user.png';
+  window.vars.src = 'img/user.png';
   window.vars.hasAudio = false;
   window.vars.lat = null;
   window.vars.lng = null;
@@ -91,9 +93,10 @@ $(function () {
       window.vars.lat = position.coords.latitude;
       window.vars.lng = position.coords.longitude;
 
-      return window.vars.$.loading.removeClass ('show');
+      if (window.storages.inited.get () == 'no') window.vars.maps.setOptions ({ zoom: 16, center: new google.maps.LatLng (window.vars.lat, window.vars.lng)});
+      return window.vars.$.loading.removeClass ('show') && window.storages.inited.set ('yes');
     }, function () {
-      return window.vars.$.loading.removeClass ('show') && cb && cb ();
+      return window.vars.$.loading.removeClass ('show') && window.storages.inited.set ('yes') && cb && cb ();
     }, { enableHighAccuracy: true });
   };
 
@@ -196,7 +199,6 @@ $(function () {
       window.vars.$.step3.addClass ('show');
     });
     window.vars.$.step3.find ('.cover, .cancel').click (function () {
-      window.storages.inited.set ('yes');
       window.vars.$.loading.addClass ('show').find ('.txt').text ('初始中，請稍候..');
       window.funcs.initGeoFeature (cb);
     });
@@ -224,11 +226,12 @@ $(function () {
     window.vars.$.relogin.find ('.cover, .ok').click (function () { location.reload (); });
     window.vars.$.myMessage.keyup (function (e) { if (e.keyCode == 13) window.vars.$.send.click (); });
     window.vars.$.history.find ('.ok').click (function () { window.vars.$.history.removeClass ('show').get (0).firebase.ref.off ('value', window.vars.$.history.get (0).firebase.on); });
-    window.vars.$.notification.attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).addClass (window.storages.audio.get () == 'on' ? 'icon-notification_active' : 'icon-notification_off').addClass ('show').click (function () { window.storages.audio.set (window.storages.audio.get () == 'on' ? 'off' : 'on'); window.vars.hasAudio = window.storages.audio.get () == 'on' ? true : false; $(this).attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).attr ('class', window.storages.audio.get () == 'on' ? 'icon-notification_active show' : 'icon-notification_off show'); });
+    window.vars.$.notification.attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).addClass (window.storages.audio.get () == 'on' ? 'icon-notification_active' : 'icon-notification_off').addClass ('show feature_tip').click (function () { window.storages.audio.set (window.storages.audio.get () == 'on' ? 'off' : 'on'); window.vars.hasAudio = window.storages.audio.get () == 'on' ? true : false; $(this).attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).attr ('class', window.storages.audio.get () == 'on' ? 'icon-notification_active show feature_tip' : 'icon-notification_off show feature_tip'); });
     window.vars.$.login.find ('.ok').click (function () { window.vars.$.popbox.removeClass ('show'); return window.funcs.showForm (); });
+    window.vars.$.see_comments.click (function () { window.vars.$.comments.addClass ('show'); }).addClass ('show');
     window.vars.$.plus.click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('定位中，請稍候..'); if (window.vars.lat === null && window.vars.lng === null) { window.vars.$.loading.removeClass ('show'); return window.vars.$.gpson.addClass ('show'); } if (!$(this).hasClass ('open') && !window.storages.user.get ()) { window.vars.$.loading.removeClass ('show'); window.vars.$.login.find ('span').text (''); return window.vars.$.login.addClass ('show'); } window.vars.$.loading.removeClass ('show'); return window.funcs.showForm (); }).addClass ('show');
 
-    var audio = function () { if (window.vars.lat === null && window.vars.lng === null) window.vars.$.myLocation.click (function () { window.vars.maps.setZoom (16); window.vars.maps.setCenter (new google.maps.LatLng (window.vars.lat, window.vars.lng)); }).addClass ('show'); setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000); };
+    var audio = function () { if (window.vars.lat === null && window.vars.lng === null) window.vars.$.myLocation.click (function () { window.vars.maps.setOptions ({ zoom: 16, center: new google.maps.LatLng (window.vars.lat, window.vars.lng)}); }).addClass ('show'); setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000); };
     if (window.storages.inited.get () === 'no') window.funcs.initStep (audio);
     else window.funcs.initGeoFeature (audio);
   });

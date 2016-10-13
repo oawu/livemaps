@@ -32,7 +32,7 @@ html {
   }
 }
 
-#zoom_in, #zoom_out, #plus, #notification, #my_location {
+#zoom_in, #zoom_out, #plus, #notification, #my_location, #see_comments {
   position: fixed;
   right: 10px;
   display: inline-block;
@@ -291,7 +291,7 @@ html {
   }
 }
 
-#history, #history, #chat, #relogin, #firebase_error, #step1, #gpson, #login {
+#history, #history, #chat, #relogin, #firebase_error, #comments, #step1, #gpson, #login {
   .wrapper {
     top: calc(50% - 290px / 2);
     left: calc(50% - 400px / 2);
@@ -429,7 +429,7 @@ html {
   }
   // + 
 }
-#relogin, #firebase_error, #step1 {
+#relogin, #firebase_error, #comments, #step1 {
   .wrapper {
     top: calc(50% - 420px / 2);
     left: calc(50% - 450px / 2);
@@ -586,6 +586,35 @@ html {
         font-size: 15px;
       }
     }
+  }
+}
+#comments {
+  .wrapper {
+    top: calc(50% - 450px / 2);
+    left: calc(50% - 450px / 2);
+    height: 450px;
+    width: 450px;
+
+    @media screen and (min-width: 0) and (max-width: #{500px - 1px}) {
+      left: 10px;
+      width: calc(100% - 20px);
+      top: 10%;
+      height: 80%;
+    }
+  }
+  .panel_content {
+    padding: 10px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: rgba(251, 254, 254, 1.00);
+    margin-bottom: 0;
+
+    @media screen and (min-width: 0) and (max-width: #{500px - 1px}) {
+      padding: 5px;
+    }
+  }
+  .btns {
+    border-top: 1px solid rgba(173, 210, 211, 1.00);
   }
 }
 #history, #chat {
@@ -896,11 +925,18 @@ html {
     top: $headerHeight + 5px;
   }
 }
-#my_location {
+#see_comments {
   bottom: auto;
   top: $headerHeight + 10px + 40px + 5px;
   @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
     top: $headerHeight + 5px + 40px + 5px;
+  }
+}
+#my_location {
+  bottom: auto;
+  top: $headerHeight + 10px + 40px + 5px + 40px + 5px;
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    top: $headerHeight + 5px + 40px + 5px + 40px + 5px;
   }
 }
 
@@ -998,6 +1034,86 @@ html {
   }
 }
 
+#fb-like {
+  position: fixed;
+  top: $headerHeight + 10px;
+  left: 10px;
+  z-index: 2;
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    top: $headerHeight + 5px;
+    left: 5px;
+  }
+}
+@media screen and (min-width: $changeWidth) {
+  .feature_tip {
+    &:before {
+      position: relative;
+      z-index: 2;
+    }
+    &:after {
+      content: attr(title);
+      position: absolute;
+      top: calc(100% - 37px);
+      right: -200px;
+      background-color: rgba(255, 255, 255, 1.00);
+      border: 1px solid rgba(44, 128, 133, 1.00);
+      padding: 3px 10px;
+      font-size: 13px;
+      color: rgba(44, 128, 133, 1.00);
+      z-index: 9;
+      display: inline-block;
+
+      min-width: 120px;
+      height: 35px;
+      line-height: 25px;
+      z-index: 1;
+
+      @include opacity(0);
+      @include border-radius(2px);
+      @include text-shadow(none);
+      @include transition(opacity .5s);
+    }
+    &.t2 {
+      &:after {
+        top: auto;
+        bottom: calc(100% - 37px);
+      }
+    }
+    &:hover {
+      &:after {
+        right: 45px;
+        @include opacity(.75);
+      }
+    }
+  }
+  .header_tip {
+    position: relative;
+    
+    &:after {
+      content: attr(title);
+      position: absolute;
+      top: calc(100% - 5px);
+      right: 10px;
+      min-width: 80px;
+      background-color: rgba(255, 255, 255, 1.00);
+      border: 1px solid rgba(44, 128, 133, 1.00);
+      padding: 3px 10px;
+      font-size: 13px;
+      color: rgba(44, 128, 133, 1.00);
+      z-index: 9;
+      display: none;
+      @include opacity(.75);
+      @include border-radius(2px);
+      @include text-shadow(none);
+      @include transition(opacity .3s);
+    }
+    &:hover {
+      &:after {
+        display: inline-block;
+      }
+    }
+  }
+}
 @include keyframes(step2){
   0% {
       right: 45px;

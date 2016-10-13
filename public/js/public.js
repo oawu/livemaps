@@ -5,7 +5,7 @@
  */
 
 // Facebook
-window.fbAsyncInit = function () { FB.init ({ appId: '1223496701040644', cookie: true, xfbml: true, version: 'v2.8' }); };
+window.fbAsyncInit = function () { FB.init ({ appId: '1623452611281139', cookie: true, xfbml: true, version: 'v2.8' }); };
 (function(d, s, id){ var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) {return;} js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/zh_TW/sdk.js"; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));
 
 // jQuery 1.10.2
