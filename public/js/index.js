@@ -23,6 +23,8 @@ $(function () {
   window.vars.$.chat = $('#chat');
   window.vars.$.history = $('#history');
   window.vars.$.gpson = $('#gpson');
+  window.vars.$.myLocation = $('#my_location');
+  window.vars.$.firebaseError = $('#firebase_error');
   window.vars.$.notification = $('#notification');
 
   window.vars.$.markerMenu = $('#marker_menu');
@@ -32,6 +34,8 @@ $(function () {
   window.vars.name = '遊客';
   window.vars.src = 'img/d4_user.png';
   window.vars.hasAudio = false;
+  window.vars.lat = null;
+  window.vars.lng = null;
 
   window.vars.points = {};
   window.vars.z = 0;
@@ -51,11 +55,7 @@ $(function () {
   window.funcs.getFbData = function (cb) { FB.api('/me', function (response) { window.storages.user.set ({ fbuid: response.id, name: response.name, src: 'https://graph.facebook.com/' + response.id + '/picture?width=100&height=100' }); window.funcs.removeSameUser (response.id); return cb && cb (response); }); };
   window.funcs.checkLoginState = function (cb, eb) { FB.getLoginStatus (function (response) { if (response.status != 'connected') return window.storages.user.set (null) && eb && eb (); return cb && cb (response); }); return eb && eb (); };
   window.funcs.initFB = function () { if (!window.storages.user.get ()) window.funcs.checkLoginState (function () { window.funcs.getFbData (); }, function () { window.vars.$.facebook.click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('登入中，請稍候..'); FB.login (function (response) { if (response.status != 'connected') return window.vars.$.loading.removeClass ('show') && window.vars.$.facebook.prev ().text ('登入失敗..'); window.funcs.getFbData (function () { window.vars.$.loading.removeClass ('show'); window.vars.$.facebook.parents ('.popbox').removeClass ('show'); window.funcs.showForm (); }); }, {scope: 'public_profile,email'}); }); }); };
-  window.funcs.initStepFirebase = function () {
-    if (!window.firebaseConfig) {
-      // Error
-    }
-    firebase.initializeApp (window.firebaseConfig); window.vars.firebaseDB = firebase.database (); window.vars.firebaseDB.ref ('version/').on ('value', function (snapshot) { if (window.vars.version != snapshot.val ()) location.reload (); }); window.vars.firebaseUserRef = window.vars.firebaseDB.ref ('users/'); };
+  window.funcs.initFirebase = function () { if (!window.firebaseConfig) { window.vars.$.firebaseError.addClass ('show'); throw new Error ("載入 Firebase 設定檔錯誤！"); } firebase.initializeApp (window.firebaseConfig); window.vars.firebaseDB = firebase.database (); window.vars.firebaseDB.ref ('version/').on ('value', function (snapshot) { if (window.vars.version != snapshot.val ()) location.reload (); }); window.vars.firebaseUserRef = window.vars.firebaseDB.ref ('users/'); };
 
   window.funcs.showHistory = function (data) {
     window.vars.$.loading.addClass ('show').find ('.txt').text ('讀取中，請稍候..');
@@ -83,13 +83,15 @@ $(function () {
     $(window).on ('pagehide', function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/enable/').set (0); });
 
     navigator.geolocation.watchPosition (function (position) {
-      if (!window.vars.hasOpenGeo) window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get ()).set ({ uid: window.storages.uuid.get (), name: window.storages.user.get () ? window.storages.user.get ().name : window.vars.name, src: window.storages.user.get () ? window.storages.user.get ().src : window.vars.src, enable: 1, fbuid: window.storages.user.get () ? window.storages.user.get ().fbuid : 0, location: { lat: position.coords.latitude, lng: position.coords.longitude } });
+      if (window.vars.lat === null && window.vars.lng === null) window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get ()).set ({ uid: window.storages.uuid.get (), name: window.storages.user.get () ? window.storages.user.get ().name : window.vars.name, src: window.storages.user.get () ? window.storages.user.get ().src : window.vars.src, enable: 1, fbuid: window.storages.user.get () ? window.storages.user.get ().fbuid : 0, location: { lat: position.coords.latitude, lng: position.coords.longitude} });
       else window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/location').set ({ lat: position.coords.latitude, lng: position.coords.longitude });
-      if(!window.vars.hasOpenGeo && (window.vars.hasOpenGeo = true)) return window.vars.$.loading.removeClass ('show');
 
-      window.vars.maps.setZoom (13);
-      window.vars.maps.setCenter (new google.maps.LatLng (position.coords.latitude, position.coords.longitude));
-      return window.vars.$.loading.removeClass ('show') && cb && cb ();
+      if (window.vars.lat === null && window.vars.lng === null) cb && cb ();
+
+      window.vars.lat = position.coords.latitude;
+      window.vars.lng = position.coords.longitude;
+
+      return window.vars.$.loading.removeClass ('show');
     }, function () {
       return window.vars.$.loading.removeClass ('show') && cb && cb ();
     }, { enableHighAccuracy: true });
@@ -200,7 +202,7 @@ $(function () {
     });
   };
 
-  window.funcs.initStepFirebase ();
+  window.funcs.initFirebase ();
   
   google.maps.event.addDomListener (window, 'load', function () {
     var mapsLastPosition = window.storages.mapsLastPosition.get ();
@@ -214,9 +216,8 @@ $(function () {
     window.vars.firebaseUserRef.orderByChild ('enable').equalTo (0).on ('child_added', window.funcs.removeUser);
     
     window.funcs.initFB ();
-    if (window.storages.user.get ())
-    window.funcs.removeSameUser (window.storages.user.get ().fbuid);
-    
+    if (window.storages.user.get ()) window.funcs.removeSameUser (window.storages.user.get ().fbuid);
+
     window.vars.$.zoomIn.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom + 1); }).addClass ('show');
     window.vars.$.zoomOut.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom - 1); }).addClass ('show');
     window.vars.$.send.click (function () { var val = window.vars.$.myMessage.val ().trim (); if (!val.length) return ; window.vars.firebaseDB.ref ('messages/' + window.storages.uuid.get ()).push ({ content: val, time: window.funcs.getDatetime () }); window.vars.$.myMessage.val (''); });
@@ -225,16 +226,9 @@ $(function () {
     window.vars.$.history.find ('.ok').click (function () { window.vars.$.history.removeClass ('show').get (0).firebase.ref.off ('value', window.vars.$.history.get (0).firebase.on); });
     window.vars.$.notification.attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).addClass (window.storages.audio.get () == 'on' ? 'icon-notification_active' : 'icon-notification_off').addClass ('show').click (function () { window.storages.audio.set (window.storages.audio.get () == 'on' ? 'off' : 'on'); window.vars.hasAudio = window.storages.audio.get () == 'on' ? true : false; $(this).attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).attr ('class', window.storages.audio.get () == 'on' ? 'icon-notification_active show' : 'icon-notification_off show'); });
     window.vars.$.login.find ('.ok').click (function () { window.vars.$.popbox.removeClass ('show'); return window.funcs.showForm (); });
-  
-    window.vars.$.plus.click (function () {
-      window.vars.$.loading.addClass ('show').find ('.txt').text ('定位中，請稍候..');
-      if (!window.vars.hasOpenGeo) { window.vars.$.loading.removeClass ('show'); return window.vars.$.gpson.addClass ('show'); }
-      if (!$(this).hasClass ('open') && !window.storages.user.get ()) { window.vars.$.loading.removeClass ('show'); window.vars.$.login.find ('span').text (''); return window.vars.$.login.addClass ('show'); }
-      window.vars.$.loading.removeClass ('show'); return window.funcs.showForm ();
-    }).addClass ('show');
+    window.vars.$.plus.click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('定位中，請稍候..'); if (window.vars.lat === null && window.vars.lng === null) { window.vars.$.loading.removeClass ('show'); return window.vars.$.gpson.addClass ('show'); } if (!$(this).hasClass ('open') && !window.storages.user.get ()) { window.vars.$.loading.removeClass ('show'); window.vars.$.login.find ('span').text (''); return window.vars.$.login.addClass ('show'); } window.vars.$.loading.removeClass ('show'); return window.funcs.showForm (); }).addClass ('show');
 
-    var audio = function () { setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000); };
-
+    var audio = function () { if (window.vars.lat === null && window.vars.lng === null) window.vars.$.myLocation.click (function () { window.vars.maps.setZoom (16); window.vars.maps.setCenter (new google.maps.LatLng (window.vars.lat, window.vars.lng)); }).addClass ('show'); setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000); };
     if (window.storages.inited.get () === 'no') window.funcs.initStep (audio);
     else window.funcs.initGeoFeature (audio);
   });

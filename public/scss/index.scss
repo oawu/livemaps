@@ -32,7 +32,7 @@ html {
   }
 }
 
-#zoom_in, #zoom_out, #plus, #notification {
+#zoom_in, #zoom_out, #plus, #notification, #my_location {
   position: fixed;
   right: 10px;
   display: inline-block;
@@ -291,7 +291,7 @@ html {
   }
 }
 
-#history, #history, #chat, #relogin, #step1, #gpson, #login {
+#history, #history, #chat, #relogin, #firebase_error, #step1, #gpson, #login {
   .wrapper {
     top: calc(50% - 290px / 2);
     left: calc(50% - 400px / 2);
@@ -429,7 +429,7 @@ html {
   }
   // + 
 }
-#relogin, #step1 {
+#relogin, #firebase_error, #step1 {
   .wrapper {
     top: calc(50% - 420px / 2);
     left: calc(50% - 450px / 2);
@@ -568,7 +568,8 @@ html {
     top: 40px;
   }
 }
-#relogin {
+
+#firebase_error, #relogin {
   .wrapper {
     top: calc(50% - 240px / 2);
     left: calc(50% - 450px / 2);
@@ -893,6 +894,13 @@ html {
   top: $headerHeight + 10px;
   @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
     top: $headerHeight + 5px;
+  }
+}
+#my_location {
+  bottom: auto;
+  top: $headerHeight + 10px + 40px + 5px;
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    top: $headerHeight + 5px + 40px + 5px;
   }
 }
 
