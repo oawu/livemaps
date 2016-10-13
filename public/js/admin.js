@@ -13,6 +13,7 @@ $(function () {
   window.vars.$.time = $('#time');
   window.vars.$.timeago = $('#timeago');
   window.vars.$.clearCounter = $('#clear_counter');
+  window.vars.rangeMin = 1.5;
   
   var appendUser = function (snapshot) {
     var data = null; if (!(snapshot && (data = snapshot.val ()) && (typeof data.uid != 'undefined') && (data.uid.length > 0) && (typeof data.name != 'undefined') && (data.name.length > 0) && (typeof data.src != 'undefined') && (data.src.length > 0) && (typeof data.time != 'undefined') && (data.time != 0) && (typeof data.location != 'undefined') && (Object.keys (data.location).length == 2) && (typeof data.location.lat != 'undefined') && (data.location.lat >= -90 ) && (data.location.lat <= 90 ) && (typeof data.location.lng != 'undefined') && (data.location.lng >= -180) && (data.location.lng <= 180) && (typeof window.vars.users[data.uid] == 'undefined'))) return ;
@@ -40,8 +41,8 @@ $(function () {
   };
 
   window.funcs.initFirebase ();
-  window.vars.firebaseUserRef.orderByChild ('time').startAt (new Date ().getTime () - 5 * 60 * 1000).on ('child_added', appendUser);
-  window.vars.firebaseUserRef.orderByChild ('time').endAt (new Date ().getTime () - 5 * 60 * 1000).on ('child_added', removeUser);
+  window.vars.firebaseUserRef.orderByChild ('time').startAt (new Date ().getTime () - window.vars.rangeMin * 60 * 1000).on ('child_added', appendUser);
+  window.vars.firebaseUserRef.orderByChild ('time').endAt (new Date ().getTime () - window.vars.rangeMin * 60 * 1000).on ('child_added', removeUser);
     
   window.vars.$.loading.removeClass ('show');
 });

@@ -40,6 +40,7 @@ $(function () {
   window.vars.hasAudio = false;
   window.vars.lat = null;
   window.vars.lng = null;
+  window.vars.rangeMin = 1.5;
 
   window.vars.points = {};
   window.vars.z = 0;
@@ -213,8 +214,8 @@ $(function () {
     window.vars.maps.setMapTypeId ('style1');
     window.vars.maps.addListener ('idle', function () { window.storages.mapsLastPosition.set ({zoom: window.vars.maps.zoom, lat: window.vars.maps.center.lat (), lng: window.vars.maps.center.lng ()}); });
 
-    window.vars.firebaseUserRef.orderByChild ('time').startAt (new Date ().getTime () - 5 * 60 * 1000).on ('child_added', window.funcs.appendUser);
-    window.vars.firebaseUserRef.orderByChild ('time').endAt (new Date ().getTime () - 5 * 60 * 1000).on ('child_added', window.funcs.removeUser);
+    window.vars.firebaseUserRef.orderByChild ('time').startAt (new Date ().getTime () - window.vars.rangeMin * 60 * 1000).on ('child_added', window.funcs.appendUser);
+    window.vars.firebaseUserRef.orderByChild ('time').endAt (new Date ().getTime () - window.vars.rangeMin * 60 * 1000).on ('child_added', window.funcs.removeUser);
     
     window.funcs.initFB ();
     if (window.storages.user.get ()) window.funcs.removeSameUser (window.storages.user.get ().fbuid);
