@@ -40,7 +40,6 @@ $(function () {
   window.vars.hasAudio = false;
   window.vars.lat = null;
   window.vars.lng = null;
-  window.vars.rangeMin = 1.5;
 
   window.vars.points = {};
   window.vars.z = 0;
@@ -81,11 +80,11 @@ $(function () {
 
   window.funcs.initGeoFeature = function (cb) {
     if (window.navigator.geolocation === undefined || navigator.geolocation.watchPosition === undefined) return window.vars.$.loading.removeClass ('show');
-    $(window).on ('beforeunload', function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/time/').set (0); });
-    $(window).on ('pagehide', function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/time/').set (0); });
+    $(window).on ('beforeunload', function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/enable/').set (0); });
+    $(window).on ('pagehide', function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/enable/').set (0); });
 
     navigator.geolocation.watchPosition (function (position) {
-      if (window.vars.lat === null && window.vars.lng === null) window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get ()).set ({ uid: window.storages.uuid.get (), name: window.storages.user.get () ? window.storages.user.get ().name : window.vars.name, src: window.storages.user.get () ? window.storages.user.get ().src : window.vars.src, fbuid: window.storages.user.get () ? window.storages.user.get ().fbuid : 0, location: { lat: position.coords.latitude, lng: position.coords.longitude}, time: new Date ().getTime () });
+      if (window.vars.lat === null && window.vars.lng === null) window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get ()).set ({ uid: window.storages.uuid.get (), name: window.storages.user.get () ? window.storages.user.get ().name : window.vars.name, src: window.storages.user.get () ? window.storages.user.get ().src : window.vars.src, enable: 1, fbuid: window.storages.user.get () ? window.storages.user.get ().fbuid : 0, location: { lat: position.coords.latitude, lng: position.coords.longitude}, time: new Date ().getTime () });
       else window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/location').set ({ lat: position.coords.latitude, lng: position.coords.longitude });
 
       if (window.vars.lat === null && window.vars.lng === null) cb && cb ();
@@ -102,7 +101,7 @@ $(function () {
 
   window.funcs.appendUser = function (snapshot) {
     var data = null;
-    if (!(snapshot && (data = snapshot.val ()) && (typeof data.uid != 'undefined') && (data.uid.length > 0) && (typeof data.name != 'undefined') && (data.name.length > 0) && (typeof data.src != 'undefined') && (data.src.length > 0) && (typeof data.time != 'undefined') && (data.time != 0) && (typeof data.location != 'undefined') && (Object.keys (data.location).length == 2) && (typeof data.location.lat != 'undefined') && (data.location.lat >= -90 ) && (data.location.lat <= 90 ) && (typeof data.location.lng != 'undefined') && (data.location.lng >= -180) && (data.location.lng <= 180) && (typeof window.vars.points[data.uid] == 'undefined'))) return ;
+    if (!(snapshot && (data = snapshot.val ()) && (typeof data.uid != 'undefined') && (data.uid.length > 0) && (typeof data.name != 'undefined') && (data.name.length > 0) && (typeof data.src != 'undefined') && (data.src.length > 0) && (typeof data.enable != 'undefined') && (data.enable != 0) && (typeof data.location != 'undefined') && (Object.keys (data.location).length == 2) && (typeof data.location.lat != 'undefined') && (data.location.lat >= -90 ) && (data.location.lat <= 90 ) && (typeof data.location.lng != 'undefined') && (data.location.lng >= -180) && (data.location.lng <= 180) && (typeof window.vars.points[data.uid] == 'undefined'))) return ;
 
     var position = new google.maps.LatLng (data.location.lat, data.location.lng);
     var content = window.funcs.renderUser (data);
@@ -180,7 +179,7 @@ $(function () {
     if (!fbuid) return;
 
     window.vars.firebaseUserRef.orderByChild ('fbuid').equalTo ('' + fbuid).once ('value', function (snapshot) {
-      for (var i in snapshot.val ()) if (i != window.storages.uuid.get ()) window.vars.firebaseDB.ref ('users/' + i + '/time/').set (0);
+      for (var i in snapshot.val ()) if (i != window.storages.uuid.get ()) window.vars.firebaseDB.ref ('users/' + i + '/enable/').set (0);
     });
 
     window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/fbuid/').set (window.storages.user.get ().fbuid);
@@ -214,8 +213,8 @@ $(function () {
     window.vars.maps.setMapTypeId ('style1');
     window.vars.maps.addListener ('idle', function () { window.storages.mapsLastPosition.set ({zoom: window.vars.maps.zoom, lat: window.vars.maps.center.lat (), lng: window.vars.maps.center.lng ()}); });
 
-    window.vars.firebaseUserRef.orderByChild ('time').startAt (new Date ().getTime () - window.vars.rangeMin * 60 * 1000).on ('child_added', window.funcs.appendUser);
-    window.vars.firebaseUserRef.orderByChild ('time').endAt (new Date ().getTime () - window.vars.rangeMin * 60 * 1000).on ('child_added', window.funcs.removeUser);
+    window.vars.firebaseUserRef.orderByChild ('enable').equalTo (1).on ('child_added', window.funcs.appendUser);
+    window.vars.firebaseUserRef.orderByChild ('enable').equalTo (0).on ('child_added', window.funcs.removeUser);
     
     window.funcs.initFB ();
     if (window.storages.user.get ()) window.funcs.removeSameUser (window.storages.user.get ().fbuid);
