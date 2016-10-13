@@ -13,8 +13,17 @@
 }
 
 
+.icon-my_location:before {
+  content: "\e90a";
+}
 .icon-menu:before {
   content: "\e120";
+}
+.icon-notification_off:before {
+  content: "\e900";
+}
+.icon-notification_active:before {
+  content: "\e901";
 }
 .icon-pin-alt:before {
   content: "\e902";
@@ -48,12 +57,6 @@
 }
 .icon-github:before {
   content: "\f09b";
-}
-.icon-notification_off:before {
-  content: "\e900";
-}
-.icon-notification_active:before {
-  content: "\e901";
 }
 
 
