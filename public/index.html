@@ -1,42 +1,102 @@
 <!DOCTYPE html>
-<html lang="tw">
+<html lang="zh-Hant">
   <head>
     <meta http-equiv="Content-Language" content="zh-tw" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
 
-    <title></title>
+    <title>LiveMaps</title>
 
     <meta name="robots" content="index,follow" />
-
     <meta name="author" content="吳政賢(OA Wu)" />
 
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta property="og:site_name" content="" />
-    <meta property="og:title" content="" />
-    <meta property="og:description" content="" />
-    <meta property="og:url" content="" />
+    <meta name="keywords" content="LiveMaps,即時地圖聊天室" />
+    <meta name="description" content="LiveMaps 是一個即時地圖聊天室，讓你在世界上任何位置都可以發出自己的感想動態，也可以在地圖上其他人的心情寫照、分享，利用 Firebase 的 Realtime Database 以及 Google Maps JavaScript API 實作出來的地圖聊天室。" />
+
+    <meta property="og:site_name" content="LiveMaps" />
+    <meta property="og:title" content="即時地圖聊天室 - LiveMaps" />
+    <meta property="og:description" content="LiveMaps是一個即時地圖聊天室，讓你在世界上任何位置都可以發出自己的感想動態，也可以在地圖上其他人的心情寫照、分享，利用Firebase的RealtimeDatabase以及GoogleMapsJavaScriptAPI實作出來的地圖聊天室。" />
+    <meta property="og:url" content="https://livemaps.ioa.tw/index.html" />
 
     <meta property="fb:admins" content="100000100541088" />
-    <meta property="fb:app_id" content="640377126095413" />
+    <meta property="fb:app_id" content="" />
 
     <meta property="og:locale" content="zh_TW" />
     <meta property="og:locale:alternate" content="en_US" />
+    
+    <meta property="og:type" content="article" />
+    <meta property="article:author" content="https://www.facebook.com/comdan66" />
+    <meta property="article:publisher" content="https://www.facebook.com/comdan66" />
+    <meta property="article:modified_time" content="2016-10-13T06:40:47+08:00" />
+    <meta property="article:published_time" content="2016-10-13T06:40:47+08:00" />
 
-    <meta property="og:type" content="city" />
-    <meta property="og:image" content="" alt="" />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image" content="https://livemaps.ioa.tw/img/og.png" alt="LiveMaps" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="600" />
+    <meta property="og:image:height" content="315" />
 
+    <link rel="canonical" href="https://livemaps.ioa.tw/index.html" />
+    <link rel="alternate" href="https://livemaps.ioa.tw/index.html" hreflang="zh-Hant" />
+
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
     <link href="css/public.css" rel="stylesheet" type="text/css" />
+    <link href="css/index.css" rel="stylesheet" type="text/css" />
 
-    <script src="js/jquery_v1.10.2/jquery-1.10.2.min.js" language="javascript" type="text/javascript" ></script>
-    <script src="js/public.js" language="javascript" type="text/javascript" ></script>
+    <script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
+    <script src="https://cdn.firebase.com/libs/geofire/4.1.1/geofire.min.js"></script>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_TMGAKpGb-Res0ry8h1iVChNO6HWqGWM&language=zh-TW" language="javascript" type="text/javascript" ></script>
+    <script src="js/config.js?v=11" language="javascript" type="text/javascript" ></script>
+    <script src="js/public.js?v=11" language="javascript" type="text/javascript" ></script>
+    <script src="js/index.js?v=11" language="javascript" type="text/javascript" ></script>
   </head>
-  <body lang="zh-tw">
+  <body>
 
+    <header>
+      <div>
+        <a class='icon-menu'></a><a class='icon-pin-alt a' href='index.html'>地圖</a><a class='icon-question' href='about.html'>說明</a>
+        <span><a class='icon-share' id='share' title='分享至 Facebook'></a><a href='http://www.ioa.tw/' class='icon-user' title='網站作者' target='_blank'></a></span>
+      </div>
+    </header>
+
+    <div id='maps'></div>
+
+    <a id='notification'></a>
+    <a id='zoom_in' class='icon-zoom-in'></a>
+    <a id='zoom_out' class='icon-zoom-out'></a>
+    <a id='plus' class='icon-plus'></a>
+
+    <div id='relogin' class='popbox'><div class='cover'></div><div class='wrapper'><h4>重複登入</h4><div class='panel_content'><p>您可能在其他瀏覽器登入過或閒置太久了，請重新整理頁面重新登入吧！</p></div><div class='btns'><a class='ok'>好的，了解</a></div></div></div>
+    <div id='form'><input type='text' id='my_message' placeholder='在想些什麼呢？' /><button type='button' id='send'>送出</button></div>
+    <div id='login' class='popbox'><div class='cover'></div><div class='wrapper'><h4>登入，一起玩玩看吧！</h4><div class='panel_content'><span></span><a id='facebook'>使用 facebook 登入</a><a class='ok'>使用 訪客 登入</a></div><div class='btns'><a class='ok'>瞭解，先不登入</a></div></div></div>
+    <div id='gpson' class='popbox'><div class='cover'></div><div class='wrapper'><h4>開啟吧，會很有趣的！</h4><div class='panel_content'><p><span>體驗一下吧，</span>開啟瀏覽器定位就可以開始玩喔！</p><div class='tip'><img src='img/gpson.png'></div></div><div class='btns'><a class='cancel'>確定</a></div></div></div>
+    <div id='step1' class='popbox'><div class='cover'></div><div class='wrapper'><h4>功能提醒</h4><div class='panel_content'><p>因功能需求，會需要開啟瀏覽器定位。</p><p>開啟瀏覽器定位，如此一來就可以體驗地圖上的驚喜！</p><div class='tip'><img src='img/step1.png'></div><div class='tip2'><img src='img/step1_2.png'></div></div><div class='btns'><a class='cancel'>我知道了！</a></div></div></div>
+    <div id='step2' class='popbox'><div class='cover'></div><div class='wrapper'>這邊可以發動態喔！<a class='cancel'>好，我知道了！</a></div></div>
+    <div id='step3' class='popbox'><div class='cover'></div><div class='wrapper'>這邊可以開關音效通知喔！<a class='cancel'>好，我知道了！</a></div></div>
+    <div id='history' class='popbox'><div class='cover'></div><div class='wrapper'><h4></h4><div class='panel_content'></div><div class='btns'><a class='ok'>關閉</a></div></div></div>
+    <div id='chat' class='popbox'><div class='cover'></div><div class='wrapper'><h4>與 聊天</h4><div class='avatar'><img src="" /></div><div class='panel_content'><div class='he'><span>test</span><time>1</time></div><div class='me'><span>test</span><time>1</time></div></div><div class='ctr'><input type='text' id='chat_my_message' placeholder='對他說些什麼呢？'><button type='button' class='ok'>送出</button><button type='button' class='cancel'>關閉</button></div></div></div>
+    <div id='marker_menu'><div><div class='history'>歷史訊息</div><div class='chat_he'>跟他聊天</div></div></div>
+    <div id='loading' class='show'><div class='cover'></div><div class='loading'><div><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><span class='txt'>連線中，請稍候..</span></div></div>
+
+    <aside>
+      <header>
+        <span>聊天地圖！</span>
+        <span>LiveMaps！</span>
+      </header>
+
+      <span>主要功能</span>
+      <ul>
+        <li><a class='icon-pin-alt a' href='index.html'>地圖</a></li>
+        <li><a class='icon-question' href='about.html'>說明</a></li>
+      </ul>
+
+      <span>其他功能</span>
+      <ul>
+        <li><a class='icon-user' href='http://www.ioa.tw/' target='_blank'>開發人員</a></li>
+        <li><a class='icon-github' href='https://github.com/comdan66/evolution/' target='_blank'>GitHub</a></li>
+      </ul>
+    </aside>
+    <div class='cover'></div>
   </body>
 </html>
