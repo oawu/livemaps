@@ -429,11 +429,22 @@ html {
   }
   // + 
 }
+#relogin, #firebase_error {
+  .panel_content {
+    padding: 20px 70px;
+    @media screen and (min-width: 0) and (max-width: #{500px - 1px}) {
+      padding: 20px;
+    }
+  }
+}
 #relogin, #firebase_error, #comments, #step1 {
+  .panel_content {
+    padding: 20px;
+  }
   .wrapper {
-    top: calc(50% - 420px / 2);
+    top: calc(50% - 430px / 2);
     left: calc(50% - 450px / 2);
-    height: 420px;
+    height: 430px;
     width: 450px;
     p {
       line-height: 35px;
@@ -450,12 +461,6 @@ html {
         font-size: 13px;
         line-height: 30px;
       }
-    }
-  }
-  .panel_content {
-    padding: 20px 70px;
-    @media screen and (min-width: 0) and (max-width: #{500px - 1px}) {
-      padding: 20px;
     }
   }
   .tip {
