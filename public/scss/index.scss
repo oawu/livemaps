@@ -96,90 +96,6 @@ html {
 }
 
 
-#loading {
-  position: fixed;
-  top: -100%;
-  left: 0;
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-
-  &.show {
-    top: 0;
-
-    .loading {
-      @include opacity(1);
-    }
-  }
-  .cover {
-    position: absolute;left: 0;top: 0;bottom: 0;right: 0;
-    background-color: rgba(39, 40, 34, .75);
-  }
-  .loading {
-    position: absolute;
-    display: inline-block;
-    border: 1px solid rgba(160, 160, 157, 1.00);
-    overflow: hidden;
-    color: rgba(255, 255, 255, 1.00);
-    background-color: rgba(0, 0, 0, .2500);
-    
-    top: calc(50% - 150px / 2);
-    left: calc(50% - 200px / 2);
-    height: 150px;
-    width: 200px;
-
-    @include opacity(0);
-    @include box-shadow(0 0 25px rgba(0, 0, 0, .5));
-    @include border-radius(3px);
-    @include transition(opacity .3s);
-    > * {
-      position: absolute;
-      display: inline-block;
-    }
-    > span {
-      left: 0;
-      bottom: 5px;
-      width: 100%;
-      padding: 5px;
-    }
-    > div {
-      top: 10px;
-      left: calc(50% - 100px / 2);
-      width: 100px;
-      height: 100px;
-      @include animation(loading 2s linear infinite);
-
-      span {
-        position: absolute;
-        display: inline-block;
-
-        width: 15px;
-        height: 15px;
-        @include border-radius(50%);
-        @include opacity(.75);
-
-        $cs:(
-          rgba(244, 67, 54, 1.00), //#f44336
-          rgba(255, 87, 34, 1.00), //#ff5722
-          rgba(255, 152, 0, 1.00), //#ff9800
-          rgba(255, 235, 59, 1.00), //#ffeb3b
-          rgba(76, 175, 80, 1.00), //#4caf50
-          rgba(33, 150, 243, 1.00), //#2196f3
-          rgba(3, 169, 244, 1.00), //#03a9f4
-          rgba(0, 188, 212, 1.00)); //#00bcd4
-
-        @for $i from 1 through 8 {
-          &:nth-child(#{$i}){
-            background-color: nth($cs,$i);
-            top: sin(360deg / 8 * ($i - 1)) * (30px) + (100px / 2 - 15px / 2);
-            left: cos(360deg / 8 * ($i - 1)) * (30px) + (100px / 2 - 15px / 2);
-          }
-        }
-      }
-    }
-  }
-}
 
 
 #form {
@@ -512,7 +428,7 @@ html {
       bottom: -5px;
       font-size: 50px;
       
-      @include animation(step2 .5s linear infinite);
+      @include animation(step .5s linear infinite);
 
 
     }
@@ -951,27 +867,6 @@ html {
   display: inline-block;
   width: calc(100% - 60px - 60px - 5px - 5px)
 }
-.avatar {
-  position: relative;
-  display: inline-block;
-  width: 45px;
-  height: 45px;
-  overflow: hidden;
-  text-align: center;
-  color: rgba(255, 255, 255, 1.0);
-  border: 3px solid rgba(255, 255, 255, 1.0);
-  background-color: rgba(255, 255, 255, 1.00);
-  z-index: 1;
-  @include border-radius(50%);
-  @include box-shadow(inset 0 0 1px rgba(0, 0, 0, 1), 0 0 1px rgba(0, 0, 0, .800));
-
-  @include scale(0);
-  @include transition(transform .5s);
-
-  img {
-    width: 100%;
-  }
-}
 #marker_menu {
   position: absolute;
   top: -10000px;
@@ -1119,7 +1014,7 @@ html {
     }
   }
 }
-@include keyframes(step2){
+@include keyframes(step){
   0% {
       right: 45px;
   }
@@ -1131,11 +1026,3 @@ html {
   }
 }
 
-@include keyframes(loading){
-  0% {
-    @include rotate(0);
-  }
-  100% {
-    @include rotate(360deg);
-  }
-}
