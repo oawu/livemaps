@@ -7,3 +7,4 @@ sftp-config*
 /database.rules.json
 
 /firebase-debug.log
+/public/js/config.js
