@@ -349,9 +349,9 @@ html {
 
 #login {
   .wrapper {
-    top: calc(50% - 250px / 2);
+    top: calc(50% - 280px / 2);
     left: calc(50% - 350px / 2);
-    height: 250px;
+    height: 280px;
     width: 350px;
 
     @media screen and (min-width: 0) and (max-width: #{400px - 1px}) {
