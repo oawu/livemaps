@@ -5,3 +5,5 @@ sftp-config*
 /cmd/node_modules/*
 /cmd/npm-debug.log
 /database.rules.json
+
+/firebase-debug.log
