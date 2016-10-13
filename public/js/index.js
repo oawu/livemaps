@@ -40,6 +40,7 @@ $(function () {
   window.vars.hasAudio = false;
   window.vars.lat = null;
   window.vars.lng = null;
+  window.vars.rangeMsgMin = 1.5;
 
   window.vars.points = {};
   window.vars.z = 0;
@@ -123,8 +124,9 @@ $(function () {
     }, 500));
 
     window.vars.points[data.uid].on = {
-      message: window.vars.firebaseDB.ref ('messages/' + data.uid + '/').limitToLast (1).on ('value', function (snapshot) {
+      message: window.vars.firebaseDB.ref ('messages/' + data.uid + '/').orderByChild ('utime').startAt (new Date ().getTime () - window.vars.rangeMsgMin * 60 * 1000).limitToLast (1).on ('value', function (snapshot) {
         var msg = null; for (var i in snapshot.val ()) msg = snapshot.val ()[i]; if (!msg) return ;
+
         window.vars.points[data.uid].marker.setOptions ({ zIndex: ++window.vars.z, labelContent: window.funcs.renderUser (window.vars.points[data.uid].data, msg.content.slice (0, 255)) });
         window.vars.points[data.uid].timers.push (setTimeout (function () {
           window.vars.points[data.uid].marker.setOptions ({ labelClass: 'user show message' });
@@ -221,7 +223,7 @@ $(function () {
 
     window.vars.$.zoomIn.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom + 1); }).addClass ('show');
     window.vars.$.zoomOut.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom - 1); }).addClass ('show');
-    window.vars.$.send.click (function () { var val = window.vars.$.myMessage.val ().trim ().slice (0, 255); if (!val.length) return ; window.vars.firebaseDB.ref ('messages/' + window.storages.uuid.get ()).push ({ content: val, time: window.funcs.getDatetime () }); window.vars.$.myMessage.val (''); });
+    window.vars.$.send.click (function () { var val = window.vars.$.myMessage.val ().trim ().slice (0, 255); if (!val.length) return ; window.vars.firebaseDB.ref ('messages/' + window.storages.uuid.get ()).push ({ content: val, time: window.funcs.getDatetime (), utime: new Date ().getTime () }); window.vars.$.myMessage.val (''); });
     window.vars.$.relogin.find ('.cover, .ok').click (function () { location.reload (); });
     window.vars.$.myMessage.keyup (function (e) { if (e.keyCode == 13) window.vars.$.send.click (); });
     window.vars.$.history.find ('.ok').click (function () { window.vars.$.history.removeClass ('show').get (0).firebase.ref.off ('value', window.vars.$.history.get (0).firebase.on); });
