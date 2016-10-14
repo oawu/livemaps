@@ -8,16 +8,18 @@ LiveMaps 是一個即時地圖聊天室，讓你在世界上任何位置都可�
 ---
 
 
+
+<br/>
+## 聲明
+本作品授權採用 **[姓名標示-非商業性 2.0 台灣 (CC BY-NC 2.0 TW) 授權](http://creativecommons.org/licenses/by-nc/2.0/tw/)**，詳見 [http://creativecommons.org/licenses/by-nc/2.0/tw/](http://creativecommons.org/licenses/by-nc/2.0/tw/)
+
+
 <br/>
 ## DEMO
 * Demo：[https://livemaps.ioa.tw/](https://livemaps.ioa.tw/)
 * 更多作品：[http://www.ioa.tw/](http://www.ioa.tw/)
 
-
-
-<br/>
-## 聲明
-本作品授權採用 **[姓名標示-非商業性 2.0 台灣 (CC BY-NC 2.0 TW) 授權](http://creativecommons.org/licenses/by-nc/2.0/tw/)**，詳見 [http://creativecommons.org/licenses/by-nc/2.0/tw/](http://creativecommons.org/licenses/by-nc/2.0/tw/)
+![LiveMaps](public/img/demo.gif)
 
 
 
