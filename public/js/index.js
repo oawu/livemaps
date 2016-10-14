@@ -58,6 +58,7 @@ $(function () {
   window.funcs.getFbData = function (cb) { FB.api('/me', function (response) { window.storages.user.set ({ fbuid: response.id, name: response.name, src: 'https://graph.facebook.com/' + response.id + '/picture?width=100&height=100' }); window.funcs.removeSameUser (response.id); return cb && cb (response); }); };
   window.funcs.checkLoginState = function (cb, eb) { FB.getLoginStatus (function (response) { if (response.status != 'connected') return window.storages.user.set (null) && eb && eb (); return cb && cb (response); }); return eb && eb (); };
   window.funcs.initFB = function () { if (!window.storages.user.get ()) window.funcs.checkLoginState (function () { window.funcs.getFbData (); }, function () { window.vars.$.facebook.click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('登入中，請稍候..'); FB.login (function (response) { if (response.status != 'connected') return window.vars.$.loading.removeClass ('show') && window.vars.$.facebook.prev ().text ('登入失敗..'); window.funcs.getFbData (function () { window.vars.$.loading.removeClass ('show'); window.vars.$.facebook.parents ('.popbox').removeClass ('show'); window.funcs.showForm (); }); }, {scope: 'public_profile,email'}); }); }); };
+  window.funcs.setUserTime = function () { setInterval (function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/time/').set (new Date ().getTime ()); }, 60 * 1000); window.vars.firebaseUserRef.orderByChild ('time').endAt (new Date ().getTime () - 5 * 60 * 1000).once ('value', function (snapshot) { var datas = []; for (var i in snapshot.val ())  datas.push (snapshot.val ()[i]); datas.forEach (function (t) { window.vars.firebaseDB.ref ('users/' + t.uid + '/enable/').set (0); }); }); };
 
   window.funcs.showHistory = function (data) {
     window.vars.$.loading.addClass ('show').find ('.txt').text ('讀取中，請稍候..');
@@ -236,6 +237,6 @@ $(function () {
     if (window.storages.inited.get () === 'no') window.funcs.initStep (audio);
     else window.funcs.initGeoFeature (audio);
 
-    setInterval (function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/time/').set (new Date ().getTime ()); }, 60 * 1000);
+    window.funcs.setUserTime ();
   });
 });
