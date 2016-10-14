@@ -4,6 +4,10 @@
  * @website     http://www.ioa.tw/
  */
 
+// Google Analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-46121102-4', 'auto'); ga('send', 'pageview');
+
 // Facebook
 window.fbAsyncInit = function () { FB.init ({ appId: '1623452611281139', cookie: true, xfbml: true, version: 'v2.8' }); }; (function(d, s, id){ var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) {return;} js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/zh_TW/sdk.js"; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));
 
@@ -40,7 +44,7 @@ $(function () {
     initFB: function () { if (!window.storages.user.get ()) window.funcs.checkLoginState (function () { window.funcs.getFbData (); }, function () { window.vars.$.facebook.click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('登入中，請稍候..'); FB.login (function (response) { if (response.status != 'connected') return window.vars.$.loading.removeClass ('show') && window.vars.$.facebook.prev ().text ('登入失敗..'); window.funcs.getFbData (function () { window.vars.$.loading.removeClass ('show'); window.vars.$.facebook.parents ('.popbox').removeClass ('show'); window.funcs.showForm (); }); }, {scope: 'public_profile,email'}); }); }); },
     setUserTime: function () { setInterval (function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/time/').set (new Date ().getTime ()); }, 60 * 1000); window.vars.firebaseUserRef.orderByChild ('time').endAt (new Date ().getTime () - 5 * 60 * 1000).once ('value', function (snapshot) { var datas = []; for (var i in snapshot.val ())  datas.push (snapshot.val ()[i]); datas.forEach (function (t) { window.vars.firebaseDB.ref ('users/' + t.uid + '/enable/').set (0); }); }); },
     initStep: function (cb) { window.vars.$.loading.removeClass ('show'); window.vars.$.step1.addClass ('show').find ('.cover, .cancel').click (function () { window.vars.$.step2.addClass ('show'); }); window.vars.$.step2.find ('.cover, .cancel').click (function () { window.vars.$.step3.addClass ('show'); }); window.vars.$.step3.find ('.cover, .cancel').click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('初始中，請稍候..'); window.funcs.initGeoFeature (cb); }); },
-    showHistory: function (data) { window.vars.$.loading.addClass ('show').find ('.txt').text ('讀取中，請稍候..'); window.vars.firebaseDB.ref ('messages/' + data.uid).limitToLast (100).once ('value', function (snapshot) { var msgs = []; for (var i in snapshot.val ()) msgs.push (snapshot.val ()[i]); window.vars.$.loading.removeClass ('show'); window.vars.$.history.find ('h4').text (data.name + ' 的訊息紀錄').next ().empty ().append (msgs.map (function (t) {return $('<div />').addClass ('he').append ($('<div />').addClass ('avatar').append ($('<img />').attr ('src', data.src))).append ($('<span />').text (t.content.slice (0, 255))).append ($('<time />').text ($.timeago (t.time)));})).find ('.avatar').imgLiquid ({verticalAlign: 'center'}).parents ('.popbox').addClass ('show'); }); },
+    showHistory: function (data) { window.vars.$.loading.addClass ('show').find ('.txt').text ('讀取中，請稍候..'); window.vars.$.history.find ('h4').text (data.name + ' 的訊息紀錄').next ().empty ().parents ('.popbox').addClass ('show'); window.vars.firebaseDB.ref ('messages/' + data.uid).limitToLast (100).once ('value', function (snapshot) { var msgs = []; for (var i in snapshot.val ()) msgs.push (snapshot.val ()[i]); window.vars.$.loading.removeClass ('show'); window.vars.$.history.find ('.panel_content').empty ().append (msgs.map (function (t) {return $('<div />').addClass ('he').append ($('<div />').addClass ('avatar').append ($('<img />').attr ('src', data.src))).append ($('<span />').text (t.content.slice (0, 255))).append ($('<time />').text ($.timeago (t.time)));})).find ('.avatar').imgLiquid ({verticalAlign: 'center'}).parents ('.popbox').addClass ('show'); }); },
     initGeoFeature: function (cb) {
       if (window.navigator.geolocation === undefined || navigator.geolocation.watchPosition === undefined) return window.vars.$.loading.removeClass ('show');
       $(window).on ('beforeunload', function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/enable/').set (0); });
@@ -146,7 +150,7 @@ $(function () {
   window.vars.z = 0;
   window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
 
-  window.funcs.initFirebase (window.storages.version.get (2));
+  window.funcs.initFirebase (window.storages.version.get (3));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
