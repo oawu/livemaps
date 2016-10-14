@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta http-equiv="Content-Language" content="zh-tw" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
+
+    <title>製作說明 - LiveMaps</title>
+
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="吳政賢(OA Wu)" />
+
+    <meta name="keywords" content="LiveMaps,即時地圖聊天室,製作說明" />
+    <meta name="description" content="LiveMaps 是一個即時地圖聊天室，讓你在世界上任何位置都可以發出自己的感想動態，也可以在地圖上其他人的心情寫照、分享，利用 Firebase 的 Realtime Database 以及 Google Maps JavaScript API 實作出來的地圖聊天室。" />
+
+    <meta property="og:site_name" content="LiveMaps" />
+    <meta property="og:title" content="製作說明 - LiveMaps" />
+    <meta property="og:description" content="LiveMaps是一個即時地圖聊天室，讓你在世界上任何位置都可以發出自己的感想動態，也可以在地圖上其他人的心情寫照、分享，利用Firebase的RealtimeDatabase以及GoogleMapsJavaScriptAPI實作出來的地圖聊天室。" />
+    <meta property="og:url" content="https://livemaps.ioa.tw/about.html" />
+
+    <meta property="fb:admins" content="100000100541088" />
+    <meta property="fb:app_id" content="1623452611281139" />
+
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:locale:alternate" content="en_US" />
+    
+    <meta property="og:type" content="article" />
+    <meta property="article:author" content="https://www.facebook.com/comdan66" />
+    <meta property="article:publisher" content="https://www.facebook.com/comdan66" />
+    <meta property="article:modified_time" content="2016-10-13T06:40:47+08:00" />
+    <meta property="article:published_time" content="2016-10-13T06:40:47+08:00" />
+
+    <meta property="og:image" content="https://livemaps.ioa.tw/img/og.png" alt="LiveMaps" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="600" />
+    <meta property="og:image:height" content="315" />
+
+    <link rel="canonical" href="https://livemaps.ioa.tw/about.html" />
+    <link rel="alternate" href="https://livemaps.ioa.tw/about.html" hreflang="zh-Hant" />
+
+    <link href="css/public.css" rel="stylesheet" type="text/css" />
+    <link href="css/about.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/geofire/4.1.1/geofire.min.js"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_TMGAKpGb-Res0ry8h1iVChNO6HWqGWM&language=zh-TW" language="javascript" type="text/javascript" ></script>
+    <script src="js/config.js?v=1" language="javascript" type="text/javascript" ></script>
+    <script src="js/public.js?v=1" language="javascript" type="text/javascript" ></script>
+    <script src="js/about.js?v=1" language="javascript" type="text/javascript" ></script>
+  </head>
+  <body>
+
+    <header>
+      <div>
+        <a class='icon-menu'></a><a class='icon-pin-alt' href='index.html'>地圖</a><a class='icon-question a' href='about.html'>說明</a>
+        <span><a class='icon-share header_tip' id='share' title='分享至 Facebook'></a><a href='http://www.ioa.tw/' class='icon-user header_tip' title='網站作者' target='_blank'></a></span>
+      </div>
+    </header>
+    
+    <div id='container' class='about'>
+      <article>
+        <header>
+          <h1><a href='https://livemaps.ioa.tw/'>LiveMaps！</a>
+            <div class='fb-like' data-href='https://livemaps.ioa.tw/' data-send='false' data-layout='button_count' data-action='like' data-show-faces='false' data-share='true'></div>
+          </h1>
+          <span><p>一起在地圖上聊天吧！</p><div class='fb-like' data-href='https://livemaps.ioa.tw/' data-send='false' data-layout='button_count' data-action='like' data-show-faces='false' data-share='true'></div></span>
+        </header>
+        <section>
+          <p>LiveMaps 是一個即時地圖聊天室，讓你在世界上任何位置都可以發出自己的感想動態。每個人都可以在地圖分享著她在世界各地、城市角落的心情寫照，網站藉由 <a href='https://www.google.com.tw/' target='_blank'>Google</a> 所提供的 <a href='https://firebase.google.com/' target='_blank'>Firebase</a> 的 <a href='https://firebase.google.com/docs/database/' target='_blank'>Realtime Database</a> 以及 <a href='https://developers.google.com/maps/documentation/javascript/?hl=zh-tw' target='_blank'>Google Maps JavaScript API</a> 免費服務實作。</p>
+          <p>聊天地圖也是一個純前端技術的網站，仰賴 Firebase 的 Realtime 的特性，並且用於 Google Maps 上，讓使用者的定位可以即時分享，同時間也可以發佈動態；現階段只是初樣的 Prototype，之後會加入 <b>個人聊天室</b>、<b>上傳照片</b>、<b>Mobile App</b> 等功能！</p>
+        </section>
+      </article>
+
+      <article>
+        <header>
+          <h2>作品分享</h2>
+          <span>取之於網路 • 分享於網路</span>
+        </header>
+        <section>
+          <ul>
+            <li>GitHub：<a href='https://github.com/comdan66/livemaps/' target='_blank'>https://github.com/comdan66/livemaps/</a></li>
+            <li>Demo：<a href='https://livemaps.ioa.tw/' target='_blank'>https://livemaps.ioa.tw/</a></li>
+            <li>更多作品：<a href='http://www.ioa.tw/' target='_blank'>http://www.ioa.tw/</a></li>
+          </ul>
+        </section>
+      </article>
+
+      <article>
+        <header>
+          <h2>授權聲明</h2>
+          <span>使用授權 • 責任聲明</span>
+        </header>
+        <section>
+          <ul>
+            <li>本作品授權採用<b>姓名標示-非商業性 2.0 台灣 (CC BY-NC 2.0 TW) 授權</b>，詳見 <a href='http://creativecommons.org/licenses/by-nc/2.0/tw/' target='_blank'>http://creativecommons.org/licenses/by-nc/2.0/tw/</a></li>
+          </ul>
+        </section>
+      </article>
+
+      <article>
+        <header>
+          <h2>功能介紹</h2>
+          <span>FEATURE • LIVE DEMO</span>
+        </header>
+        <section>
+
+          <p>基本的 Google Maps JavaScript API 的應用這邊就不多介紹了，這次的練習主要著重在 Firebase 的應用，藉由 Hosting 來取得 <a href='https://zh.wikipedia.org/wiki/超文本传输安全协议' target='_blank'>Https</a> 的協定，然後在建立起專案，並且利用 Realtime Database 來實作即時性的功能。</p>
+          <p>Firebase 的 Hosting 可以將自己的 <a href='https://zh.wikipedia.org/wiki/域名' target='_blank'>Domain</a> 用 CNAME、A 記錄指向過來，使得專案擁有自己客製化的 Domain/Sub Domain 並且是 Https 的協定，而 Hosting 功能在 Firebase 的操作上並不會太困難，只要依照其所顯示的步驟驗證完網域所有權後即可完成。Realtime Database 是項 Firebase 儲存資料的服務，他是以 <a href='http://www.json.org/' target='_blank'>JSON</a> 的方式，用 key-value 方式儲存，用過 <a href='http://tx.liberal.ntu.edu.tw/InfoMgt/Jx/IS_IM/NoSQL.htm' target='_blank'>NoSQL</a> 的朋友或許會比較適應這樣的 Database；因為儲存格式是 JSON 的關係，所以在一開始的設計就不能以<a href='https://zh.wikipedia.org/wiki/關聯式資料庫管理系統' target='_blank'>關聯式資料庫</a>的思維角度下去設計囉。</p>
+          <p>CRUD 的基本功能撰寫這邊也不做介紹，基本上<a href='https://firebase.google.com/docs/samples/?hl=zh-TW' target='_blank'>官網</a>都有範例以及說明囉，其中包含了 iOS、Android、JavaScript 的支援，所以更可以製作成 Mobile App，而下一階段我也將考量使用 iOS 來實作一次 LiveMaps。官方資源也不僅於 Sample，在官方 <a href='https://github.com/firebase/' target='_blank'>GitHub</a> 也可以看到多樣的 Library，其中常見的 <a href='https://github.com/firebase/firebaseui-web' target='_blank'>firebaseui-web</a>、<a href='https://github.com/firebase/?utf8=%E2%9C%93&query=geo' target='_blank'>GEO</a>.. 等，服務都是由官方維護的，所以在家接功能上會更加方便。</p>
+          <p>以網頁版來說，登入系統可以由 <a href='https://github.com/firebase/firebaseui-web' target='_blank'>firebaseui-web</a> 來串接，在地圖上更可以用 <a href='https://github.com/firebase/geofire-js' target='_blank'>geofire-js</a> 來實作，geofire 就有豐富的經緯度範圍運算，可以快速的撈出範圍內的點，不過對於 Database 的 JSON 格式架構就要符合其規範，第一版的 LiveMaps 就是使用 geofire 實作，但是因為功能需求，所以暫時先捨棄；而 firebaseui 提供了各種不同的 OAuth 登入，可以配合 Authentication 製作登入系統，不過在第二版製作時也暫時拿掉，主要是因為想加快登入時間問題，所以暫時只使用 <a href='https://www.facebook.com' target='_blank'>Facebook</a> 的 SDK 實作 OAuth 登入。</p>
+
+        </section>
+      </article>
+
+      <div id='comments'>
+        <h3 title='留言討論區'></h3>
+        <div class="fb-comments" data-order-by='reverse_time' width='100%' data-href="https://livemaps.ioa.tw/" data-numposts="5"></div>
+      </div>
+
+    </div>
+
+    <aside>
+      <header><span>聊天地圖！</span><span>LiveMaps！</span></header>
+
+      <span>主要功能</span>
+      <ul><li><a class='icon-pin-alt' href='index.html'>地圖</a></li><li><a class='icon-question a' href='about.html'>說明</a></li></ul>
+
+      <span>其他功能</span>
+      <ul><li><a class='icon-user' href='http://www.ioa.tw/' target='_blank'>開發人員</a></li><li><a class='icon-github' href='https://github.com/comdan66/livemaps/' target='_blank'>GitHub</a></li></ul>
+    </aside>
+    <div class='cover'></div>
+    
+
+    <footer>
+      <div></div>
+      <div>
+        <div>LiveMaps ©2016</div>
+        <div>如有相關問題歡迎與<a href="http://www.ioa.tw/" target="_blank">作者</a>討論。</div>
+      </div>
+      <div></div>
+    </footer>
+
+    <div id='fb-root'></div>
+  </body>
+</html>

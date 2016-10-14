@@ -62,8 +62,7 @@ $(function () {
 
   window.funcs.showHistory = function (data) {
     window.vars.$.loading.addClass ('show').find ('.txt').text ('讀取中，請稍候..');
-    var ref = window.vars.firebaseDB.ref ('messages/' + data.uid);
-    var on = ref.limitToLast (100).on ('value', function (snapshot) {
+    window.vars.firebaseDB.ref ('messages/' + data.uid).limitToLast (100).once ('value', function (snapshot) {
       var msgs = []; for (var i in snapshot.val ()) msgs.push (snapshot.val ()[i]);
 
       window.vars.$.loading.removeClass ('show');
@@ -77,7 +76,6 @@ $(function () {
       })).find ('.avatar').imgLiquid ({verticalAlign: 'center'});
       window.vars.$.history.addClass ('show');
     });
-    window.vars.$.history.get (0).firebase = { ref: ref, on: on };
   };
 
   window.funcs.initGeoFeature = function (cb) {
@@ -227,7 +225,7 @@ $(function () {
     window.vars.$.send.click (function () { var val = window.vars.$.myMessage.val ().trim ().slice (0, 255); if (!val.length) return ; window.vars.firebaseDB.ref ('messages/' + window.storages.uuid.get ()).push ({ content: val, time: window.funcs.getDatetime (), utime: new Date ().getTime () }); window.vars.$.myMessage.val (''); });
     window.vars.$.relogin.find ('.cover, .ok').click (function () { location.reload (); });
     window.vars.$.myMessage.keyup (function (e) { if (e.keyCode == 13) window.vars.$.send.click (); });
-    window.vars.$.history.find ('.ok').click (function () { window.vars.$.history.removeClass ('show').get (0).firebase.ref.off ('value', window.vars.$.history.get (0).firebase.on); });
+    window.vars.$.history.find ('.ok').click (function () { window.vars.$.history.removeClass ('show'); });
     window.vars.$.notification.attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).addClass (window.storages.audio.get () == 'on' ? 'icon-notification_active' : 'icon-notification_off').addClass ('show feature_tip').click (function () { window.storages.audio.set (window.storages.audio.get () == 'on' ? 'off' : 'on'); window.vars.hasAudio = window.storages.audio.get () == 'on' ? true : false; $(this).attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).attr ('class', window.storages.audio.get () == 'on' ? 'icon-notification_active show feature_tip' : 'icon-notification_off show feature_tip'); });
     window.vars.$.login.find ('.ok').click (function () { window.vars.$.popbox.removeClass ('show'); return window.funcs.showForm (); });
     window.vars.$.see_comments.click (function () { window.vars.$.comments.addClass ('show'); }).addClass ('show');
