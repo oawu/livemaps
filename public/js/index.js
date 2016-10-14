@@ -74,7 +74,7 @@ $(function () {
             $('<img />').attr ('src', data.src))).append (
           $('<span />').text (t.content.slice (0, 255))).append (
           $('<time />').text ($.timeago (t.time)));
-      }));
+      })).find ('.avatar').imgLiquid ({verticalAlign: 'center'});
       window.vars.$.history.addClass ('show');
     });
     window.vars.$.history.get (0).firebase = { ref: ref, on: on };
