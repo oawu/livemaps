@@ -179,7 +179,7 @@ $(function () {
   window.vars.z = 0;
   window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
 
-  window.funcs.initFirebase (window.storages.version.get (4));
+  window.funcs.initFirebase (window.storages.version.get (5));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
@@ -200,6 +200,7 @@ $(function () {
     window.vars.$.zoomOut.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom - 1); }).addClass ('show');
     window.vars.$.send.click (function () {
       if (window.vars.t) return;
+
       window.vars.t = true;
       var val = window.vars.$.myMessage.val ().trim ().slice (0, 255); if (!val.length) return ; window.vars.firebaseDB.ref ('messages/' + window.storages.uuid.get ()).push ({ content: val, time: window.funcs.getDatetime (), utime: new Date ().getTime () }); window.vars.$.myMessage.val ('');
       setTimeout (function () { window.vars.t = false; }, 5 * 1000);
@@ -208,9 +209,21 @@ $(function () {
     window.vars.$.myMessage.keyup (function (e) { if (e.keyCode == 13) window.vars.$.send.click (); });
     window.vars.$.history.find ('.ok').click (function () { window.vars.$.history.removeClass ('show'); });
     window.vars.$.notification.attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).addClass (window.storages.audio.get () == 'on' ? 'icon-notification_active' : 'icon-notification_off').addClass ('show feature_tip').click (function () { window.storages.audio.set (window.storages.audio.get () == 'on' ? 'off' : 'on'); window.vars.hasAudio = window.storages.audio.get () == 'on' ? true : false; $(this).attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).attr ('class', window.storages.audio.get () == 'on' ? 'icon-notification_active show feature_tip' : 'icon-notification_off show feature_tip'); });
-    window.vars.$.login.find ('.ok').click (function () { window.vars.$.popbox.removeClass ('show'); return window.funcs.showForm (); });
+    window.vars.$.login.find ('.ok').click (function () { window.vars.$.popbox.removeClass ('show');  });
     window.vars.$.see_comments.click (function () { window.vars.$.comments.addClass ('show'); }).addClass ('show');
-    window.vars.$.plus.click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('定位中，請稍候..'); if (window.vars.lat === null && window.vars.lng === null) { window.vars.$.loading.removeClass ('show'); return window.vars.$.gpson.addClass ('show'); } if (!$(this).hasClass ('open') && !window.storages.user.get ()) { window.vars.$.loading.removeClass ('show'); window.vars.$.login.find ('span').text (''); return window.vars.$.login.addClass ('show'); } window.vars.$.loading.removeClass ('show'); return window.funcs.showForm (); }).addClass ('show');
+    window.vars.$.plus.click (function () {
+      window.vars.$.loading.addClass ('show').find ('.txt').text ('定位中，請稍候..'); 
+      if (window.vars.lat === null && window.vars.lng === null) {
+       window.vars.$.loading.removeClass ('show'); 
+       return window.vars.$.gpson.addClass ('show'); } 
+
+     if (!$(this).hasClass ('open') && !window.storages.user.get ()) { 
+        window.vars.$.loading.removeClass ('show'); 
+        window.vars.$.login.find ('span').text (''); 
+        return window.vars.$.login.addClass ('show');
+      } 
+        window.vars.$.loading.removeClass ('show'); 
+        return window.funcs.showForm (); }).addClass ('show');
     window.vars.$.logs.addClass ('show');
     window.vars.$.logsBtn.click (function () {
       window.vars.$.logs.toggleClass ('show');
