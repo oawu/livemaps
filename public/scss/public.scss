@@ -1629,3 +1629,45 @@ section {
   0% { @include rotate(0); }
   100% { @include rotate(360deg); }
 }
+
+#logs {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+
+  display: none;
+  width: 350px;
+  height: 80%;
+  border: 1px solid rgba(255, 255, 255, 1.00);
+  border-left: 0;
+  border-bottom: 0;
+  z-index: 2;
+  background-color: rgba(39, 40, 34, .300);
+  text-align: left;
+  padding: 5px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  @media screen and (min-width: 700px) {
+    &.show {
+      display: inline-block;
+    }
+  }
+
+  > div {
+    padding: 5px;
+    display: inline-block;
+    width: 100%;
+    color: rgba(255, 255, 255, 1.00);
+    font-size: 13px;
+    @include overflow-docx3();
+    @include border-radius(2px);
+    overflow: hidden;
+    &.admin {
+      color: rgba(255, 0, 0, 1);
+    }
+  }
+
+  > div + div {
+    border-top: 1px solid rgba(255, 255, 255, .3500);
+  }
+}
