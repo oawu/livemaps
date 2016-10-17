@@ -8,3 +8,4 @@ sftp-config*
 
 /firebase-debug.log
 /public/js/config.js
+/public/admin.html
