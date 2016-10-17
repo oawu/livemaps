@@ -1685,7 +1685,6 @@ $logWidth: 300px;
     width: 100%;
     color: rgba(255, 255, 255, 1.00);
     font-size: 13px;
-    @include overflow-docx3();
     @include border-radius(2px);
     overflow: hidden;
     cursor: pointer;
@@ -1701,6 +1700,21 @@ $logWidth: 300px;
     }
     &.admin {
       color: rgba(255, 0, 0, 1);
+    }
+    @include clearfix();
+    
+    img {
+      float: left;
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      @include border-radius(3px);
+    }
+    >div {
+      float: right;
+      display: inline-block;
+      width: calc(100% - 30px - 10px);
+      @include overflow-docx3();
     }
   }
 

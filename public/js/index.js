@@ -58,7 +58,7 @@ $(function () {
       //   });
       // });
     },
-    initStep: function (cb) { window.vars.$.loading.removeClass ('show'); window.vars.$.step1.addClass ('show').find ('.cover, .cancel').click (function () { window.vars.$.step2.addClass ('show'); }); window.vars.$.step2.find ('.cover, .cancel').click (function () { window.vars.$.step3.addClass ('show'); }); window.vars.$.step3.find ('.cover, .cancel').click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('初始中，請稍候..'); window.funcs.initGeoFeature (cb); }); },
+    // initStep: function (cb) { window.vars.$.loading.removeClass ('show'); window.vars.$.step1.addClass ('show').find ('.cover, .cancel').click (function () { window.vars.$.step2.addClass ('show'); }); window.vars.$.step2.find ('.cover, .cancel').click (function () { window.vars.$.step3.addClass ('show'); }); window.vars.$.step3.find ('.cover, .cancel').click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('初始中，請稍候..'); window.funcs.initGeoFeature (cb); }); },
     showHistory: function (data) { window.vars.$.loading.addClass ('show').find ('.txt').text ('讀取中，請稍候..'); window.vars.$.history.find ('h4').text (data.name + ' 的訊息紀錄').next ().empty ().parents ('.popbox').addClass ('show'); window.vars.firebaseDB.ref ('messages/' + data.uid).limitToLast (100).once ('value', function (snapshot) { var msgs = []; for (var i in snapshot.val ()) msgs.push (snapshot.val ()[i]); window.vars.$.loading.removeClass ('show'); window.vars.$.history.find ('.panel_content').empty ().append (msgs.map (function (t) {return $('<div />').addClass ('he').append ($('<div />').addClass ('avatar').append ($('<img />').attr ('src', data.src))).append ($('<span />').text (t.content.slice (0, 255))).append ($('<time />').text ($.timeago (t.time)));})).find ('.avatar').imgLiquid ({verticalAlign: 'center'}).parents ('.popbox').addClass ('show'); }); },
     initGeoFeature: function (cb) {
       if (window.navigator.geolocation === undefined || navigator.geolocation.watchPosition === undefined) return window.vars.$.loading.removeClass ('show');
@@ -74,7 +74,6 @@ $(function () {
         window.vars.lat = position.coords.latitude;
         window.vars.lng = position.coords.longitude;
 
-        if (window.storages.inited.get () == 'no') window.vars.maps.setOptions ({ zoom: 16, center: new google.maps.LatLng (window.vars.lat, window.vars.lng)});
         return window.vars.$.loading.removeClass ('show') && window.storages.inited.set ('yes');
       }, function () {
         return window.vars.$.loading.removeClass ('show') && window.storages.inited.set ('yes') && cb && cb ();
@@ -111,7 +110,7 @@ $(function () {
           var msg = null; for (var i in snapshot.val ()) msg = snapshot.val ()[i]; if (!msg) return ;
           var admin = typeof msg.admin != 'undefined' && msg.admin == '1';
           if (data.name != '遊客') {
-            window.vars.$.logs.append ($('<div />').addClass (admin ? 'admin' : '').text ((admin ? '作者' : data.name) + '：' + msg.content.slice (0, 255)).click (function () {
+            window.vars.$.logs.append ($('<div />').addClass (admin ? 'admin' : '').append ($('<img />').attr ('src', data.src)).append ($('<div />').text ((admin ? '作者' : data.name) + '：' + msg.content.slice (0, 255))).click (function () {
               window.vars.maps.setCenter (position);
               window.vars.maps.setZoom (16);
             }));
@@ -159,7 +158,12 @@ $(function () {
   window.storages = {
     mapsLastPosition: { key: 'firebase.maps.lastPosition', zoom: 14, lat: 25.056678157775092, lng: 121.53488159179688, get: function () {var last = window.funcs.getStorage (this.key); var zoom = last && last.zoom && !isNaN (last.zoom) ? last.zoom : this.zoom; var lat  = last && last.lat && !isNaN (last.lat)  ? last.lat : this.lat; var lng  = last && last.lng && !isNaN (last.lng)  ? last.lng : this.lng; return {zoom: zoom, lat: lat, lng: lng}; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     location: { key: 'firebase.maps.user.location', cacheTime: 10 * 60, get: function (callback) { var info = window.funcs.getStorage (this.key); if (info && info.t && (new Date ().getTime () - info.t < this.cacheTime * 1000)) callback (info.a, info.n); else this.getCurrentPosition (callback); }, getCurrentPosition: function (callback) { navigator.geolocation.getCurrentPosition (function (position) { window.funcs.setStorage (this.key, {t: new Date ().getTime (), a: position.coords.latitude, n: position.coords.longitude}); callback && callback (position.coords.latitude, position.coords.longitude); }.bind (this), function () { callback && callback (-1, -1); }.bind (this)); } },
-    user: { key: 'firebase.maps.user', cacheTime: 24 * 60 * 60, get: function () { var user = window.funcs.getStorage (this.key); return user && user.t && (new Date ().getTime () - user.t < this.cacheTime * 1000) ? user.v : null; }, set: function (val) { window.funcs.setStorage (this.key, {t: new Date ().getTime (), v: val}); return this; } },
+    user: { key: 'firebase.maps.user', cacheTime: 1 * 60, get: function () {
+      return window.xxx ? window.xxx : null;
+    },
+      set: function (val) {
+        window.xxx = val;
+        return this; } },
     inited: { key: 'firebase.maps.inited', get: function () {var inited = window.funcs.getStorage (this.key); return inited ? inited : 'no'; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     uuid: { key: 'firebase.maps.uuid', get: function () { var uuid = window.funcs.getStorage (this.key); if (!uuid) {uuid = window.funcs.uuid (); this.set (uuid); return uuid; } return uuid; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     version: { key: 'firebase.maps.version', get: function (v) {var version = window.funcs.getStorage (this.key);if (!version || version != v) window.funcs.clearStorage ();this.set (v);return v;}, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
@@ -183,7 +187,7 @@ $(function () {
   window.vars.z = 0;
   window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
 
-  window.funcs.initFirebase (window.storages.version.get (7));
+  window.funcs.initFirebase (window.storages.version.get (9));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
@@ -234,8 +238,7 @@ $(function () {
     }).addClass ('show');
 
     var audio = function () { if (window.vars.lat === null && window.vars.lng === null) window.vars.$.myLocation.click (function () { window.vars.maps.setOptions ({ zoom: 16, center: new google.maps.LatLng (window.vars.lat, window.vars.lng)}); }).addClass ('show'); setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000); };
-    if (window.storages.inited.get () === 'no') window.funcs.initStep (audio);
-    else window.funcs.initGeoFeature (audio);
+    window.funcs.initGeoFeature (audio);
 
     window.funcs.setUserTime ();
   });
