@@ -198,7 +198,12 @@ $(function () {
 
     window.vars.$.zoomIn.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom + 1); }).addClass ('show');
     window.vars.$.zoomOut.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom - 1); }).addClass ('show');
-    window.vars.$.send.click (function () { var val = window.vars.$.myMessage.val ().trim ().slice (0, 255); if (!val.length) return ; window.vars.firebaseDB.ref ('messages/' + window.storages.uuid.get ()).push ({ content: val, time: window.funcs.getDatetime (), utime: new Date ().getTime () }); window.vars.$.myMessage.val (''); });
+    window.vars.$.send.click (function () {
+      if (window.vars.t) return;
+      window.vars.t = true;
+      var val = window.vars.$.myMessage.val ().trim ().slice (0, 255); if (!val.length) return ; window.vars.firebaseDB.ref ('messages/' + window.storages.uuid.get ()).push ({ content: val, time: window.funcs.getDatetime (), utime: new Date ().getTime () }); window.vars.$.myMessage.val ('');
+      setTimeout (function () { window.vars.t = false; }, 5 * 1000);
+    });
     window.vars.$.relogin.find ('.cover, .ok').click (function () { location.reload (); });
     window.vars.$.myMessage.keyup (function (e) { if (e.keyCode == 13) window.vars.$.send.click (); });
     window.vars.$.history.find ('.ok').click (function () { window.vars.$.history.removeClass ('show'); });
