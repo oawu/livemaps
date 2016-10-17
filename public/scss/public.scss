@@ -1662,6 +1662,17 @@ section {
     @include overflow-docx3();
     @include border-radius(2px);
     overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    padding-right: 20px;
+
+    &:after {
+      content: "\e90a";
+      font-family: 'icomoon', 'Open sans', Comfortaa, 'Helvetica Neue', Helvetica, Arial, 'Hiragino Maru Gothic ProN', 'メイリオ','ヒラギノ丸ゴ ProN W4', '微軟正黑體', Meiryo, 'Droid Sans'; speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1;
+      position: absolute;
+      right: 5px;
+      top: 5px;
+    }
     &.admin {
       color: rgba(255, 0, 0, 1);
     }
