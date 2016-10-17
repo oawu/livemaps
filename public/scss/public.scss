@@ -29,6 +29,7 @@
 .icon-github:before { content: "\f09b"; }
 .icon-facebook:before { content: "\ea90"; }
 
+
 * {
   &, &:after, &:before {
     vertical-align: top;
@@ -689,7 +690,7 @@ section {
   }
 }
 
-#zoom_in, #zoom_out, #plus, #notification, #my_location, #see_comments {
+#logs_btn, #zoom_in, #zoom_out, #plus, #notification, #my_location, #see_comments {
   position: fixed;
   right: 10px;
   display: inline-block;
@@ -738,6 +739,7 @@ section {
     @include transition(transform .3s);
   }
   &.open {
+    z-index: 101;
     &:before {
       @include rotate(45deg);
     }
@@ -760,7 +762,6 @@ section {
   display: inline-block;
   padding: 5px;
   z-index: 100;
-  z-index: 1;
   width: 300px;
   max-width: calc(100% - (5px + 40px + 10px + 5px));
   @include clearfix();
@@ -1537,16 +1538,6 @@ section {
   width: calc(100% - 60px - 60px - 5px - 5px)
 }
 
-#fb-like {
-  position: fixed;
-  top: $headerHeight + 10px;
-  left: 10px;
-  z-index: 2;
-  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-    top: $headerHeight + 5px;
-    left: 5px;
-  }
-}
 
 @media screen and (min-width: $changeWidth) {
   .feature_tip {
@@ -1630,26 +1621,61 @@ section {
   100% { @include rotate(360deg); }
 }
 
+@media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+$logWidth: 200px;
+  #logs {
+    left: 0 - $logWidth;
+    width: $logWidth;
+
+    &.show {
+      ~ #logs_btn {
+        left: $logWidth - 45px / 2;
+      }
+      ~ #fb-like {
+        left: $logWidth + 10px;
+      }
+    }
+  }
+}
+@media screen and (min-width: 450px) {
+$logWidth: 300px;
+  #logs {
+    left: 0 - $logWidth;
+    width: $logWidth;
+
+    &.show {
+      ~ #logs_btn {
+        left: $logWidth - 45px / 2;
+      }
+      ~ #fb-like {
+        left: $logWidth + 10px;
+      }
+    }
+  }
+}
 #logs {
   position: fixed;
-  left: 0;
   bottom: 0;
 
-  display: none;
-  width: 350px;
-  height: 80%;
-  border: 1px solid rgba(255, 255, 255, 1.00);
-  border-left: 0;
-  border-bottom: 0;
+  display: inline-block;
+  height: calc(100% - #{$headerHeight});
+  border-right: 1px solid rgba(255, 255, 255, 1.00);
   z-index: 2;
   background-color: rgba(39, 40, 34, .300);
   text-align: left;
   padding: 5px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  @media screen and (min-width: 700px) {
-    &.show {
-      display: inline-block;
+  @include opacity(0);
+  @include transition(left .3s, opacity .3s);
+  
+  &.show {
+    left: 0;
+    @include opacity(1);
+    ~ #logs_btn {
+      @include rotate(180deg);
+    }
+    ~ #fb-like {
     }
   }
 
@@ -1680,5 +1706,28 @@ section {
 
   > div + div {
     border-top: 1px solid rgba(255, 255, 255, .3500);
+  }
+}
+#logs_btn {
+  right: auto;
+  left: 10px;
+  top: $headerHeight + 5px + 40px;
+  @include rotate(0);
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    top: $headerHeight + 30px;
+    left: 5px;
+  }
+}
+
+#fb-like {
+  position: fixed;
+  top: $headerHeight + 10px;
+  left: 10px;
+  z-index: 2;
+  @include transition(left .3s);
+  
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    top: $headerHeight + 5px;
+    left: 5px;
   }
 }
