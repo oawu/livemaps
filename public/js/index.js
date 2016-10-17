@@ -93,10 +93,10 @@ $(function () {
         timers: [],
         data: data
       };
-      window.vars.$.logs.append ($('<div />').text ('== ' + data.name + '登入囉 ==').click (function () {
-        window.vars.maps.setCenter (position);
-        window.vars.maps.setZoom (16);
-      }));
+      // window.vars.$.logs.append ($('<div />').text ('== ' + data.name + '登入囉 ==').click (function () {
+      //   window.vars.maps.setCenter (position);
+      //   window.vars.maps.setZoom (16);
+      // }));
 
       window.vars.$.logs.animate ({scrollTop: window.vars.$.logs.prop ("scrollHeight")}, 100);
 
