@@ -106,7 +106,7 @@ $(function () {
         message: window.vars.firebaseDB.ref ('messages/' + data.uid + '/').orderByChild ('utime').startAt (new Date ().getTime () - window.vars.rangeMsgMin * 60 * 1000).limitToLast (1).on ('value', function (snapshot) {
 
           var msg = null; for (var i in snapshot.val ()) msg = snapshot.val ()[i]; if (!msg) return ;
-          window.vars.$.logs.append ($('<div />').addClass ('').text (data.name + '：' + msg.content.slice (0, 255)).click (function () {
+          window.vars.$.logs.append ($('<div />').addClass (data.admim ? 'admin' : '').text ((data.admim ? '作者' : data.name) + '：' + msg.content.slice (0, 255)).click (function () {
             window.vars.maps.setCenter (position);
             window.vars.maps.setZoom (16);
           }));
