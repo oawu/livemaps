@@ -81,6 +81,8 @@ $(function () {
         timers: [],
         data: data
       };
+      window.vars.$.logs.append ($('<div />').text ('== ' + data.name + '登入囉 =='));
+      window.vars.$.logs.animate ({scrollTop: window.vars.$.logs.prop ("scrollHeight")}, 100);
 
       window.vars.points[data.uid].timers.push (setTimeout (function () { window.vars.points[data.uid].marker.setOptions ({ labelClass: 'user show' }); window.vars.points[data.uid].timers = []; }, 500));
 
@@ -89,7 +91,6 @@ $(function () {
 
           var msg = null; for (var i in snapshot.val ()) msg = snapshot.val ()[i]; if (!msg) return ;
           window.vars.$.logs.append ($('<div />').addClass (data.fbuid == '1433272646686073' ? 'admin' : '').text ((data.fbuid == '1433272646686073' ? '作者': data.name) + '：' + msg.content.slice (0, 255)));
-          window.vars.$.logs.scrollTop (window.vars.$.logs.height ());
           window.vars.$.logs.animate ({scrollTop: window.vars.$.logs.prop ("scrollHeight")}, 100);
 
           window.vars.points[data.uid].marker.setOptions ({ zIndex: ++window.vars.z, labelContent: window.funcs.renderUser (window.vars.points[data.uid].data, msg.content.slice (0, 255)) }); window.vars.points[data.uid].timers.push (setTimeout (function () { window.vars.points[data.uid].marker.setOptions ({ labelClass: 'user show message' }); window.vars.points[data.uid].timers = []; if (data.uid != window.storages.uuid.get () && window.vars.hasAudio) window.vars.audio.chat.play (); }, 500));
