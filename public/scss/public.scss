@@ -791,6 +791,22 @@ section {
     @include transition(bottom .3s, opacity .3s);
     @include transition-delay(.3s);
   }
+  &.sec {
+    &:after {
+      content: '五秒後才可發文..';
+      color: rgba(255, 255, 255, 1.00);
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(39, 40, 34, .700);
+      z-index: 99;
+      line-height: 42px;
+      @include border-radius(2px);
+    }
+  }
 }
 
 .popbox {
@@ -1678,6 +1694,14 @@ $logWidth: 300px;
     ~ #fb-like {
     }
   }
+  &:empty {
+    &:before {
+      content: '快一起聊天吧！😊';
+      display: inline-block;
+      padding: 10px;
+      color: white;
+    }
+  }
 
   > div {
     padding: 5px;
@@ -1685,7 +1709,6 @@ $logWidth: 300px;
     width: 100%;
     color: rgba(255, 255, 255, 1.00);
     font-size: 13px;
-    @include border-radius(2px);
     overflow: hidden;
     cursor: pointer;
     position: relative;
@@ -1695,11 +1718,22 @@ $logWidth: 300px;
       content: "\e90a";
       font-family: 'icomoon', 'Open sans', Comfortaa, 'Helvetica Neue', Helvetica, Arial, 'Hiragino Maru Gothic ProN', 'メイリオ','ヒラギノ丸ゴ ProN W4', '微軟正黑體', Meiryo, 'Droid Sans'; speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1;
       position: absolute;
-      right: 5px;
-      top: 5px;
+      right: 2px;
+      top: 10px;
+      color: white;
     }
     &.admin {
-      color: rgba(255, 0, 0, 1);
+      color: rgba(234, 111, 6, 1.00);
+      > div {background-color: rgba(39, 40, 34, .5);}
+      font-weight: bold;
+    }
+    &.s1 {
+      color: rgba(62, 182, 189, 1.00);
+      > div {background-color: rgba(39, 40, 34, .5);}
+    }
+    &.s2 {
+      color: rgba(73, 137, 242, 1.00);
+      > div {background-color: rgba(39, 40, 34, .5);}
     }
     @include clearfix();
     
@@ -1713,8 +1747,10 @@ $logWidth: 300px;
     >div {
       float: right;
       display: inline-block;
-      width: calc(100% - 30px - 10px);
+      width: calc(100% - 30px - 5px);
+      padding: 5px;
       @include overflow-docx3();
+      @include border-radius(2px);
     }
   }
 

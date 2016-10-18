@@ -23,6 +23,9 @@
       @include box-shadow(none);
     }
   }
+  &[disabled] {
+    cursor: not-allowed;
+  }
   &:focus {
     outline: 0;
     border: 1px solid rgba(102, 175, 233, 1);
