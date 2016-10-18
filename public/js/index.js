@@ -109,7 +109,7 @@ $(function () {
 
           setTimeout (function () {
             window.vars.$.logs.prepend (
-              $('<div />').addClass (admin ? 'admin' : (s1 ? : 's1' : (s2 ? s2 : (s3 ? s3 : '')))).append (
+              $('<div />').addClass (admin ? 'admin' : (s1 ? 's1' : (s2 ? s2 : (s3 ? s3 : '')))).append (
                 $('<img />').attr ('src', data.src).click (function () {
                   if (data.fbuid != 0) window.open('https://www.facebook.com/' + data.fbuid, '_blank');
                 })).append (
