@@ -1703,7 +1703,25 @@ $logWidth: 300px;
   -webkit-overflow-scrolling: touch;
   @include opacity(0);
   @include transition(left .3s, opacity .3s);
-  
+  padding-top: 50px;
+
+  &:after {
+    content: '🌟黑名單、戳、私訊上線囉！🌟';
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 100%;
+    padding: 10px 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, .500);
+    background-color: rgba(39, 40, 34, .5);
+    color: white;
+    @include overflow-docx3();
+    @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+      font-size: 13px;
+    }
+  }
   &.show {
     left: 0;
     @include opacity(1);

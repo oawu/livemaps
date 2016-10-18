@@ -262,7 +262,7 @@ $(function () {
   window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
 
 
-  window.funcs.initFirebase (window.storages.version.get (20));
+  window.funcs.initFirebase (window.storages.version.get (21));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
@@ -276,19 +276,23 @@ $(function () {
 
     window.vars.firebaseUserRef.orderByChild ('enable').equalTo (1).on ('child_added', window.funcs.appendUser);
     window.vars.firebaseUserRef.orderByChild ('enable').equalTo (0).on ('child_added', window.funcs.removeUser);
-    
+    window.vars.firebaseDB.ref ('blacks/').on ('value', function (snapshot) {
+      window.vars.blacks = []; for (var i in snapshot.val ()) window.vars.blacks.push (snapshot.val ()[i]);
+    });
     window.funcs.initFB ();
     if (window.storages.user.get ()) window.funcs.removeSameUser (window.storages.user.get ().fbuid);
 
     window.vars.$.donate.click (function () { window.open ('https://livemaps.ioa.tw/donate.html', '_blank'); }).addClass ('show');
     window.vars.$.zoomIn.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom + 1); }).addClass ('show');
     window.vars.$.zoomOut.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom - 1); }).addClass ('show');
+    
     window.vars.$.send.click (function () {
-      if (window.vars.t)return;
+      if (window.vars.t) return;
+      if ($.inArray (window.storages.user.get ().fbuid, window.vars.blacks) != -1 ) { alert ('您的帳號疑似被檢舉黑名單囉！'); return; }
 
       window.vars.t = true;
       var val = window.vars.$.myMessage.val ().trim ().slice (0, 255); if (!val.length) return ;
-      
+
       window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/msg/').set ({
         content: val, utime: new Date ().getTime ()
       });
@@ -326,10 +330,10 @@ $(function () {
 
       alert ('已經戳囉！');
       window.vars.$.markerMenu.css ({ top: -100, left: -100 }).removeClass ('show');
-
-      setTimeout (function () {
+// 
+      // setTimeout (function () {
         window.vars.tx = false;
-      }, 1 * 60 * 1000);
+      // }, 1 * 60 * 1000);
     });
 
     window.vars.$.plus.click (function () {
