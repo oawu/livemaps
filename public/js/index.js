@@ -316,7 +316,12 @@ $(function () {
     window.vars.$.login.find ('.ok').click (function () { window.vars.$.popbox.removeClass ('show');  });
     window.vars.$.see_comments.click (function () { window.vars.$.comments.addClass ('show'); }).addClass ('show');
     
-    window.vars.$.markerMenu.find ('.look_fb').click (function () { if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0) window.open('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank'); });
+    window.vars.$.markerMenu.find ('.look_fb').click (function () {
+      if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0)
+        window.open ('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank');
+      else 
+        alert ('她未登入喔！');
+    });
     window.vars.$.markerMenu.find ('.pick_he').click (function () { 
       var msg = prompt ('輸入您想跟他說的話吧！');
       if (window.vars.tx) {
