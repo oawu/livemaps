@@ -184,7 +184,7 @@ $(function () {
       window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/').on ('value', function (snapshot) {
         if (!(snapshot.val () && snapshot.val ().name && snapshot.val ().src && snapshot.val ().uid && snapshot.val ().enable)) return;
         if (!(snapshot.val ().uid != window.storages.uuid.get () && window.vars.hasAudio && window.vars.notification))return;
-        var notification = new Notification (snapshot.val ().name, {dir: "ltr", lang: "utf-8", icon: snapshot.val ().src, body: '戳了一你一下！' });
+        var notification = new Notification (snapshot.val ().name, {dir: "ltr", lang: "utf-8", icon: snapshot.val ().src, body: '戳了一你一下！' + ( typeof snapshot.val ().msg && snapshot.val ().msg.length ? '他說：' + snapshot.val ().msg.slice (0, 255) : '')});
         notification.onclick = function() { notification.close (); window.vars.maps.setCenter (window.vars.points[snapshot.val ().uid].marker.position); window.vars.maps.setZoom (16); };
         window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/enable/').set (0);
       });
@@ -297,15 +297,17 @@ $(function () {
     
     window.vars.$.markerMenu.find ('.look_fb').click (function () { if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0) window.open('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank'); });
     window.vars.$.markerMenu.find ('.pick_he').click (function () { 
+      var msg = prompt ('輸入您想跟他說的話吧！');
+      if (msg.length <= 0) return;
       if (window.vars.tx) {
-        alert ('您剛剛已經戳過了，3 分鐘後再試試..')
+        alert ('您剛剛已經戳過了，1 分鐘後再試試..')
         return;
       }
       window.vars.tx = true;
 
       if (!window.storages.user.get ()) return;
       window.vars.firebaseDB.ref ('users/' + window.vars.$.markerMenu.get (0).point.data.uid + '/pick/').set ({
-        name: window.storages.user.get ().name, src: window.storages.user.get ().src, uid: window.storages.uuid.get (), enable: 1
+        msg: msg.slice (0, 255), name: window.storages.user.get ().name, src: window.storages.user.get ().src, uid: window.storages.uuid.get (), enable: 1
       });
 
       alert ('已經戳囉！');
@@ -313,7 +315,7 @@ $(function () {
 
       setTimeout (function () {
         window.vars.tx = false;
-      }, 3 * 60 * 1000);
+      }, 1 * 60 * 1000);
     });
 
     window.vars.$.plus.click (function () {
