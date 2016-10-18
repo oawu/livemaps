@@ -60,14 +60,14 @@ $(function () {
     setUserTime: function () {
       setInterval (function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/time/').set (new Date ().getTime ()); }, 60 * 1000);
 
-      window.vars.firebaseUserRef.orderByChild ('time').endAt (new Date ().getTime () - 10 * 60 * 1000).once ('value', function (snapshot) {
-        var datas = [];
-        for (var i in snapshot.val ())
-          datas.push (snapshot.val ()[i]);
-        datas.forEach (function (t) {
-          window.vars.firebaseDB.ref ('users/' + t.uid + '/enable/').set (0);
-        });
-      });
+      // window.vars.firebaseUserRef.orderByChild ('time').endAt (new Date ().getTime () - 10 * 60 * 1000).once ('value', function (snapshot) {
+      //   var datas = [];
+      //   for (var i in snapshot.val ())
+      //     datas.push (snapshot.val ()[i]);
+      //   datas.forEach (function (t) {
+      //     window.vars.firebaseDB.ref ('users/' + t.uid + '/enable/').set (0);
+      //   });
+      // });
     },
     // initStep: function (cb) { window.vars.$.loading.removeClass ('show'); window.vars.$.step1.addClass ('show').find ('.cover, .cancel').click (function () { window.vars.$.step2.addClass ('show'); }); window.vars.$.step2.find ('.cover, .cancel').click (function () { window.vars.$.step3.addClass ('show'); }); window.vars.$.step3.find ('.cover, .cancel').click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('初始中，請稍候..'); window.funcs.initGeoFeature (cb); }); },
     showHistory: function (data) { window.vars.$.loading.addClass ('show').find ('.txt').text ('讀取中，請稍候..'); window.vars.$.history.find ('h4').text (data.name + ' 的訊息紀錄').next ().empty ().parents ('.popbox').addClass ('show'); window.vars.firebaseDB.ref ('messages/' + data.uid).limitToLast (100).once ('value', function (snapshot) { var msgs = []; for (var i in snapshot.val ()) msgs.push (snapshot.val ()[i]); window.vars.$.loading.removeClass ('show'); window.vars.$.history.find ('.panel_content').empty ().append (msgs.map (function (t) {return $('<div />').addClass ('he').append ($('<div />').addClass ('avatar').append ($('<img />').attr ('src', data.src))).append ($('<span />').text (t.content.slice (0, 255))).append ($('<time />').text ($.timeago (t.time)));})).find ('.avatar').imgLiquid ({verticalAlign: 'center'}).parents ('.popbox').addClass ('show'); }); },
@@ -85,9 +85,7 @@ $(function () {
         window.vars.lat = position.coords.latitude;
         window.vars.lng = position.coords.longitude;
 
-        setTimeout (function () {
-          window.vars.$.loading.removeClass ('show')
-        }, 1000);
+        window.vars.$.loading.removeClass ('show');
         return window.storages.inited.set ('yes');
       }, function () {
         return window.vars.$.loading.removeClass ('show') && window.storages.inited.set ('yes') && cb && cb ();
@@ -338,9 +336,9 @@ $(function () {
       alert ('已經戳囉！');
       window.vars.$.markerMenu.css ({ top: -100, left: -100 }).removeClass ('show');
 // 
-      // setTimeout (function () {
+      setTimeout (function () {
         window.vars.tx = false;
-      // }, 1 * 60 * 1000);
+      }, 1 * 60 * 1000);
     });
 
     window.vars.$.plus.click (function () {
