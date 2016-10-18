@@ -85,10 +85,9 @@ $(function () {
         window.vars.lat = position.coords.latitude;
         window.vars.lng = position.coords.longitude;
 
-        window.vars.$.loading.removeClass ('show');
         return window.storages.inited.set ('yes');
       }, function () {
-        return window.vars.$.loading.removeClass ('show') && window.storages.inited.set ('yes') && cb && cb ();
+        return window.vars.$.loading.removeClass ('show') && window.storages.inited.set ('yes');
       }, { enableHighAccuracy: true });
     },
     getPixelPosition: function (obj) {
@@ -260,7 +259,7 @@ $(function () {
   window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
 
 
-  window.funcs.initFirebase (window.storages.version.get (21));
+  window.funcs.initFirebase (window.storages.version.get (22));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
@@ -323,7 +322,7 @@ $(function () {
     window.vars.$.markerMenu.find ('.pick_he').click (function () { 
       var msg = prompt ('輸入您想跟他說的話吧！');
       if (window.vars.tx) {
-        alert ('您剛剛已經戳過了，1 分鐘後再試試..')
+        alert ('您剛剛已經戳過了，30秒後再試試..')
         return;
       }
       window.vars.tx = true;
@@ -338,7 +337,7 @@ $(function () {
 // 
       setTimeout (function () {
         window.vars.tx = false;
-      }, 1 * 60 * 1000);
+      }, 30 * 1000);
     });
 
     window.vars.$.plus.click (function () {
@@ -359,7 +358,15 @@ $(function () {
       window.vars.$.logs.toggleClass ('show');
     }).addClass ('show');
 
-    var audio = function () { if (window.vars.lat === null && window.vars.lng === null) window.vars.$.myLocation.click (function () { window.vars.maps.setOptions ({ zoom: 16, center: new google.maps.LatLng (window.vars.lat, window.vars.lng)}); }).addClass ('show'); setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000); };
+    var audio = function () {
+      if (!(window.vars.lat === null && window.vars.lng === null)) return;
+
+      window.vars.$.myLocation.click (function () {
+        window.vars.maps.setOptions ({ zoom: 16, center: new google.maps.LatLng (window.vars.lat, window.vars.lng)});
+      }).addClass ('show');
+      window.vars.$.loading.removeClass ('show');
+      setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000);
+    };
     window.funcs.initNotification ();
     window.funcs.initGeoFeature (audio);
 
