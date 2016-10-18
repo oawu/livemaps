@@ -248,7 +248,7 @@ $(function () {
   window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
 
 
-  window.funcs.initFirebase (window.storages.version.get (15));
+  window.funcs.initFirebase (window.storages.version.get (17));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
@@ -297,10 +297,17 @@ $(function () {
     
     window.vars.$.markerMenu.find ('.look_fb').click (function () { if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0) window.open('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank'); });
     window.vars.$.markerMenu.find ('.pick_he').click (function () { 
+      if (window.vars.tx)return;
+      window.vars.tx = true;
+
       if (!window.storages.user.get ()) return;
       window.vars.firebaseDB.ref ('users/' + window.vars.$.markerMenu.get (0).point.data.uid + '/pick/').set ({
         name: window.storages.user.get ().name, src: window.storages.user.get ().src, uid: window.storages.uuid.get (), enable: 1
       });
+
+      setTimeout (function () {
+        window.vars.tx = false;
+      }, 60 * 1000);
     });
 
     window.vars.$.plus.click (function () {
