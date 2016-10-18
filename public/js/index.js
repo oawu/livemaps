@@ -299,7 +299,7 @@ $(function () {
     window.vars.$.markerMenu.find ('.pick_he').click (function () { 
       var msg = prompt ('輸入您想跟他說的話吧！');
       if (window.vars.tx) {
-        alert ('您剛剛已經戳過了，2 分鐘後再試試..')
+        alert ('您剛剛已經戳過了，1 分鐘後再試試..')
         return;
       }
       window.vars.tx = true;
@@ -314,7 +314,7 @@ $(function () {
 
       setTimeout (function () {
         window.vars.tx = false;
-      }, 2 * 60 * 1000);
+      }, 1 * 60 * 1000);
     });
 
     window.vars.$.plus.click (function () {
