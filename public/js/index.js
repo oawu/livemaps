@@ -124,7 +124,7 @@ $(function () {
               window.vars.points[data.uid].marker.setOptions ({
                 labelContent: window.funcs.renderUser (window.vars.points[data.uid].data, ''),
                 labelClass: 'user show' });
-            }, 1 * 60 * 1000);
+            }, 3 * 60 * 1000);
           }, 500);
         }),
         location: window.vars.firebaseDB.ref ('users/' + data.uid + '/location/').on ('value', function (snapshot) { window.vars.points[data.uid].data.location = snapshot.val (); window.vars.points[data.uid].marker.setPosition (new google.maps.LatLng (snapshot.val ().lat, snapshot.val ().lng)); }),
@@ -197,7 +197,7 @@ $(function () {
   window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
 
 
-  window.funcs.initFirebase (window.storages.version.get (14));
+  window.funcs.initFirebase (window.storages.version.get (15));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
