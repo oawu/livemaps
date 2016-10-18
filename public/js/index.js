@@ -84,47 +84,48 @@ $(function () {
 
       var position = new google.maps.LatLng (data.location.lat, data.location.lng),
           content = window.funcs.renderUser (data);
-      
+
       window.vars.points[data.uid] = {
         marker: new MarkerWithLabel ({
           map: window.vars.maps, labelAnchor: new google.maps.Point (45 / 2, 45 / 2), icon: {path: 'M 0 0'}, labelClass: 'user',
           position: position,
           labelContent: content,
-          zIndex: 0
+          zIndex: 0,
+          labelClass: 'user show',
         }),
         timers: [],
         data: data
       };
-      // window.vars.$.logs.append ($('<div />').text ('== ' + data.name + '登入囉 ==').click (function () {
-      //   window.vars.maps.setCenter (position);
-      //   window.vars.maps.setZoom (16);
-      // }));
-
-      window.vars.$.logs.animate ({scrollTop: window.vars.$.logs.prop ("scrollHeight")}, 100);
-
-      window.vars.points[data.uid].timers.push (setTimeout (function () { window.vars.points[data.uid].marker.setOptions ({ labelClass: 'user show' }); window.vars.points[data.uid].timers = []; }, 500));
 
       window.vars.points[data.uid].on = {
         message: window.vars.firebaseDB.ref ('users/' + data.uid + '/msg/').on ('value', function (snapshot) {
           if (!(data.name != '遊客' && snapshot.val () && (typeof snapshot.val ().utime != 'undefined') && (snapshot.val ().utime > new Date ().getTime () - 5 * 60 * 1000))) return;
 
           var admin = typeof snapshot.val ().admin != 'undefined' && snapshot.val ().admin == '1';
-console.error (admin);
-
           clearTimeout (window.vars.points[data.uid]._t);
 
-          window.vars.$.logs.prepend (
-            $('<div />').addClass (admin ? 'admin' : '').append (
-              $('<img />').attr ('src', data.src).click (function () {
-                if (data.fbuid != 0) window.open('https://www.facebook.com/' + data.fbuid, '_blank');
-              })).append (
-              $('<div />').text ((admin ? '作者' : data.name) + '：' + snapshot.val ().content.slice (0, 255)).click (function () { window.vars.maps.setCenter (position); window.vars.maps.setZoom (16); })));
+          setTimeout (function () {
+            window.vars.$.logs.prepend (
+              $('<div />').addClass (admin ? 'admin' : '').append (
+                $('<img />').attr ('src', data.src).click (function () {
+                  if (data.fbuid != 0) window.open('https://www.facebook.com/' + data.fbuid, '_blank');
+                })).append (
+                $('<div />').text ((admin ? '作者' : data.name) + '：' + snapshot.val ().content.slice (0, 255)).click (function () { window.vars.maps.setCenter (position); window.vars.maps.setZoom (16); })));
 
-          window.vars.points[data.uid].marker.setOptions ({ zIndex: ++window.vars.z, labelContent: window.funcs.renderUser (window.vars.points[data.uid].data, snapshot.val ().content.slice (0, 255)) }); window.vars.points[data.uid].timers.push (setTimeout (function () { window.vars.points[data.uid].marker.setOptions ({ labelClass: 'user show message' }); window.vars.points[data.uid].timers = []; if (data.uid != window.storages.uuid.get () && window.vars.hasAudio) window.vars.audio.chat.play (); }, 500));
-  
-          window.vars.points[data.uid]._t = setTimeout (function () {
-            window.vars.points[data.uid].marker.setOptions ({ labelContent: window.funcs.renderUser (window.vars.points[data.uid].data, ''), labelClass: 'user show' });
-          }, 1 * 60 * 1000);
+              window.vars.points[data.uid].marker.setOptions ({
+              zIndex: ++window.vars.z,
+              labelContent: window.funcs.renderUser (window.vars.points[data.uid].data, snapshot.val ().content.slice (0, 255)),
+              labelClass: 'user show message'
+            });
+
+            if (data.uid != window.storages.uuid.get () && window.vars.hasAudio) window.vars.audio.chat.play ();
+
+            window.vars.points[data.uid]._t = setTimeout (function () {
+              window.vars.points[data.uid].marker.setOptions ({
+                labelContent: window.funcs.renderUser (window.vars.points[data.uid].data, ''),
+                labelClass: 'user show' });
+            }, 1 * 60 * 1000);
+          }, 500);
         }),
         location: window.vars.firebaseDB.ref ('users/' + data.uid + '/location/').on ('value', function (snapshot) { window.vars.points[data.uid].data.location = snapshot.val (); window.vars.points[data.uid].marker.setPosition (new google.maps.LatLng (snapshot.val ().lat, snapshot.val ().lng)); }),
         name: window.vars.firebaseDB.ref ('users/' + data.uid + '/name/').on ('value', function (snapshot) { window.vars.points[data.uid].data.name = snapshot.val (); window.vars.points[data.uid].marker.setOptions ({ labelContent: window.funcs.renderUser (window.vars.points[data.uid].data) }); }),
@@ -195,7 +196,8 @@ $(function () {
   window.vars.z = 0;
   window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
 
-  window.funcs.initFirebase (window.storages.version.get (13));
+
+  window.funcs.initFirebase (window.storages.version.get (14));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
