@@ -297,7 +297,10 @@ $(function () {
     
     window.vars.$.markerMenu.find ('.look_fb').click (function () { if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0) window.open('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank'); });
     window.vars.$.markerMenu.find ('.pick_he').click (function () { 
-      if (window.vars.tx)return;
+      if (window.vars.tx) {
+        alert ('您剛剛已經戳過了，3 分鐘後再試試..')
+        return;
+      }
       window.vars.tx = true;
 
       if (!window.storages.user.get ()) return;
@@ -305,9 +308,12 @@ $(function () {
         name: window.storages.user.get ().name, src: window.storages.user.get ().src, uid: window.storages.uuid.get (), enable: 1
       });
 
+      alert ('已經戳囉！');
+      window.vars.$.markerMenu.css ({ top: -100, left: -100 }).removeClass ('show');
+
       setTimeout (function () {
         window.vars.tx = false;
-      }, 60 * 1000);
+      }, 3 * 60 * 1000);
     });
 
     window.vars.$.plus.click (function () {
