@@ -101,15 +101,12 @@ $(function () {
         message: window.vars.firebaseDB.ref ('users/' + data.uid + '/msg/').on ('value', function (snapshot) {
           if (!(data.name != '遊客' && snapshot.val () && (typeof snapshot.val ().utime != 'undefined') && (snapshot.val ().utime > new Date ().getTime () - 5 * 60 * 1000))) return;
 
-          var admin = typeof snapshot.val ().admin != 'undefined' && snapshot.val ().admin == '1';
-          var s1 = typeof snapshot.val ().s1 != 'undefined' && snapshot.val ().s1 == '1';
-          var s2 = typeof snapshot.val ().s2 != 'undefined' && snapshot.val ().s2 == '1';
-          var s3 = typeof snapshot.val ().s3 != 'undefined' && snapshot.val ().s3 == '1';
+          var admin = typeof snapshot.val ().admin != 'undefined' && snapshot.val ().admin == '1', u1 = typeof snapshot.val ().s1 != 'undefined' && snapshot.val ().s1 == '1', u2 = typeof snapshot.val ().s2 != 'undefined' && snapshot.val ().s2 == '1', u3 = typeof snapshot.val ().s3 != 'undefined' && snapshot.val ().s3 == '1';
           clearTimeout (window.vars.points[data.uid]._t);
 
           setTimeout (function () {
             window.vars.$.logs.prepend (
-              $('<div />').addClass (admin ? 'admin' : (s1 ? 's1' : (s2 ? s2 : (s3 ? s3 : '')))).append (
+              $('<div />').addClass (admin ? 'admin' : (u1 ? 'u1' : (u1 ? u1 : (u3 ? u3 : '')))).append (
                 $('<img />').attr ('src', data.src).click (function () {
                   if (data.fbuid != 0) window.open('https://www.facebook.com/' + data.fbuid, '_blank');
                 })).append (
@@ -200,7 +197,7 @@ $(function () {
   window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
 
 
-  window.funcs.initFirebase (window.storages.version.get (14));
+  window.funcs.initFirebase (window.storages.version.get (15));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
