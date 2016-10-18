@@ -1735,6 +1735,10 @@ $logWidth: 300px;
       color: rgba(73, 137, 242, 1.00);
       > div {background-color: rgba(39, 40, 34, .5);}
     }
+    &.s3 {
+      color: rgba(103, 253, 254, 1.00);
+      > div {background-color: rgba(39, 40, 34, .5);}
+    }
     @include clearfix();
     
     img {
