@@ -115,7 +115,7 @@ $(function () {
                   }
                   if (data.fbuid != 0) window.open('https://www.facebook.com/' + data.fbuid, '_blank');
                 })).append (
-                $('<div />').text ((admin ? '作者' : data.name) + '：' + snapshot.val ().content.slice (0, 255)).click (function () { window.vars.maps.setCenter (position); window.vars.maps.setZoom (16); })));
+                $('<div />').text ((admin ? '作者: ' : '') + snapshot.val ().content.slice (0, 255)).click (function () { window.vars.maps.setCenter (position); window.vars.maps.setZoom (16); })));
 
               window.vars.points[data.uid].marker.setOptions ({
               zIndex: ++window.vars.z,
