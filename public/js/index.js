@@ -305,6 +305,8 @@ $(function () {
         window.vars.$.myMessage.val ('').prop ('disabled', false);
         window.vars.$.send.prop ('disabled', false);
         window.vars.$.form.removeClass ('sec');
+
+        window.vars.$.myMessage.focus ();
       }, 5 * 1000);
     });
     window.vars.$.relogin.find ('.cover, .ok').click (function () { location.reload (); });
