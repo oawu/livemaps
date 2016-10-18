@@ -27,7 +27,7 @@ var imgLiquid=imgLiquid||{VER:"0.9.944"};imgLiquid.bgs_Available=!1,imgLiquid.bg
 function inherits(e,t){function i(){}i.prototype=t.prototype,e.superClass_=t.prototype,e.prototype=new i,e.prototype.constructor=e}function MarkerLabel_(e,t,i){this.marker_=e,this.handCursorURL_=e.handCursorURL,this.labelDiv_=document.createElement("div"),this.labelDiv_.style.cssText="position: absolute; overflow: hidden;",this.eventDiv_=document.createElement("div"),this.eventDiv_.style.cssText=this.labelDiv_.style.cssText,this.eventDiv_.setAttribute("onselectstart","return false;"),this.eventDiv_.setAttribute("ondragstart","return false;"),this.crossDiv_=MarkerLabel_.getSharedCross(t)}function MarkerWithLabel(e){e=e||{},e.labelContent=e.labelContent||"",e.initCallback=e.initCallback||function(){},e.labelAnchor=e.labelAnchor||new google.maps.Point(0,0),e.labelClass=e.labelClass||"markerLabels",e.labelStyle=e.labelStyle||{},e.labelInBackground=e.labelInBackground||!1,"undefined"==typeof e.labelVisible&&(e.labelVisible=!0),"undefined"==typeof e.raiseOnDrag&&(e.raiseOnDrag=!0),"undefined"==typeof e.clickable&&(e.clickable=!0),"undefined"==typeof e.draggable&&(e.draggable=!1),"undefined"==typeof e.optimized&&(e.optimized=!1),e.crossImage=e.crossImage||"http"+("https:"===document.location.protocol?"s":"")+"://maps.gstatic.com/intl/en_us/mapfiles/drag_cross_67_16.png",e.handCursor=e.handCursor||"http"+("https:"===document.location.protocol?"s":"")+"://maps.gstatic.com/intl/en_us/mapfiles/closedhand_8_8.cur",e.optimized=!1,this.label=new MarkerLabel_(this,e.crossImage,e.handCursor),google.maps.Marker.apply(this,arguments)}inherits(MarkerLabel_,google.maps.OverlayView),MarkerLabel_.getSharedCross=function(e){var t;return"undefined"==typeof MarkerLabel_.getSharedCross.crossDiv&&(t=document.createElement("img"),t.style.cssText="position: absolute; z-index: 1000002; display: none;",t.style.marginLeft="-8px",t.style.marginTop="-9px",t.src=e,MarkerLabel_.getSharedCross.crossDiv=t),MarkerLabel_.getSharedCross.crossDiv},MarkerLabel_.prototype.onAdd=function(){var e,t,i,s,a,r,o,n=this,l=!1,g=!1,p=20,_="url("+this.handCursorURL_+")",v=function(e){e.preventDefault&&e.preventDefault(),e.cancelBubble=!0,e.stopPropagation&&e.stopPropagation()},h=function(){n.marker_.setAnimation(null)};this.getPanes().overlayImage.appendChild(this.labelDiv_),this.getPanes().overlayMouseTarget.appendChild(this.eventDiv_),"undefined"==typeof MarkerLabel_.getSharedCross.processed&&(this.getPanes().overlayImage.appendChild(this.crossDiv_),MarkerLabel_.getSharedCross.processed=!0),this.listeners_=[google.maps.event.addDomListener(this.eventDiv_,"mouseover",function(e){(n.marker_.getDraggable()||n.marker_.getClickable())&&(this.style.cursor="pointer",google.maps.event.trigger(n.marker_,"mouseover",e))}),google.maps.event.addDomListener(this.eventDiv_,"mouseout",function(e){!n.marker_.getDraggable()&&!n.marker_.getClickable()||g||(this.style.cursor=n.marker_.getCursor(),google.maps.event.trigger(n.marker_,"mouseout",e))}),google.maps.event.addDomListener(this.eventDiv_,"mousedown",function(e){g=!1,n.marker_.getDraggable()&&(l=!0,this.style.cursor=_),(n.marker_.getDraggable()||n.marker_.getClickable())&&(google.maps.event.trigger(n.marker_,"mousedown",e),v(e))}),google.maps.event.addDomListener(document,"mouseup",function(t){var i;if(l&&(l=!1,n.eventDiv_.style.cursor="pointer",google.maps.event.trigger(n.marker_,"mouseup",t)),g){if(a){i=n.getProjection().fromLatLngToDivPixel(n.marker_.getPosition()),i.y+=p,n.marker_.setPosition(n.getProjection().fromDivPixelToLatLng(i));try{n.marker_.setAnimation(google.maps.Animation.BOUNCE),setTimeout(h,1406)}catch(r){}}n.crossDiv_.style.display="none",n.marker_.setZIndex(e),s=!0,g=!1,t.latLng=n.marker_.getPosition(),google.maps.event.trigger(n.marker_,"dragend",t)}}),google.maps.event.addListener(n.marker_.getMap(),"mousemove",function(s){var _;l&&(g?(s.latLng=new google.maps.LatLng(s.latLng.lat()-t,s.latLng.lng()-i),_=n.getProjection().fromLatLngToDivPixel(s.latLng),a&&(n.crossDiv_.style.left=_.x+"px",n.crossDiv_.style.top=_.y+"px",n.crossDiv_.style.display="",_.y-=p),n.marker_.setPosition(n.getProjection().fromDivPixelToLatLng(_)),a&&(n.eventDiv_.style.top=_.y+p+"px"),google.maps.event.trigger(n.marker_,"drag",s)):(t=s.latLng.lat()-n.marker_.getPosition().lat(),i=s.latLng.lng()-n.marker_.getPosition().lng(),e=n.marker_.getZIndex(),r=n.marker_.getPosition(),o=n.marker_.getMap().getCenter(),a=n.marker_.get("raiseOnDrag"),g=!0,n.marker_.setZIndex(1e6),s.latLng=n.marker_.getPosition(),google.maps.event.trigger(n.marker_,"dragstart",s)))}),google.maps.event.addDomListener(document,"keydown",function(e){g&&27===e.keyCode&&(a=!1,n.marker_.setPosition(r),n.marker_.getMap().setCenter(o),google.maps.event.trigger(document,"mouseup",e))}),google.maps.event.addDomListener(this.eventDiv_,"click",function(e){(n.marker_.getDraggable()||n.marker_.getClickable())&&(s?s=!1:(google.maps.event.trigger(n.marker_,"click",e),v(e)))}),google.maps.event.addDomListener(this.eventDiv_,"dblclick",function(e){(n.marker_.getDraggable()||n.marker_.getClickable())&&(google.maps.event.trigger(n.marker_,"dblclick",e),v(e))}),google.maps.event.addListener(this.marker_,"dragstart",function(e){g||(a=this.get("raiseOnDrag"))}),google.maps.event.addListener(this.marker_,"drag",function(e){g||a&&(n.setPosition(p),n.labelDiv_.style.zIndex=1e6+(this.get("labelInBackground")?-1:1))}),google.maps.event.addListener(this.marker_,"dragend",function(e){g||a&&n.setPosition(0)}),google.maps.event.addListener(this.marker_,"position_changed",function(){n.setPosition()}),google.maps.event.addListener(this.marker_,"zindex_changed",function(){n.setZIndex()}),google.maps.event.addListener(this.marker_,"visible_changed",function(){n.setVisible()}),google.maps.event.addListener(this.marker_,"labelvisible_changed",function(){n.setVisible()}),google.maps.event.addListener(this.marker_,"title_changed",function(){n.setTitle()}),google.maps.event.addListener(this.marker_,"labelcontent_changed",function(){n.setContent()}),google.maps.event.addListener(this.marker_,"labelanchor_changed",function(){n.setAnchor()}),google.maps.event.addListener(this.marker_,"labelclass_changed",function(){n.setStyles()}),google.maps.event.addListener(this.marker_,"labelstyle_changed",function(){n.setStyles()})]},MarkerLabel_.prototype.onRemove=function(){var e;for(this.labelDiv_.parentNode.removeChild(this.labelDiv_),this.eventDiv_.parentNode.removeChild(this.eventDiv_),e=0;e<this.listeners_.length;e++)google.maps.event.removeListener(this.listeners_[e])},MarkerLabel_.prototype.draw=function(){this.setContent(),this.setTitle(),this.setStyles()},MarkerLabel_.prototype.setContent=function(){var e=this.marker_.get("labelContent");"undefined"==typeof e.nodeType?(this.labelDiv_.innerHTML=e,this.eventDiv_.innerHTML=this.labelDiv_.innerHTML):(this.labelDiv_.innerHTML="",this.labelDiv_.appendChild(e),e=e.cloneNode(!0),this.eventDiv_.innerHTML="",this.eventDiv_.appendChild(e))},MarkerLabel_.prototype.setTitle=function(){this.eventDiv_.title=this.marker_.getTitle()||""},MarkerLabel_.prototype.setStyles=function(){var e,t;this.labelDiv_.className=this.marker_.get("labelClass"),this.eventDiv_.className=this.labelDiv_.className,this.labelDiv_.style.cssText="",this.eventDiv_.style.cssText="",t=this.marker_.get("labelStyle");for(e in t)t.hasOwnProperty(e)&&(this.labelDiv_.style[e]=t[e],this.eventDiv_.style[e]=t[e]);this.setMandatoryStyles()},MarkerLabel_.prototype.setMandatoryStyles=function(){this.labelDiv_.style.position="absolute",this.labelDiv_.style.overflow="","undefined"!=typeof this.labelDiv_.style.opacity&&""!==this.labelDiv_.style.opacity&&(this.labelDiv_.style.MsFilter='"progid:DXImageTransform.Microsoft.Alpha(opacity='+100*this.labelDiv_.style.opacity+')"',this.labelDiv_.style.filter="alpha(opacity="+100*this.labelDiv_.style.opacity+")"),this.eventDiv_.style.position=this.labelDiv_.style.position,this.eventDiv_.style.overflow=this.labelDiv_.style.overflow,this.eventDiv_.style.opacity=.01,this.eventDiv_.style.MsFilter='"progid:DXImageTransform.Microsoft.Alpha(opacity=1)"',this.eventDiv_.style.filter="alpha(opacity=1)",this.setAnchor(),this.setPosition(),this.setVisible()},MarkerLabel_.prototype.setAnchor=function(){var e=this.marker_.get("labelAnchor");this.labelDiv_.style.marginLeft=-e.x+"px",this.labelDiv_.style.marginTop=-e.y+"px",this.eventDiv_.style.marginLeft=-e.x+"px",this.eventDiv_.style.marginTop=-e.y+"px"},MarkerLabel_.prototype.setPosition=function(e){var t=this.getProjection().fromLatLngToDivPixel(this.marker_.getPosition());"undefined"==typeof e&&(e=0),this.labelDiv_.style.left=Math.round(t.x)+"px",this.labelDiv_.style.top=Math.round(t.y-e)+"px",this.eventDiv_.style.left=this.labelDiv_.style.left,this.eventDiv_.style.top=this.labelDiv_.style.top,this.setZIndex()},MarkerLabel_.prototype.setZIndex=function(){var e=this.marker_.get("labelInBackground")?-1:1;"undefined"==typeof this.marker_.getZIndex()?(this.labelDiv_.style.zIndex=parseInt(this.labelDiv_.style.top,10)+e,this.eventDiv_.style.zIndex=this.labelDiv_.style.zIndex):(this.labelDiv_.style.zIndex=this.marker_.getZIndex()+e,this.eventDiv_.style.zIndex=this.labelDiv_.style.zIndex)},MarkerLabel_.prototype.setVisible=function(){this.marker_.get("labelVisible")?this.labelDiv_.style.display=this.marker_.getVisible()?"block":"none":this.labelDiv_.style.display="none",this.eventDiv_.style.display=this.labelDiv_.style.display;var e=this.marker_.get("initCallback");e(this.labelDiv_)},inherits(MarkerWithLabel,google.maps.Marker),MarkerWithLabel.prototype.setMap=function(e){google.maps.Marker.prototype.setMap.apply(this,arguments),this.label.setMap(e)};
 
 $(function () {
-  window.vars = { $: { body: $('body'), logsBtn: $('#logs_btn'), logs: $('#logs'), loading: $('#loading'), maps: $('#maps'), send: $('#send'), myMessage: $('#my_message'), zoomIn: $('#zoom_in'), zoomOut: $('#zoom_out'), plus: $('#plus'), facebook: $('#facebook'), login: $('#login'), relogin: $('#relogin'), step1: $('#step1'), step2: $('#step2'), step3: $('#step3'), popbox: $('.popbox'), title: $('title'), form: $('#form'), chat: $('#chat'), history: $('#history'), gpson: $('#gpson'), myLocation: $('#my_location'), firebaseError: $('#firebase_error'), notification: $('#notification'), see_comments: $('#see_comments'), comments: $('#comments'), markerMenu: $('#marker_menu'), }, };
+  window.vars = { $: { body: $('body'), markerMenu: $('#marker_menu'), logsBtn: $('#logs_btn'), logs: $('#logs'), loading: $('#loading'), maps: $('#maps'), send: $('#send'), myMessage: $('#my_message'), zoomIn: $('#zoom_in'), zoomOut: $('#zoom_out'), plus: $('#plus'), facebook: $('#facebook'), login: $('#login'), relogin: $('#relogin'), step1: $('#step1'), step2: $('#step2'), step3: $('#step3'), popbox: $('.popbox'), title: $('title'), form: $('#form'), chat: $('#chat'), history: $('#history'), gpson: $('#gpson'), myLocation: $('#my_location'), firebaseError: $('#firebase_error'), notification: $('#notification'), see_comments: $('#see_comments'), comments: $('#comments'), markerMenu: $('#marker_menu'), }, };
 
   window.funcs = {
     ajaxError: function (result) { console.error (result.responseText); },
@@ -79,6 +79,20 @@ $(function () {
         return window.vars.$.loading.removeClass ('show') && window.storages.inited.set ('yes') && cb && cb ();
       }, { enableHighAccuracy: true });
     },
+    getPixelPosition: function (obj) {
+      var scale = Math.pow (2, obj.map.getZoom ());
+      var nw = new google.maps.LatLng (
+          obj.map.getBounds ().getNorthEast ().lat (),
+          obj.map.getBounds ().getSouthWest ().lng ()
+      );
+      var worldCoordinateNW = obj.map.getProjection ().fromLatLngToPoint (nw);
+      var worldCoordinate = obj.map.getProjection ().fromLatLngToPoint (obj.getPosition ());
+      
+      return new google.maps.Point (
+          (worldCoordinate.x - worldCoordinateNW.x) * scale,
+          (worldCoordinate.y - worldCoordinateNW.y) * scale
+      );
+    },
     appendUser: function (snapshot) {
       var data = null; if (!(snapshot && (data = snapshot.val ()) && (typeof data.uid != 'undefined') && (data.uid.length > 0) && (typeof data.name != 'undefined') && (data.name.length > 0) && (typeof data.src != 'undefined') && (data.src.length > 0) && (typeof data.enable != 'undefined') && (data.enable != 0) && (typeof data.location != 'undefined') && (Object.keys (data.location).length == 2) && (typeof data.location.lat != 'undefined') && (data.location.lat >= -90 ) && (data.location.lat <= 90 ) && (typeof data.location.lng != 'undefined') && (data.location.lng >= -180) && (data.location.lng <= 180) && (typeof window.vars.points[data.uid] == 'undefined'))) return ;
 
@@ -98,6 +112,7 @@ $(function () {
       };
 
       window.vars.points[data.uid].on = {
+       // ,
         message: window.vars.firebaseDB.ref ('users/' + data.uid + '/msg/').on ('value', function (snapshot) {
           if (!(data.name != '遊客' && snapshot.val () && (typeof snapshot.val ().utime != 'undefined') && (snapshot.val ().utime > new Date ().getTime () - 5 * 60 * 1000))) return;
 
@@ -126,9 +141,10 @@ $(function () {
             if (data.uid != window.storages.uuid.get () && window.vars.hasAudio) window.vars.audio.chat.play ();
 
             window.vars.points[data.uid]._t = setTimeout (function () {
-              window.vars.points[data.uid].marker.setOptions ({
-                labelContent: window.funcs.renderUser (window.vars.points[data.uid].data, ''),
-                labelClass: 'user show' });
+              if (typeof window.vars.points[data.uid].marker != 'undefined')
+                window.vars.points[data.uid].marker.setOptions ({
+                  labelContent: window.funcs.renderUser (window.vars.points[data.uid].data, ''),
+                  labelClass: 'user show' });
             }, 3 * 60 * 1000);
           }, 500);
         }),
@@ -144,11 +160,34 @@ $(function () {
           window.vars.$.login.find ('span').text (''); 
           return window.vars.$.login.addClass ('show');
         }
-        if (data.fbuid != 0) window.open('https://www.facebook.com/' + data.fbuid, '_blank');
+        var pixel = window.funcs.getPixelPosition (this);
+        window.vars.$.markerMenu.css ({ top: pixel.y, left: pixel.x }).addClass ('show').get (0).point = window.vars.points[data.uid];
       });
       window.funcs.updateTitle ();
         
       if (data.uid != window.storages.uuid.get () && window.vars.hasAudio)  window.vars.audio.pop.play ();
+    },
+    initNotification: function () {
+      if (!Notification) return window.storages.notificationStatus.set ('denied');
+
+      var setNotification = function () {
+        if (window.storages.notificationStatus.get () === 'denied') window.vars.notification = false;
+        if (window.storages.notificationStatus.get () === 'default') window.vars.notification = false;
+        if (window.storages.notificationStatus.get () === 'granted') window.vars.notification = true;
+      };
+
+      Notification.requestPermission (function (status) {
+        window.storages.notificationStatus.set (status);
+        setNotification ();
+      });
+
+      window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/').on ('value', function (snapshot) {
+        if (!(snapshot.val () && snapshot.val ().name && snapshot.val ().src && snapshot.val ().uid && snapshot.val ().enable)) return;
+        if (!(snapshot.val ().uid != window.storages.uuid.get () && window.vars.hasAudio && window.vars.notification))return;
+        var notification = new Notification (snapshot.val ().name, {dir: "ltr", lang: "utf-8", icon: snapshot.val ().src, body: '戳了一你一下！' });
+        notification.onclick = function() { notification.close (); window.vars.maps.setCenter (window.vars.points[snapshot.val ().uid].marker.position); window.vars.maps.setZoom (16); };
+        window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/enable/').set (0);
+      });
     },
     removeUser: function (snapshot) {
       var data = null; if (!(snapshot && (data = snapshot.val ()) && (typeof data.uid != 'undefined') && (data.uid.length > 0) && (typeof window.vars.points[data.uid] != 'undefined'))) return ;
@@ -219,6 +258,7 @@ $(function () {
     window.vars.maps.mapTypes.set ('style1', new google.maps.StyledMapType ([{featureType: 'all', stylers: [{ visibility: 'on' }]}, {featureType: 'administrative', stylers: [{ visibility: 'simplified' }]}, {featureType: 'landscape', stylers: [{ visibility: 'simplified' }]}, {featureType: 'poi', stylers: [{ visibility: 'simplified' }]}, {featureType: 'road', stylers: [{ visibility: 'simplified' }]}, {featureType: 'road.arterial', stylers: [{ visibility: 'simplified' }]}, {featureType: 'transit', stylers: [{ visibility: 'simplified' }]}, {featureType: 'water', stylers: [{ color: '#b3d1ff', visibility: 'simplified' }]}, {elementType: "labels.icon", stylers:[{ visibility: 'off' }]}]));
     window.vars.maps.setMapTypeId ('style1');
     window.vars.maps.addListener ('idle', function () { window.storages.mapsLastPosition.set ({zoom: window.vars.maps.zoom, lat: window.vars.maps.center.lat (), lng: window.vars.maps.center.lng ()}); });
+    window.vars.maps.addListener ('mousemove', function () { window.vars.$.markerMenu.css ({ top: -100, left: -100 }).removeClass ('show'); });
 
     window.vars.firebaseUserRef.orderByChild ('enable').equalTo (1).on ('child_added', window.funcs.appendUser);
     window.vars.firebaseUserRef.orderByChild ('enable').equalTo (0).on ('child_added', window.funcs.removeUser);
@@ -254,6 +294,15 @@ $(function () {
     window.vars.$.notification.attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).addClass (window.storages.audio.get () == 'on' ? 'icon-notification_active' : 'icon-notification_off').addClass ('show feature_tip').click (function () { window.storages.audio.set (window.storages.audio.get () == 'on' ? 'off' : 'on'); window.vars.hasAudio = window.storages.audio.get () == 'on' ? true : false; $(this).attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).attr ('class', window.storages.audio.get () == 'on' ? 'icon-notification_active show feature_tip' : 'icon-notification_off show feature_tip'); });
     window.vars.$.login.find ('.ok').click (function () { window.vars.$.popbox.removeClass ('show');  });
     window.vars.$.see_comments.click (function () { window.vars.$.comments.addClass ('show'); }).addClass ('show');
+    
+    window.vars.$.markerMenu.find ('.look_fb').click (function () { if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0) window.open('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank'); });
+    window.vars.$.markerMenu.find ('.pick_he').click (function () { 
+      if (!window.storages.user.get ()) return;
+      window.vars.firebaseDB.ref ('users/' + window.vars.$.markerMenu.get (0).point.data.uid + '/pick/').set ({
+        name: window.storages.user.get ().name, src: window.storages.user.get ().src, uid: window.storages.uuid.get (), enable: 1
+      });
+    });
+
     window.vars.$.plus.click (function () {
       window.vars.$.loading.addClass ('show').find ('.txt').text ('定位中，請稍候..'); 
       if (window.vars.lat === null && window.vars.lng === null) {
@@ -272,7 +321,12 @@ $(function () {
       window.vars.$.logs.toggleClass ('show');
     }).addClass ('show');
 
+// FB.logout(function(response) {
+//   // user is now logged out
+// });
+
     var audio = function () { if (window.vars.lat === null && window.vars.lng === null) window.vars.$.myLocation.click (function () { window.vars.maps.setOptions ({ zoom: 16, center: new google.maps.LatLng (window.vars.lat, window.vars.lng)}); }).addClass ('show'); setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000); };
+    window.funcs.initNotification ();
     window.funcs.initGeoFeature (audio);
 
     window.funcs.setUserTime ();

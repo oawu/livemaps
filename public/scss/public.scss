@@ -1785,3 +1785,55 @@ $logWidth: 300px;
     left: 5px;
   }
 }
+
+#marker_menu {
+  position: absolute;
+  top: -10000px;
+  left: -100000px;
+
+  display: inline-block;
+  padding: 7px;
+
+  @include opacity(0);
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0 - ((45px + 1px) / 2);
+    left: 0 - ((45px + 1px) / 2);
+
+    display: inline-block;
+    width: 45px + 2px;
+    height: 45px + 2px;
+    border: 2px solid rgba(44, 128, 133, 1.00);
+    @include border-radius(50%);
+    z-index: 2;
+  }
+  &.show {
+    z-index: 2;
+    @include opacity(1);
+  }
+  > div {
+    position: absolute;
+    z-index: 3;
+    border: 1px solid rgba(40, 40, 35, .4);
+    background-color: rgba(250, 250, 250, 1);
+    padding: 3px;
+    width: 130px;
+    @include border-radius(2px);
+    @include box-shadow(0 0 15px 1px rgba(0, 0, 0, 0.2));
+
+    div {
+      cursor: pointer;
+      padding: 5px 10px;
+
+      + div {
+        border-top: 1px solid rgba(200, 200, 200, 1);
+      }
+
+      &:hover {
+        color: rgba(255, 255, 255, 1);
+        background-color: rgba(44, 128, 133, 1.00);
+      }
+    } 
+  }
+}
