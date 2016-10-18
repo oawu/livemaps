@@ -298,9 +298,8 @@ $(function () {
     window.vars.$.markerMenu.find ('.look_fb').click (function () { if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0) window.open('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank'); });
     window.vars.$.markerMenu.find ('.pick_he').click (function () { 
       var msg = prompt ('輸入您想跟他說的話吧！');
-      if (msg.length <= 0) return;
       if (window.vars.tx) {
-        alert ('您剛剛已經戳過了，1 分鐘後再試試..')
+        alert ('您剛剛已經戳過了，2 分鐘後再試試..')
         return;
       }
       window.vars.tx = true;
@@ -315,7 +314,7 @@ $(function () {
 
       setTimeout (function () {
         window.vars.tx = false;
-      }, 1 * 60 * 1000);
+      }, 2 * 60 * 1000);
     });
 
     window.vars.$.plus.click (function () {
