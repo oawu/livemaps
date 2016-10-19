@@ -42,18 +42,7 @@ $(function () {
     renderUser: function (obj, content) { return $('<div />').addClass ('user').append ($('<div />').addClass ('avatar').append ($('<img />').attr ('alt', obj.name).attr ('src', obj.src)).imgLiquid ({verticalAlign: 'center'})).append ($('<div />').addClass ('content').text (content = typeof content == 'undefined' ? '' : content)).html (); },
     getPixelPosition: function (obj) { var scale = Math.pow (2, obj.map.getZoom ()), nw = new google.maps.LatLng (obj.map.getBounds ().getNorthEast ().lat (), obj.map.getBounds ().getSouthWest ().lng ()), worldCoordinateNW = obj.map.getProjection ().fromLatLngToPoint (nw), worldCoordinate = obj.map.getProjection ().fromLatLngToPoint (obj.getPosition ()); return new google.maps.Point ((worldCoordinate.x - worldCoordinateNW.x) * scale, (worldCoordinate.y - worldCoordinateNW.y) * scale); },
     showForm: function () { window.vars.$.plus.toggleClass ('open'); if (window.vars.$.plus.hasClass ('open')) window.vars.myMessageTimer =  setTimeout (function () { window.vars.$.myMessage.focus (); }, 500); else clearTimeout (window.vars.myMessageTimer); },
-    getFbData: function (cb) { FB.api('/me', function (response) { window.storages.user.set ({ fbuid: response.id, name: response.name, src: 'https://graph.facebook.com/' + response.id + '/picture?width=100&height=100' }); window.funcs.removeSameUser (response.id); 
-      window.vars.$.logout.click (function () {
-        window.vars.$.loading.addClass ('show').find ('.txt').text ('登出中，請稍候..');
-        FB.logout (function(response) {
-          window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/enable/').set (0);
-          window.storages.user.set (null);
-          window.funcs.clearStorage ();
-          window.vars.$.loading.removeClass ('show');
-          location.reload ();
-        });
-      }).addClass ('show');
-      return cb && cb (response); }); },
+    getFbData: function (cb) { FB.api('/me', function (response) { window.storages.user.set ({ fbuid: response.id, name: response.name, src: 'https://graph.facebook.com/' + response.id + '/picture?width=100&height=100' }); window.funcs.removeSameUser (response.id);  window.vars.$.logout.click (function () {window.vars.$.loading.addClass ('show').find ('.txt').text ('登出中，請稍候..');FB.logout (function(response) {window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/enable/').set (0);window.storages.user.set (null);window.funcs.clearStorage ();window.vars.$.loading.removeClass ('show');location.reload ();});}).addClass ('show'); return cb && cb (response); }); },
     checkLoginState: function (cb, eb) { FB.getLoginStatus (function (response) { if (response.status != 'connected') return window.storages.user.set (null) && eb && eb (); return cb && cb (response); }); return eb && eb (); },
     initFB: function () { if (!window.storages.user.get ()) window.funcs.checkLoginState (function () { window.funcs.getFbData (); }, function () { window.vars.$.facebook.click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('登入中，請稍候..'); FB.login (function (response) { if (response.status != 'connected') return window.vars.$.loading.removeClass ('show') && window.vars.$.facebook.prev ().text ('登入失敗..'); window.funcs.getFbData (function () { window.vars.$.loading.removeClass ('show'); window.vars.$.facebook.parents ('.popbox').removeClass ('show'); window.funcs.showForm (); }); }, {scope: 'public_profile,email'}); }); }); },
 
@@ -90,20 +79,7 @@ $(function () {
         return window.vars.$.loading.removeClass ('show') && window.storages.inited.set ('yes');
       }, { enableHighAccuracy: true });
     },
-    getPixelPosition: function (obj) {
-      var scale = Math.pow (2, obj.map.getZoom ());
-      var nw = new google.maps.LatLng (
-          obj.map.getBounds ().getNorthEast ().lat (),
-          obj.map.getBounds ().getSouthWest ().lng ()
-      );
-      var worldCoordinateNW = obj.map.getProjection ().fromLatLngToPoint (nw);
-      var worldCoordinate = obj.map.getProjection ().fromLatLngToPoint (obj.getPosition ());
-      
-      return new google.maps.Point (
-          (worldCoordinate.x - worldCoordinateNW.x) * scale,
-          (worldCoordinate.y - worldCoordinateNW.y) * scale
-      );
-    },
+    getPixelPosition: function (obj) { var scale = Math.pow (2, obj.map.getZoom ()), nw = new google.maps.LatLng (obj.map.getBounds ().getNorthEast ().lat (), obj.map.getBounds ().getSouthWest ().lng ()), worldCoordinateNW = obj.map.getProjection ().fromLatLngToPoint (nw), worldCoordinate = obj.map.getProjection ().fromLatLngToPoint (obj.getPosition ()); return new google.maps.Point ((worldCoordinate.x - worldCoordinateNW.x) * scale, (worldCoordinate.y - worldCoordinateNW.y) * scale); },
     appendUser: function (snapshot) {
       var data = null; if (!(snapshot && (data = snapshot.val ()) && (typeof data.uid != 'undefined') && (data.uid.length > 0) && (typeof data.name != 'undefined') && (data.name.length > 0) && (typeof data.src != 'undefined') && (data.src.length > 0) && (typeof data.enable != 'undefined') && (data.enable != 0) && (typeof data.location != 'undefined') && (Object.keys (data.location).length == 2) && (typeof data.location.lat != 'undefined') && (data.location.lat >= -90 ) && (data.location.lat <= 90 ) && (typeof data.location.lng != 'undefined') && (data.location.lng >= -180) && (data.location.lng <= 180) && (typeof window.vars.points[data.uid] == 'undefined'))) return ;
 
@@ -195,8 +171,22 @@ $(function () {
       window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/').on ('value', function (snapshot) {
         if (!(snapshot.val () && snapshot.val ().name && snapshot.val ().src && snapshot.val ().uid && snapshot.val ().enable)) return;
         if (!(snapshot.val ().uid != window.storages.uuid.get () && window.vars.hasAudio && window.vars.notification))return;
-        var notification = new Notification (snapshot.val ().name, {dir: "ltr", lang: "utf-8", icon: snapshot.val ().src, body: '戳了你一下！' + ( typeof snapshot.val ().msg && snapshot.val ().msg.length ? '他說：' + snapshot.val ().msg.slice (0, 255) : '')});
-        notification.onclick = function() { notification.close (); window.vars.maps.setCenter (window.vars.points[snapshot.val ().uid].marker.position); window.vars.maps.setZoom (16); };
+        var notification = new Notification (snapshot.val ().name, {dir: "ltr", lang: "utf-8", icon: snapshot.val ().src, body: (typeof snapshot.val ().msg && snapshot.val ().msg.length ? snapshot.val ().msg.slice (0, 255) : '戳了你一下！')});
+        notification.onclick = function() {
+          notification.close ();
+
+          if (!snapshot.val ().msg.length) return window.vars.maps.setCenter (window.vars.points[snapshot.val ().uid].marker.position); window.vars.maps.setZoom (16);
+
+          var msg = prompt ('您要回他什麼？');
+          if (!msg.length) return;
+
+          window.vars.firebaseDB.ref ('users/' + snapshot.val ().uid + '/pick/').set ({
+            msg: msg.slice (0, 255), name: window.storages.user.get ().name, src: window.storages.user.get ().src, uid: window.storages.uuid.get (), enable: 1
+          });
+
+          alert ('已經回囉！');
+      
+        };
         window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/enable/').set (0);
       });
     },
@@ -334,7 +324,7 @@ $(function () {
 
       alert ('已經戳囉！');
       window.vars.$.markerMenu.css ({ top: -100, left: -100 }).removeClass ('show');
-// 
+
       setTimeout (function () {
         window.vars.tx = false;
       }, 30 * 1000);
