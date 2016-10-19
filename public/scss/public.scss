@@ -12,24 +12,25 @@
   @include font-smoothing(antialiased);
 }
 
-.icon-menu:before { content: "\e120" }
-.icon-notification_off:before { content: "\e900" }
-.icon-notification_active:before { content: "\e901" }
-.icon-pin-alt:before { content: "\e902" }
-.icon-chat-3:before { content: "\e903" }
-.icon-user:before { content: "\e904" }
-.icon-question:before { content: "\e905" }
-.icon-plus:before { content: "\e906" }
-.icon-arrow-right:before { content: "\e907" }
-.icon-zoom-out:before { content: "\e908" }
-.icon-zoom-in:before { content: "\e909" }
-.icon-my_location:before { content: "\e90a" }
-.icon-exit_to_app:before { content: "\e90b" }
-.icon-search:before { content: "\e986" }
-.icon-facebook:before { content: "\ea90" }
-.icon-share:before { content: "\f064" }
-.icon-github:before { content: "\f09b" }
-.icon-credit-card:before { content: "\e93f" }
+
+.icon-credit:before { content: "\e90c"; }
+.icon-menu:before { content: "\e120"; }
+.icon-notification_off:before { content: "\e900"; }
+.icon-notification_active:before { content: "\e901"; }
+.icon-pin-alt:before { content: "\e902"; }
+.icon-chat-3:before { content: "\e903"; }
+.icon-user:before { content: "\e904"; }
+.icon-question:before { content: "\e905"; }
+.icon-plus:before { content: "\e906"; }
+.icon-arrow-right:before { content: "\e907"; }
+.icon-zoom-out:before { content: "\e908"; }
+.icon-zoom-in:before { content: "\e909"; }
+.icon-my_location:before { content: "\e90a"; }
+.icon-exit_to_app:before { content: "\e90b"; }
+.icon-search:before { content: "\e986"; }
+.icon-facebook:before { content: "\ea90"; }
+.icon-share:before { content: "\f064"; }
+.icon-github:before { content: "\f09b"; }
 
 
 * {
