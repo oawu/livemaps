@@ -358,13 +358,13 @@ $(function () {
       window.vars.$.logs.toggleClass ('show');
     }).addClass ('show');
 
+    window.vars.$.loading.removeClass ('show');
     var audio = function () {
       if (!(window.vars.lat === null && window.vars.lng === null)) return;
 
       window.vars.$.myLocation.click (function () {
         window.vars.maps.setOptions ({ zoom: 16, center: new google.maps.LatLng (window.vars.lat, window.vars.lng)});
       }).addClass ('show');
-      window.vars.$.loading.removeClass ('show');
       setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000);
     };
     window.funcs.initNotification ();
