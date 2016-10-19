@@ -1674,7 +1674,23 @@ $logWidth: 200px;
   }
 }
 @media screen and (min-width: 450px) {
-$logWidth: 300px;
+$logWidth: 350px;
+  #logs {
+    left: 0 - $logWidth;
+    width: $logWidth;
+
+    &.show {
+      ~ #logs_btn {
+        left: $logWidth - 45px / 2;
+      }
+      ~ #fb-like {
+        left: $logWidth + 10px;
+      }
+    }
+  }
+}
+@media screen and (min-width: 950px) {
+$logWidth: 400px;
   #logs {
     left: 0 - $logWidth;
     width: $logWidth;
