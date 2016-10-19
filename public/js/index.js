@@ -263,7 +263,7 @@ $(function () {
   window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
 
 
-  window.funcs.initFirebase (window.storages.version.get (27));
+  window.funcs.initFirebase (window.storages.version.get (28));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
