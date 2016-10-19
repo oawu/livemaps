@@ -97,12 +97,15 @@
 
       <article>
         <header>
-          <h2>授權聲明</h2>
+          <h2>授權與聲明</h2>
           <span>使用授權 • 責任聲明</span>
         </header>
         <section>
           <ul>
             <li>本作品授權採用<b>姓名標示-非商業性 2.0 台灣 (CC BY-NC 2.0 TW) 授權</b>，詳見 <a href='http://creativecommons.org/licenses/by-nc/2.0/tw/' target='_blank'>http://creativecommons.org/licenses/by-nc/2.0/tw/</a></li>
+            <li>作品中會由瀏覽器取得瀏覽器概略位置，若不想公開的話，可以從瀏覽器設定中選擇不分享。</li>
+            <li>作品中會由瀏覽器發送本地通知的功能，一樣可以由瀏覽器設定中關閉。</li>
+            <li>聊天地圖使用過程中會使用到 <a href='https://www.facebook.com' target='_blank'>Facebook</a> 的 OAuth 授權登入，而程式僅會藉由 OAuth 取得名稱與相片，其他資料並不會取得。</li>
           </ul>
         </section>
       </article>
@@ -120,6 +123,19 @@
           <p>以網頁版來說，登入系統可以由 <a href='https://github.com/firebase/firebaseui-web' target='_blank'>firebaseui-web</a> 來串接，在地圖上更可以用 <a href='https://github.com/firebase/geofire-js' target='_blank'>geofire-js</a> 來實作，geofire 就有豐富的經緯度範圍運算，可以快速的撈出範圍內的點，不過對於 Database 的 JSON 格式架構就要符合其規範，第一版的 LiveMaps 就是使用 geofire 實作，但是因為功能需求，所以暫時先捨棄；而 firebaseui 提供了各種不同的 OAuth 登入，可以配合 Authentication 製作登入系統，不過在第二版製作時也暫時拿掉，主要是因為想加快登入時間問題，所以暫時只使用 <a href='https://www.facebook.com' target='_blank'>Facebook</a> 的 SDK 實作 OAuth 登入。</p>
           <p>網頁的定位方式，是採用 <a href='https://developer.mozilla.org/zh-TW/docs/Using_geolocation' target='_blank'>navigator.geolocation</a> 的 <a href='https://developer.mozilla.org/zh-TW/docs/Web/API/Geolocation/watchPosition' target='_blank'>watchPosition</a> 取得使用者瀏覽器裝置位置，因為 Firebase 提供了 Https 的服務，故在 <a href='https://www.google.com.tw/chrome/browser/desktop/' target='_blank'>Chrome</a> 瀏覽器上就可以取得使用者位置，而且使用了 watchPosition 並且搭配使用 enableHighAccuracy，所以取的的位置會較為精準，但也可能會有誤差值，故使用上可能會有使用者發生位置不正確的狀況，待下一版本解決。</p>
 
+        </section>
+      </article>
+
+
+      <article>
+        <header>
+          <h2>更新紀錄</h2>
+          <span>不斷修改 • 變得更好</span>
+        </header>
+        <section>
+          <ul>
+            <li>v 1.1.0 - 修正版型、Realtime Database 架構、調整效能、加入 OAuth 聲明。 - 2016-10-19 15:22:12。</li>
+          </ul>
         </section>
       </article>
 

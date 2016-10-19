@@ -12,25 +12,64 @@
   @include font-smoothing(antialiased);
 }
 
+.icon-menu:before {
+  content: "\e120";
+}
+.icon-notification_off:before {
+  content: "\e900";
+}
+.icon-notification_active:before {
+  content: "\e901";
+}
+.icon-pin-alt:before {
+  content: "\e902";
+}
+.icon-chat-3:before {
+  content: "\e903";
+}
+.icon-user:before {
+  content: "\e904";
+}
+.icon-question:before {
+  content: "\e905";
+}
+.icon-plus:before {
+  content: "\e906";
+}
+.icon-arrow-right:before {
+  content: "\e907";
+}
+.icon-zoom-out:before {
+  content: "\e908";
+}
+.icon-zoom-in:before {
+  content: "\e909";
+}
+.icon-my_location:before {
+  content: "\e90a";
+}
+.icon-exit_to_app:before {
+  content: "\e90b";
+}
+.icon-credit:before {
+  content: "\e90c";
+}
+.icon-search:before {
+  content: "\e986";
+}
+.icon-facebook:before {
+  content: "\ea90";
+}
+.icon-share:before {
+  content: "\f064";
+}
+.icon-github:before {
+  content: "\f09b";
+}
+.icon-cog:before {
+  content: "\e994";
+}
 
-.icon-credit:before { content: "\e90c"; }
-.icon-menu:before { content: "\e120"; }
-.icon-notification_off:before { content: "\e900"; }
-.icon-notification_active:before { content: "\e901"; }
-.icon-pin-alt:before { content: "\e902"; }
-.icon-chat-3:before { content: "\e903"; }
-.icon-user:before { content: "\e904"; }
-.icon-question:before { content: "\e905"; }
-.icon-plus:before { content: "\e906"; }
-.icon-arrow-right:before { content: "\e907"; }
-.icon-zoom-out:before { content: "\e908"; }
-.icon-zoom-in:before { content: "\e909"; }
-.icon-my_location:before { content: "\e90a"; }
-.icon-exit_to_app:before { content: "\e90b"; }
-.icon-search:before { content: "\e986"; }
-.icon-facebook:before { content: "\ea90"; }
-.icon-share:before { content: "\f064"; }
-.icon-github:before { content: "\f09b"; }
 
 
 * {
@@ -693,7 +732,7 @@ section {
   }
 }
 
-#logs_btn, #zoom_in, #zoom_out, #plus, #notification, #my_location, #see_comments, #logout, #donate {
+#logs_btn {
   position: fixed;
   right: 10px;
   display: inline-block;
@@ -725,90 +764,6 @@ section {
   &:active {
     @include scale(1.2);
     @include box-shadow(inset 1px 1px 2px rgba(0, 0, 0, .200));
-  }
-}
-
-#plus {
-  bottom: 10px;
-  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-    bottom: 5px;
-  }
-
-  &:before {
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    @include rotate(0);
-    @include transition(transform .3s);
-  }
-  &.open {
-    z-index: 101;
-    &:before {
-      @include rotate(45deg);
-    }
-    ~ #form {
-      right: 5px + 40px + 10px;
-      @include opacity(1);
-      
-      &:before {
-        bottom: 0;
-        @include opacity(1);
-      }
-    }
-  }
-}
-
-#form {
-  position: fixed;
-  bottom: 8px;
-  right: 0 - (300px + 5px);
-  display: inline-block;
-  padding: 5px;
-  z-index: 100;
-  width: 300px;
-  max-width: calc(100% - (5px + 40px + 10px + 5px));
-  @include clearfix();
-  @include opacity(0);
-  @include transition(right .3s, opacity .3s);
-  > * {
-    position: relative;
-    z-index: 2;
-  }
-  
-  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-    bottom: 5px;
-    right: 5px + 40px + 5px;
-    max-width: calc(100% - (5px + 40px + 5px + 5px));
-  }
-  &:before {
-    content: '';
-    display: inline-block;
-    position: fixed;
-    bottom: 0 - (60px + 5px);
-    left: 0;
-    right: 0;
-    height: 60px;
-    z-index: 1;
-    @include opacity(0);
-    @include background-image(linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .25) 100%));
-    @include transition(bottom .3s, opacity .3s);
-    @include transition-delay(.3s);
-  }
-  &.sec {
-    &:after {
-      content: '五秒後才可發文..';
-      color: rgba(255, 255, 255, 1.00);
-      position: absolute;
-      left: 0;
-      top: 0;
-      display: inline-block;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(39, 40, 34, .700);
-      z-index: 99;
-      line-height: 42px;
-      @include border-radius(2px);
-    }
   }
 }
 
@@ -1512,60 +1467,8 @@ section {
   border: 1px solid rgba(51, 149, 154, 1.00);
 }
 
-#zoom_in {
-  bottom: 45px + 5px + 5px + 45px;
-  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-    bottom: 45px + 5px + 45px;
-  }
-}
 
-#zoom_out {
-  bottom: 45px + 5px + 5px;
-  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-    bottom: 45px + 5px;
-  }
-}
 
-#notification {
-  bottom: auto;
-  top: $headerHeight + 10px;
-  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-    top: $headerHeight + 5px;
-  }
-}
-#donate {
-  right: 55px;
-  bottom: auto;
-  top: $headerHeight + 10px;
-  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-    right: 50px;
-    top: $headerHeight + 5px;
-  }
-}
-#see_comments {
-  bottom: auto;
-  top: $headerHeight + 10px + 40px + 5px;
-  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-    top: $headerHeight + 5px + 40px + 5px;
-  }
-}
-#logout {
-  right: 55px;
-  bottom: auto;
-  top: $headerHeight + 10px + 40px + 5px;
-  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-    right: 50px;
-    top: $headerHeight + 5px + 40px + 5px;
-  }
-}
-
-#my_location {
-  bottom: auto;
-  top: $headerHeight + 10px + 40px + 5px + 40px + 5px;
-  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-    top: $headerHeight + 5px + 40px + 5px + 40px + 5px;
-  }
-}
 
 #chat_my_message {
   @include input;
@@ -1597,12 +1500,11 @@ section {
       min-width: 120px;
       height: 35px;
       line-height: 25px;
-      z-index: 1;
+      z-index: 5;
 
       @include opacity(0);
       @include border-radius(2px);
       @include text-shadow(none);
-      @include transition(opacity .5s);
     }
     &.t2 {
       &:after {
@@ -1722,6 +1624,15 @@ $logWidth: 400px;
   @include transition(left .3s, opacity .3s);
   padding-top: 50px;
 
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 1);
+    @include border-radius(10px);  
+  }
+  &::-webkit-scrollbar {
+    background-color: rgba(39, 40, 34, .75);
+    @include border-radius(10px);
+    width: 12px;
+  }
   &:after {
     content: '🌟點擊地圖的頭像可私訊囉！🌟';
     text-align: center;
@@ -1935,5 +1846,302 @@ $logWidth: 400px;
     font-size: 13px;
     @include opacity(.75);
     font-weight: normal;
+  }
+}
+#notification, #see_comments, #my_location, #donate, #logout, #features label {
+
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px - 2px;
+    
+  border: 1px solid rgba(44, 128, 133, .800);
+  font-size: 20px;
+  color: rgba(255, 255, 255, 1.00);
+  background-color: $mainColor;
+  cursor: pointer;
+
+  @include scale(0);
+  @include opacity(0);
+  @include border-radius(50%);
+  @include box-shadow(inset 1px 1px 1px rgba(255, 255, 255, .100), 1px 1px 5px rgba(0, 0, 0, .200));
+
+  &:hover {
+    @include box-shadow(inset 1px 1px 2px rgba(255, 255, 255, .400), inset -1px -1px 1px rgba(0, 0, 0, .100), 1px 1px 5px rgba(0, 0, 0, .200));
+  }
+  &:active {
+    @include scale(1.2);
+    @include box-shadow(inset 1px 1px 2px rgba(0, 0, 0, .200));
+  }
+}
+
+#notification, #see_comments, #my_location, #donate, #logout {
+  position: fixed;
+  z-index: -1;
+  @include transition(transform .15s ease-in-out, opacity .3s, right .3s, top .3s);
+  
+  top: $headerHeight + 10px;
+  right: 10px;
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    top: $headerHeight + 5px;
+    right: 5px;
+  }
+
+  &.show {
+    @include scale(1);
+    &:active {
+      @include scale(1.2);
+    }
+  }
+}
+
+#features {
+  position: fixed;
+  right: 10px;
+  top: $headerHeight + 10px;
+  display: inline-block;
+
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px - 2px;
+  z-index: 2;
+
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    top: $headerHeight + 5px;
+  }
+
+  label {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    z-index: 1;
+    @include scale(1);
+    @include opacity(1);
+    @include transition(transform .15s ease-in-out);
+    &:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      @include rotate(0);
+      @include transition(transform .3s);
+    }
+  }
+}
+#features_btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  @include opacity(0);
+
+  &:checked {
+    ~ * {
+      z-index: 2;
+      @include opacity(1);
+    }
+    ~ label {
+      z-index: 7;
+      &:before {
+        @include rotate(45deg);
+      }
+    }
+    ~ #notification {
+      top: $headerHeight + 10px + 40px + 5px;
+      z-index: 6;
+      @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+        top: $headerHeight + 5px + 40px + 5px;
+      }
+    }
+    ~ #see_comments {
+      right: 55px;
+      top: $headerHeight + 10px;
+      z-index: 5;
+      @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+        right: 50px;
+        top: $headerHeight + 5px;
+      }
+    }
+    ~ #donate {
+      right: 55px;
+      top: $headerHeight + 10px + 40px + 5px;
+      z-index: 4;
+      @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+        right: 50px;
+        top: $headerHeight + 5px + 40px + 5px;
+      }
+    }
+    ~ #my_location {
+      right: (40px + 5px) * 2 + 10px;
+      top: $headerHeight + 10px;
+      z-index: 3;
+      @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+        right: (40px + 5px + 5px) * 2;
+        top: $headerHeight + 5px;
+      }
+    }
+    ~ #logout {
+      right: (40px + 5px) * 2 + 10px;
+      top: $headerHeight + 10px + 40px + 5px;
+      z-index: 2;
+      @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+        right: (40px + 5px + 5px) * 2;
+        top: $headerHeight + 5px + 40px + 5px;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#zoom_in, #zoom_out, #plus {
+  position: fixed;
+  right: 10px;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px - 2px;
+  border: 1px solid rgba(44, 128, 133, .800);
+  font-size: 20px;
+  color: rgba(255, 255, 255, 1.00);
+  background-color: $mainColor;
+  cursor: pointer;
+  z-index: 0;
+  @include scale(1);
+  @include opacity(0);
+  @include border-radius(50%);
+  @include box-shadow(inset 1px 1px 1px rgba(255, 255, 255, .100), 1px 1px 5px rgba(0, 0, 0, .200));
+  
+  @include transition(box-shadow .3s, transform .15s ease-in-out, opacity .3s);
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    right: 5px;
+  }
+  &.show {
+    z-index: 2;
+    @include opacity(1);
+  }
+  &:hover {
+    @include box-shadow(inset 1px 1px 2px rgba(255, 255, 255, .400), inset -1px -1px 1px rgba(0, 0, 0, .100), 1px 1px 5px rgba(0, 0, 0, .200));
+  }
+  &:active {
+    @include scale(1.2);
+    @include box-shadow(inset 1px 1px 2px rgba(0, 0, 0, .200));
+  }
+}
+
+#zoom_in {
+  bottom: 45px + 5px + 5px + 45px;
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    bottom: 45px + 5px + 45px;
+  }
+}
+
+#zoom_out {
+  bottom: 45px + 5px + 5px;
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    bottom: 45px + 5px;
+  }
+}
+
+#plus {
+  bottom: 10px;
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    bottom: 5px;
+  }
+
+  &:before {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    @include rotate(0);
+    @include transition(transform .3s);
+  }
+  &.open {
+    z-index: 101;
+    &:before {
+      @include rotate(45deg);
+    }
+    ~ #form {
+      right: 5px + 40px + 10px;
+      @include opacity(1);
+      
+      &:before {
+        bottom: 0;
+        @include opacity(1);
+      }
+    }
+  }
+}
+
+#form {
+  position: fixed;
+  bottom: 8px;
+  right: 0 - (300px + 5px);
+  display: inline-block;
+  padding: 5px;
+  z-index: 100;
+  width: 300px;
+  max-width: calc(100% - (5px + 40px + 10px + 5px));
+  @include clearfix();
+  @include opacity(0);
+  @include transition(right .3s, opacity .3s);
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+  
+  @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
+    bottom: 5px;
+    right: 5px + 40px + 5px;
+    max-width: calc(100% - (5px + 40px + 5px + 5px));
+  }
+  &:before {
+    content: '';
+    display: inline-block;
+    position: fixed;
+    bottom: 0 - (60px + 5px);
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 1;
+    @include opacity(0);
+    @include background-image(linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .25) 100%));
+    @include transition(bottom .3s, opacity .3s);
+    @include transition-delay(.3s);
+  }
+  &.sec {
+    &:after {
+      content: '五秒後才可發文..';
+      color: rgba(255, 255, 255, 1.00);
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(39, 40, 34, .700);
+      z-index: 99;
+      line-height: 42px;
+      @include border-radius(2px);
+    }
   }
 }

@@ -72,15 +72,21 @@
     </header>
 
     <div id='maps'></div>
-
-    <a id='logout' class='icon-exit_to_app feature_tip' title='登出，使用遊客'></a>
-    <a id='donate' class='icon-credit feature_tip' title='贊助，捐款贊助'></a>
-    <a id='notification'></a>
-    <a id='see_comments' class='icon-facebook feature_tip' title='留言，給予建議'></a>
-    <a id='my_location' class='icon-my_location feature_tip' title='定位，我的位置'></a>
+    <div id='features'>
+      <input type='checkbox' id='features_btn' />
+      <label for='features_btn' class='icon-cog feature_tip' title='設定，其他功能'></label>
+      <a id='notification'></a>
+      <a id='see_comments' class='icon-facebook feature_tip' title='留言，給予建議'></a>
+      <a id='donate' class='icon-credit feature_tip' title='贊助，捐款贊助'></a>
+      <a id='my_location' class='icon-my_location feature_tip' title='定位，我的位置'></a>
+      <a id='logout' class='icon-exit_to_app feature_tip' title='登出，使用遊客'></a>
+    </div>
     <a id='zoom_in' class='icon-zoom-in feature_tip t2' title='放大，地圖拉近'></a>
     <a id='zoom_out' class='icon-zoom-out feature_tip t2' title='縮小，地圖拉遠'></a>
     <a id='plus' class='icon-chat-3 feature_tip t2' title='發文，分享動態'></a>
+
+
+
 
     <div id='comments' class='popbox'><div class='cover'></div><div class='wrapper'><h4>留言、建議與討論</h4><div class='panel_content'><div class="fb-comments" data-order-by='reverse_time' width='100%' data-href="https://livemaps.ioa.tw/" data-numposts="5"></div></div><div class='btns'><a class='cancel'>關閉</a></div></div></div>
     <div id='firebase_error' class='popbox'><div class='cover'></div><div class='wrapper'><h4>發生錯誤</h4><div class='panel_content'><p>載入 Firebase 設定檔錯誤，請檢查網路連線或重新整理頁面吧！</p></div><div class='btns'><a class='ok'>好的，了解</a></div></div></div>
@@ -91,12 +97,10 @@
     <div id='step1' class='popbox'><div class='cover'></div><div class='wrapper'><h4>功能提醒</h4><div class='panel_content'><p>因功能需求，會需要開啟瀏覽器定位。<br/>開啟瀏覽器定位，如此一來就可以體驗地圖上的驚喜！</p><div class='tip'><img src='img/step1.png'></div><div class='tip2'><img src='img/step1_2.png'></div></div><div class='btns'><a class='cancel'>我知道了！</a></div></div></div>
     <div id='step2' class='popbox'><div class='cover'></div><div class='wrapper'>這邊可以發動態喔！<a class='cancel'>好，我知道了！</a></div></div>
     <div id='step3' class='popbox'><div class='cover'></div><div class='wrapper'>這邊可以開關音效通知喔！<a class='cancel'>好，我知道了！</a></div></div>
-    <div id='history' class='popbox'><div class='cover'></div><div class='wrapper'><h4></h4><div class='panel_content'></div><div class='btns'><a class='ok'>關閉</a></div></div></div>
-    <div id='chat' class='popbox'><div class='cover'></div><div class='wrapper'><h4>與 聊天</h4><div class='avatar'><img src="" /></div><div class='panel_content'><div class='he'><span>test</span><time>1</time></div><div class='me'><span>test</span><time>1</time></div></div><div class='ctr'><input type='text' id='chat_my_message' placeholder='對他說些什麼呢？'><button type='button' class='ok'>送出</button><button type='button' class='cancel'>關閉</button></div></div></div>
     <div id='logs'></div>
     <div id='logs_btn' class='icon-arrow-right'></div>
     <div id='fb-like' class='fb-like' data-href='https://livemaps.ioa.tw/' data-send='false' data-layout='button_count' data-action='like' data-show-faces='false' data-share='true'></div>
-    <div id='loading' class='show'><div class='cover'></div><div class='loading'><div><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><span class='txt'>連線中，請稍候..</span></div></div>
+    <div id='loading' class='shㄊdow'><div class='cover'></div><div class='loading'><div><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><span class='txt'>連線中，請稍候..</span></div></div>
     <div id='marker_menu'><div><div class='look_fb'>看看臉書</div><div class='pick_he'>戳他一下</div></div></div>
 
     <aside>
