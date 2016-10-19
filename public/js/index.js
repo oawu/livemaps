@@ -102,7 +102,7 @@ $(function () {
           var youtube = links ? links.match (/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/) : null;
           youtube = youtube && youtube[2].length == 11 ? youtube[2] : null;
 
-          var pic = links ? links.match (/https?:\/\/.*\.(jpeg|jpg|gif|png)/i) : null;
+          var pic = links ? links.match (/(https?:\/\/\S*?\.(?:png|jpe?g|gif)(?:\?(?:(?:(?:[\w_-]+=[\w_-]+)(?:&[\w_-]+=[\w_-]+)*)|(?:[\w_-]+)))?)/i) : null;
           pic = pic && pic[0].length ? pic[0] : null;
           pic = $('<div />').html (pic).text ();
 
