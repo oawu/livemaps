@@ -45,10 +45,7 @@ $(function () {
     getFbData: function (cb) { FB.api('/me', function (response) { window.storages.user.set ({ fbuid: response.id, name: response.name, src: 'https://graph.facebook.com/' + response.id + '/picture?width=100&height=100' }); window.funcs.removeSameUser (response.id);  window.vars.$.logout.click (function () {window.vars.$.loading.addClass ('show').find ('.txt').text ('登出中，請稍候..');FB.logout (function(response) {window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/enable/').set (0);window.storages.user.set (null);window.funcs.clearStorage ();window.vars.$.loading.removeClass ('show');location.reload ();});}).addClass ('show'); return cb && cb (response); }); },
     checkLoginState: function (cb, eb) { FB.getLoginStatus (function (response) { if (response.status != 'connected') return window.storages.user.set (null) && eb && eb (); return cb && cb (response); }); return eb && eb (); },
     initFB: function () { if (!window.storages.user.get ()) window.funcs.checkLoginState (function () { window.funcs.getFbData (); }, function () { window.vars.$.facebook.click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('登入中，請稍候..'); FB.login (function (response) { if (response.status != 'connected') return window.vars.$.loading.removeClass ('show') && window.vars.$.facebook.prev ().text ('登入失敗..'); window.funcs.getFbData (function () { window.vars.$.loading.removeClass ('show'); window.vars.$.facebook.parents ('.popbox').removeClass ('show'); window.funcs.showForm (); }); }, {scope: 'public_profile,email'}); }); }); },
-
-    setUserTime: function () {
-      setInterval (function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/time/').set (new Date ().getTime ()); }, 60 * 1000);
-    },
+    setUserTime: function () {setInterval (function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/time/').set (new Date ().getTime ()); }, 60 * 1000);},
     // initStep: function (cb) { window.vars.$.loading.removeClass ('show'); window.vars.$.step1.addClass ('show').find ('.cover, .cancel').click (function () { window.vars.$.step2.addClass ('show'); }); window.vars.$.step2.find ('.cover, .cancel').click (function () { window.vars.$.step3.addClass ('show'); }); window.vars.$.step3.find ('.cover, .cancel').click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('初始中，請稍候..'); window.funcs.initGeoFeature (cb); }); },
     showHistory: function (data) { window.vars.$.loading.addClass ('show').find ('.txt').text ('讀取中，請稍候..'); window.vars.$.history.find ('h4').text (data.name + ' 的訊息紀錄').next ().empty ().parents ('.popbox').addClass ('show'); window.vars.firebaseDB.ref ('messages/' + data.uid).limitToLast (100).once ('value', function (snapshot) { var msgs = []; for (var i in snapshot.val ()) msgs.push (snapshot.val ()[i]); window.vars.$.loading.removeClass ('show'); window.vars.$.history.find ('.panel_content').empty ().append (msgs.map (function (t) {return $('<div />').addClass ('he').append ($('<div />').addClass ('avatar').append ($('<img />').attr ('src', data.src))).append ($('<span />').text (t.content.slice (0, 255))).append ($('<time />').text ($.timeago (t.time)));})).find ('.avatar').imgLiquid ({verticalAlign: 'center'}).parents ('.popbox').addClass ('show'); }); },
     initGeoFeature: function (cb) {
@@ -162,10 +159,13 @@ $(function () {
       window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/').on ('value', function (snapshot) {
         if (!(snapshot.val () && snapshot.val ().name && snapshot.val ().src && snapshot.val ().uid && snapshot.val ().enable)) return;
         if (!(snapshot.val ().uid != window.storages.uuid.get () && window.vars.hasAudio && window.vars.notification))return;
+        if (!(typeof window.vars.points[snapshot.val ().uid] != 'undefined')) return;
+
         var notification = new Notification (snapshot.val ().name, {dir: "ltr", lang: "utf-8", icon: snapshot.val ().src, body: (typeof snapshot.val ().msg && snapshot.val ().msg.length ? snapshot.val ().msg.slice (0, 255) : '戳了你一下！')});
         notification.onclick = function() {
           notification.close ();
 
+          ga ('send', 'event', 'get', 'pick', window.storages.user.get ().name + '(' + window.storages.uuid.get () + '/' + window.storages.user.get ().fbuid + ')' + ' from' + snapshot.val ().name + '(' + snapshot.val ().uid + '/' + window.vars.points[snapshot.val ().uid].data.fbuid + '):' + (typeof snapshot.val ().msg && snapshot.val ().msg.length ? snapshot.val ().msg.slice (0, 255) : '戳了你一下！'));
           if (!snapshot.val ().msg.length) return window.vars.maps.setCenter (window.vars.points[snapshot.val ().uid].marker.position); window.vars.maps.setZoom (16);
 
           var msg = prompt ('您要回他什麼？');
@@ -175,6 +175,7 @@ $(function () {
             msg: msg.slice (0, 255), name: window.storages.user.get ().name, src: window.storages.user.get ().src, uid: window.storages.uuid.get (), enable: 1
           });
 
+          ga ('send', 'event', 'send', 'repick', snapshot.val ().name + '(' + snapshot.val ().uid + '/' + window.vars.points[snapshot.val ().uid].data.fbuid + ')' + ' to ' + window.storages.user.get ().name + '(' + window.storages.uuid.get () + '/' + window.storages.user.get ().fbuid + '):' + msg.slice (0, 255));
           alert ('已經回囉！');
       
         };
@@ -277,6 +278,8 @@ $(function () {
       window.vars.$.myMessage.val ('').prop ('disabled', true);
       window.vars.$.send.prop ('disabled', true);
       window.vars.$.form.addClass ('sec');
+      
+      ga ('send', 'event', 'send', 'msg', window.storages.user.get ().name +'('+ window.funcs.getDatetime () + '):' + val);
 
       setTimeout (function () {
         window.vars.t = false;
@@ -294,12 +297,7 @@ $(function () {
     window.vars.$.login.find ('.ok').click (function () { window.vars.$.popbox.removeClass ('show');  });
     window.vars.$.see_comments.click (function () { window.vars.$.comments.addClass ('show'); }).addClass ('show');
     
-    window.vars.$.markerMenu.find ('.look_fb').click (function () {
-      if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0)
-        window.open ('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank');
-      else 
-        alert ('她未登入喔！');
-    });
+    window.vars.$.markerMenu.find ('.look_fb').click (function () {if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0) window.open ('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank');else  alert ('她未登入喔！'); });
     window.vars.$.markerMenu.find ('.pick_he').click (function () { 
       var msg = prompt ('輸入您想跟他說的話吧！');
       if (window.vars.tx) {
@@ -312,8 +310,10 @@ $(function () {
       window.vars.firebaseDB.ref ('users/' + window.vars.$.markerMenu.get (0).point.data.uid + '/pick/').set ({
         msg: msg.slice (0, 255), name: window.storages.user.get ().name, src: window.storages.user.get ().src, uid: window.storages.uuid.get (), enable: 1
       });
+      ga ('send', 'event', 'send', 'pick', window.storages.user.get ().name + '(' + window.storages.uuid.get () + '/' + window.storages.user.get ().fbuid + ') pick to ' + window.vars.$.markerMenu.get (0).point.data.name + '(' + window.vars.$.markerMenu.get (0).point.data.uid + '/' + window.vars.$.markerMenu.get (0).point.data.fbuid + '):' + msg.slice (0, 255));
 
       alert ('已經戳囉！');
+
       window.vars.$.markerMenu.css ({ top: -100, left: -100 }).removeClass ('show');
 
       setTimeout (function () {
@@ -339,7 +339,6 @@ $(function () {
       window.vars.$.logs.toggleClass ('show');
     }).addClass ('show');
 
-    window.vars.$.loading.removeClass ('show');
     var audio = function () {
       if (!(window.vars.lat === null && window.vars.lng === null)) return;
 
@@ -352,5 +351,7 @@ $(function () {
     window.funcs.initGeoFeature (audio);
 
     window.funcs.setUserTime ();
+
+    window.vars.$.loading.removeClass ('show');
   });
 });
