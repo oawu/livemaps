@@ -12,6 +12,7 @@
   @include font-smoothing(antialiased);
 }
 
+
 .icon-menu:before {
   content: "\e120";
 }
@@ -66,9 +67,20 @@
 .icon-github:before {
   content: "\f09b";
 }
+.icon-image:before {
+  content: "\e90d";
+}
+.icon-film:before {
+  content: "\e913";
+}
 .icon-cog:before {
   content: "\e994";
 }
+.icon-new-tab:before {
+  content: "\ea7e";
+}
+
+
 
 
 
@@ -838,7 +850,7 @@ section {
   }
 }
 
-#history, #history, #chat, #relogin, #firebase_error, #comments, #step1, #gpson, #login {
+#youtube, #history, #chat, #relogin, #firebase_error, #comments, #step1, #gpson, #login {
   .wrapper {
     top: calc(50% - 290px / 2);
     left: calc(50% - 400px / 2);
@@ -1174,7 +1186,6 @@ section {
     border-top: 1px solid rgba(173, 210, 211, 1.00);
   }
 }
-
 #history, #chat {
   .avatar {
     position: absolute;
@@ -1372,6 +1383,49 @@ section {
   }
 }
 
+#media {
+  .wrapper {
+    top: calc(50% - 550px / 2);
+    left: calc(50% - 750px / 2);
+    height: 550px;
+    width: 750px;
+
+    @media screen and (min-width: 0) and (max-width: #{800px - 1px}) {
+      left: 10px;
+      width: calc(100% - 20px);
+      top: 10%;
+      height: 80%;
+    }
+  }
+  h4 {
+    @include overflow-docx3();
+    padding: 0 5px;
+  }
+  .panel_content {
+    height: calc(100% - 50px - 50px);
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(236, 248, 249, 1.00);
+    margin-bottom: 0;
+    cursor: pointer;
+    overflow-y: scroll;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
+    img {
+      width: calc(100% - 10px * 2);
+      margin: 10px;
+    }
+  }
+  .btns {
+    border-top: 1px solid rgba(217, 229, 229, 1.00);
+    a {
+      width: 100%;
+    }
+  }
+}
 .user {
   position: relative;
   display: inline-block;
@@ -1677,16 +1731,7 @@ $logWidth: 400px;
     overflow: hidden;
     cursor: pointer;
     position: relative;
-    padding-right: 20px;
 
-    &:before {
-      content: "\e90a";
-      font-family: 'icomoon', 'Open sans', Comfortaa, 'Helvetica Neue', Helvetica, Arial, 'Hiragino Maru Gothic ProN', 'メイリオ','ヒラギノ丸ゴ ProN W4', '微軟正黑體', Meiryo, 'Droid Sans'; speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1;
-      position: absolute;
-      right: 2px;
-      top: 10px;
-      color: white;
-    }
     &.admin {
       color: rgba(234, 111, 6, 1.00);
       > div {background-color: rgba(39, 40, 34, .5);}
@@ -1712,14 +1757,31 @@ $logWidth: 400px;
       width: 30px;
       height: 30px;
       @include border-radius(3px);
+      background-color: rgba(0, 0, 255, 0.2);
     }
     >div {
       float: right;
       display: inline-block;
-      width: calc(100% - 30px - 5px);
+      width: calc(100% - 30px - 5px - 25px - 5px);
       padding: 5px;
       @include overflow-docx3();
       @include border-radius(2px);
+    }
+    .icon-film, .icon-image, .icon-new-tab, .icon-my_location {
+      float: right;
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      line-height: 25px - 2px;
+      text-align: center;
+      font-size: 18px;
+      margin-left: 5px;
+      margin-top: 4px;
+    }
+    &.link {
+      >div {
+        width: calc(100% - 30px - 5px - (25px + 5px) * 2);
+      }
     }
   }
 
@@ -1909,6 +1971,7 @@ $logWidth: 400px;
 
   @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
     top: $headerHeight + 5px;
+    right: 5px;
   }
 
   label {
@@ -1980,7 +2043,7 @@ $logWidth: 400px;
       top: $headerHeight + 10px;
       z-index: 3;
       @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-        right: (40px + 5px + 5px) * 2;
+        right: (40px + 5px) * 2 + 5px;
         top: $headerHeight + 5px;
       }
     }
@@ -1989,7 +2052,7 @@ $logWidth: 400px;
       top: $headerHeight + 10px + 40px + 5px;
       z-index: 2;
       @media screen and (min-width: 0) and (max-width: #{450px - 1px}) {
-        right: (40px + 5px + 5px) * 2;
+        right: (40px + 5px) * 2 + 5px;
         top: $headerHeight + 5px + 40px + 5px;
       }
     }

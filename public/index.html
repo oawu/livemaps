@@ -58,9 +58,9 @@
     <script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_TMGAKpGb-Res0ry8h1iVChNO6HWqGWM&language=zh-TW" language="javascript" type="text/javascript" ></script>
 
-    <link href="css/public.css?v=67" rel="stylesheet" type="text/css" />
-    <script src="js/config.js?v=67" language="javascript" type="text/javascript" ></script>
-    <script src="js/index.js?v=67" language="javascript" type="text/javascript" ></script>
+    <link href="css/public.css?v=70" rel="stylesheet" type="text/css" />
+    <script src="js/config.js?v=70" language="javascript" type="text/javascript" ></script>
+    <script src="js/index.js?v=70" language="javascript" type="text/javascript" ></script>
   </head>
   <body>
 
@@ -72,6 +72,12 @@
     </header>
 
     <div id='maps'></div>
+
+    <div id='logs'></div>
+    <div id='logs_btn' class='icon-arrow-right'></div>
+    <div id='fb-like' class='fb-like' data-href='https://livemaps.ioa.tw/' data-send='false' data-layout='button_count' data-action='like' data-show-faces='false' data-share='true'></div>
+
+
     <div id='features'>
       <input type='checkbox' id='features_btn' />
       <label for='features_btn' class='icon-cog feature_tip' title='設定，其他功能'></label>
@@ -86,22 +92,24 @@
     <a id='plus' class='icon-chat-3 feature_tip t2' title='發文，分享動態'></a>
 
 
-
-
+    <div id='media' class='popbox showw'><div class='cover'></div><div class='wrapper'><h4></h4><div class='panel_content'></div><div class='btns'><a class='cancel'>關閉</a></div></div></div>
     <div id='comments' class='popbox'><div class='cover'></div><div class='wrapper'><h4>留言、建議與討論</h4><div class='panel_content'><div class="fb-comments" data-order-by='reverse_time' width='100%' data-href="https://livemaps.ioa.tw/" data-numposts="5"></div></div><div class='btns'><a class='cancel'>關閉</a></div></div></div>
     <div id='firebase_error' class='popbox'><div class='cover'></div><div class='wrapper'><h4>發生錯誤</h4><div class='panel_content'><p>載入 Firebase 設定檔錯誤，請檢查網路連線或重新整理頁面吧！</p></div><div class='btns'><a class='ok'>好的，了解</a></div></div></div>
     <div id='relogin' class='popbox'><div class='cover'></div><div class='wrapper'><h4>重複登入</h4><div class='panel_content'><p>您可能在其他瀏覽器登入過或閒置太久了，請重新整理頁面重新登入吧！</p></div><div class='btns'><a class='ok'>好的，了解</a></div></div></div>
-    <div id='form'><input type='text' id='my_message' placeholder='在想些什麼呢？' maxlength='255' /><button type='button' id='send'>送出</button></div>
+    
+    <div id='form'>
+        <input type='text' id='my_message' placeholder='在想些什麼呢？' maxlength='255' />
+        <button type='button' id='send'>送出</button>
+    </div>
+
     <div id='login' class='popbox'><div class='cover'></div><div class='wrapper'><h4>登入，一起玩玩看吧！</h4><div class='panel_content'><span></span><a id='facebook'>使用 facebook 登入</a></div><div class='btns'><a class='ok'>瞭解，先不登入</a></div></div></div>
     <div id='gpson' class='popbox'><div class='cover'></div><div class='wrapper'><h4>開啟吧，會很有趣的！</h4><div class='panel_content'><p><span>體驗一下吧，</span>開啟瀏覽器定位就可以開始玩喔！</p><div class='tip'><img src='img/gpson.png'></div></div><div class='btns'><a class='cancel'>確定</a></div></div></div>
     <div id='step1' class='popbox'><div class='cover'></div><div class='wrapper'><h4>功能提醒</h4><div class='panel_content'><p>因功能需求，會需要開啟瀏覽器定位。<br/>開啟瀏覽器定位，如此一來就可以體驗地圖上的驚喜！</p><div class='tip'><img src='img/step1.png'></div><div class='tip2'><img src='img/step1_2.png'></div></div><div class='btns'><a class='cancel'>我知道了！</a></div></div></div>
     <div id='step2' class='popbox'><div class='cover'></div><div class='wrapper'>這邊可以發動態喔！<a class='cancel'>好，我知道了！</a></div></div>
     <div id='step3' class='popbox'><div class='cover'></div><div class='wrapper'>這邊可以開關音效通知喔！<a class='cancel'>好，我知道了！</a></div></div>
-    <div id='logs'></div>
-    <div id='logs_btn' class='icon-arrow-right'></div>
-    <div id='fb-like' class='fb-like' data-href='https://livemaps.ioa.tw/' data-send='false' data-layout='button_count' data-action='like' data-show-faces='false' data-share='true'></div>
+
     <div id='loading' class='shㄊdow'><div class='cover'></div><div class='loading'><div><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><span class='txt'>連線中，請稍候..</span></div></div>
-    <div id='marker_menu'><div><div class='look_fb'>看看臉書</div><div class='pick_he'>戳他一下</div></div></div>
+    <div id='marker_menu'><div><div class='look_fb'>看看臉書</div><div class='pick_he'>私訊敲他</div></div></div>
 
     <aside>
       <header><span>聊天地圖！</span><span>LiveMaps！</span></header>
