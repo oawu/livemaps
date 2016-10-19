@@ -143,7 +143,7 @@ $(function () {
       if (data.uid != window.storages.uuid.get () && window.vars.hasAudio)  window.vars.audio.pop.play ();
     },
     initNotification: function () {
-      if (!Notification) return window.storages.notificationStatus.set ('denied');
+      if (typeof Notification == 'undefined' || !Notification) return window.storages.notificationStatus.set ('denied');
 
       var setNotification = function () {
         if (window.storages.notificationStatus.get () === 'denied') window.vars.notification = false;
@@ -347,11 +347,11 @@ $(function () {
       }).addClass ('show');
       setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000);
     };
-    window.funcs.initNotification ();
     window.funcs.initGeoFeature (audio);
 
     window.funcs.setUserTime ();
 
     window.vars.$.loading.removeClass ('show');
+    window.funcs.initNotification ();
   });
 });
