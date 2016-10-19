@@ -67,8 +67,7 @@ $(function () {
       }, { enableHighAccuracy: true });
     },
     getPixelPosition: function (obj) { var scale = Math.pow (2, obj.map.getZoom ()), nw = new google.maps.LatLng (obj.map.getBounds ().getNorthEast ().lat (), obj.map.getBounds ().getSouthWest ().lng ()), worldCoordinateNW = obj.map.getProjection ().fromLatLngToPoint (nw), worldCoordinate = obj.map.getProjection ().fromLatLngToPoint (obj.getPosition ()); return new google.maps.Point ((worldCoordinate.x - worldCoordinateNW.x) * scale, (worldCoordinate.y - worldCoordinateNW.y) * scale); },
-    openMedia: function (content, id, type) { 
-      if (!(type == 'pic' || type == 'youtube')) return; window.vars.$.media.find ('h4').text (content).next ().empty ().append (type == 'youtube' ? $('<iframe />').attr ('src', 'https://www.youtube.com/embed/' + id).attr ('frameborder', '0').attr ('allowfullscreen', '') : $('<img />').attr ('src', id)).parents ('.popbox').addClass ('show');},
+    openMedia: function (content, id, type) { if (!(type == 'pic' || type == 'youtube')) return; window.vars.$.media.find ('h4').text (content).next ().empty ().append (type == 'youtube' ? $('<iframe />').attr ('src', 'https://www.youtube.com/embed/' + id).attr ('frameborder', '0').attr ('allowfullscreen', '') : $('<img />').attr ('src', id)).parents ('.popbox').addClass ('show');},
     appendUser: function (snapshot) {
       var data = null; if (!(snapshot && (data = snapshot.val ()) && (typeof data.uid != 'undefined') && (data.uid.length > 0) && (typeof data.name != 'undefined') && (data.name.length > 0) && (typeof data.enable != 'undefined') && (data.enable != 0) && (typeof data.location != 'undefined') && (Object.keys (data.location).length == 2) && (typeof data.location.lat != 'undefined') && (data.location.lat >= -90 ) && (data.location.lat <= 90 ) && (typeof data.location.lng != 'undefined') && (data.location.lng >= -180) && (data.location.lng <= 180) && (typeof window.vars.points[data.uid] == 'undefined'))) return ;
 
@@ -287,9 +286,18 @@ $(function () {
     window.vars.$.zoomIn.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom + 1); }).addClass ('show');
     window.vars.$.zoomOut.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom - 1); }).addClass ('show');
     
-    window.vars.$.send.click (function () {
-      if (window.vars.t) return;
-      if ($.inArray (window.storages.user.get ().fbuid, window.vars.blacks) != -1 ) { alert ('您的帳號疑似被檢舉黑名單囉！'); return; }
+    // window.vars.$.send.click (function () {
+      
+    // });
+    window.vars.$.relogin.find ('.cover, .ok').click (function () { location.reload (); });
+    window.vars.$.media.find ('.cover, .cancel').click (function () { window.vars.$.media.find ('h4').empty ().next ().empty ().parents ('.popbox').removeClass ('show'); });
+    // window.vars.$.myMessage.keyup (function (e) {
+    //   if (e.keyCode == 13) window.vars.$.send.click ();
+    // });
+    
+    window.vars.$.form.submit (function () {
+      if (window.vars.t) return false;
+      if ($.inArray (window.storages.user.get ().fbuid, window.vars.blacks) != -1 ) { alert ('您的帳號疑似被檢舉黑名單囉！'); return false; }
 
       window.vars.t = true;
       var val = window.vars.$.myMessage.val ().trim ().slice (0, 255); if (!val.length) return ;
@@ -312,10 +320,10 @@ $(function () {
 
         window.vars.$.myMessage.focus ();
       }, 5 * 1000);
+
+      return false;
     });
-    window.vars.$.relogin.find ('.cover, .ok').click (function () { location.reload (); });
-    window.vars.$.media.find ('.cover, .cancel').click (function () { window.vars.$.media.find ('h4').empty ().next ().empty ().parents ('.popbox').removeClass ('show'); });
-    window.vars.$.myMessage.keyup (function (e) { if (e.keyCode == 13) window.vars.$.send.click (); });
+
     window.vars.$.notification.attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).addClass (window.storages.audio.get () == 'on' ? 'icon-notification_active' : 'icon-notification_off').addClass ('show feature_tip').click (function () { window.storages.audio.set (window.storages.audio.get () == 'on' ? 'off' : 'on'); window.vars.hasAudio = window.storages.audio.get () == 'on' ? true : false; $(this).attr ('title', '目前 ' + (window.storages.audio.get () == 'on' ? '開啟' : '關閉')).attr ('class', window.storages.audio.get () == 'on' ? 'icon-notification_active show feature_tip' : 'icon-notification_off show feature_tip'); });
     window.vars.$.login.find ('.ok').click (function () { window.vars.$.popbox.removeClass ('show');  });
     window.vars.$.see_comments.click (function () { window.vars.$.comments.addClass ('show'); }).addClass ('show');
@@ -339,9 +347,9 @@ $(function () {
 
       window.vars.$.markerMenu.css ({ top: -100, left: -100 }).removeClass ('show');
 
-      // setTimeout (function () {
+      setTimeout (function () {
         window.vars.tx = false;
-      // }, 30 * 1000);
+      }, 30 * 1000);
     });
 
     window.vars.$.plus.click (function () {

@@ -1408,7 +1408,8 @@ section {
     background-color: rgba(236, 248, 249, 1.00);
     margin-bottom: 0;
     cursor: pointer;
-    overflow-y: scroll;
+
+    overflow-y: auto;
 
     iframe {
       width: 100%;
@@ -1757,7 +1758,7 @@ $logWidth: 400px;
       width: 30px;
       height: 30px;
       @include border-radius(3px);
-      background-color: rgba(0, 0, 255, 0.2);
+      background-color: rgba(39, 40, 34, .5);
     }
     >div {
       float: right;
