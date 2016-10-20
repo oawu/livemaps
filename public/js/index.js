@@ -184,9 +184,11 @@ $(function () {
             if (isOffline) { alert (t.n + ' 目前不再線上喔！'); return; }
             var me = {u: window.storages.uuid.get (), f: window.storages.user.get ().fbuid, n: window.storages.user.get ().name };
             var msg = prompt (t.n + ": " + t.c + '，您要回他什麼？');
-            if (!(msg && msg.length)) return;
-            window.vars.firebaseDB.ref ('users/' + t.u + '/pick/').set ({ c: msg.slice (0, 128), n: me.n, f: me.f, u: me.u, e: 1 });
-            ga ('send', 'event', 'send', 'repick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + t.n + '(' + t.u + '/' + t.f + '):' + msg);
+
+            if (msg && msg.length > 0) {
+              window.vars.firebaseDB.ref ('users/' + t.u + '/pick/').set ({ c: msg.slice (0, 128), n: me.n, f: me.f, u: me.u, e: 1 });
+              ga ('send', 'event', 'send', 'repick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + t.n + '(' + t.u + '/' + t.f + '):' + msg);
+            }
           });
       })).parents ('.popbox').addClass ('show');
 
@@ -251,10 +253,10 @@ $(function () {
           window.funcs.readNotification (from.i);
 
           var msg = prompt (from.n + ": " + from.c + '，您要回他什麼？');
-          if (!(msg && msg.length)) return;
-
-          window.vars.firebaseDB.ref ('users/' + from.u + '/pick/').set ({ c: msg.slice (0, 128), n: to.n, f: to.f, u: to.u, e: 1 });
-          ga ('send', 'event', 'send', 'repick', to.n + '(' + to.u + '/' + to.f + ')' + ' to ' + from.n + '(' + from.u + '/' + from.f + '):' + msg);
+          if (msg && msg.length > 0) {
+            window.vars.firebaseDB.ref ('users/' + from.u + '/pick/').set ({ c: msg.slice (0, 128), n: to.n, f: to.f, u: to.u, e: 1 });
+            ga ('send', 'event', 'send', 'repick', to.n + '(' + to.u + '/' + to.f + ')' + ' to ' + from.n + '(' + from.u + '/' + from.f + '):' + msg);            
+          }
         }
       });
     },
