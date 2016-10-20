@@ -105,7 +105,7 @@ $(function () {
           content = content.replace (/(https?:\/\/[^\s]+)/g, '');
           links = links ? links[0] : null;
 
-          var youtube = links ? links.match (/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/) : null;
+          var youtube = links ? links.match (/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([a-zA-Z0-9]*).*/) : null;
           youtube = youtube && youtube[2].length == 11 ? youtube[2] : null;
 
           var pic = links ? links.match (/(https?:\/\/\S*?\.(?:png|jpe?g|gif)(?:\?(?:(?:(?:[\w_-]+=[\w_-]+)(?:&[\w_-]+=[\w_-]+)*)|(?:[\w_-]+)))?)/i) : null;
@@ -126,13 +126,11 @@ $(function () {
                   if (!window.storages.user.get ()) return window.vars.$.login.find ('span').text ('').parents ('.popbox').addClass ('show');
                   if (youtube) return window.funcs.openMedia (content, youtube, 'youtube');
                   else if (pic) return window.funcs.openMedia (content, pic, 'pic');
+                  else if (links.match (/ioa\.tw/)) window.open (links, '_blank');
                   else if (confirm ('確定開啟 ' + links + ' ?')) window.open (links, '_blank');
                  }) : null).append (
                 $('<div />').attr ('title', content).text ((admin ? '作者: ' : '') + content).click (function () {
-                  if (!window.storages.user.get ()) {
-                    window.vars.maps.setCenter (position); window.vars.maps.setZoom (14);
-                    return;
-                  }
+                  if (!window.storages.user.get ()) { window.vars.maps.setCenter (position); window.vars.maps.setZoom (14); return; }
                   $(this).prev ().click ();
                 })));
 
@@ -189,7 +187,6 @@ $(function () {
             if (!msg.length) return;
             window.vars.firebaseDB.ref ('users/' + t.u + '/pick/').set ({ c: msg.slice (0, 128), n: me.n, f: me.f, u: me.u, e: 1 });
             ga ('send', 'event', 'send', 'repick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + t.n + '(' + t.u + '/' + t.f + '):' + msg);
-            console.error ('ga', 'send', 'repick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + t.n + '(' + t.u + '/' + t.f + '):' + msg);
           });
       })).parents ('.popbox').addClass ('show');
 
@@ -242,7 +239,6 @@ $(function () {
 
         window.storages.notifications.add (from);
         ga ('send', 'event', 'get', 'pick', to.n + '(' + to.u + '/' + to.f + ')' + ' from ' + from.n + '(' + from.u + '/' + from.f + '):' + from.c);
-        console.error ('ga', 'get', 'pick', to.n + '(' + to.u + '/' + to.f + ')' + ' from ' + from.n + '(' + from.u + '/' + from.f + '):' + from.c);
         window.funcs.reCountNotification ();
         window.vars.firebaseDB.ref ('users/' + to.u + '/pick/e/').set (0);
 
@@ -259,7 +255,6 @@ $(function () {
 
           window.vars.firebaseDB.ref ('users/' + from.u + '/pick/').set ({ c: msg.slice (0, 128), n: to.n, f: to.f, u: to.u, e: 1 });
           ga ('send', 'event', 'send', 'repick', to.n + '(' + to.u + '/' + to.f + ')' + ' to ' + from.n + '(' + from.u + '/' + from.f + '):' + msg);
-          console.error ('ga', 'send', 'repick', to.n + '(' + to.u + '/' + to.f + ')' + ' to ' + from.n + '(' + from.u + '/' + from.f + '):' + msg);
         }
       });
     },
@@ -397,7 +392,6 @@ $(function () {
       window.vars.firebaseDB.ref ('users/' + to.u + '/pick/').set ({ c: msg.length ? msg.slice (0, 128) : '', n: me.n, f: me.f, u: me.u, e: 1 });
 
       ga ('send', 'event', 'send', 'pick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + to.n + '(' + to.u + '/' + to.f + '):' + msg);
-      console.error ('ga', 'send', 'pick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + to.n + '(' + to.u + '/' + to.f + '):' + msg);
 
       alert ('已經傳送囉！');
       window.vars.$.markerMenu.css ({ top: -100, left: -100 }).removeClass ('show');
