@@ -171,11 +171,11 @@ $(function () {
     },
     showNotificationList: function () {
       if (!window.storages.user.get ()) return;
-      window.vars.$.notificationList.find ('.panel_content').empty ().prepend (window.storages.notifications.get ().map (function (t) {
+      window.vars.$.notificationList.find ('.panel_content').empty ().append (window.storages.notifications.get ().map (function (t) {
         window.funcs.readNotification (t.i);
         var isOffline = typeof window.vars.points[t.u] == 'undefined';
 
-        return $('<div />').addClass ('log').addClass (isOffline ? 'offline' : null).prepend (
+        return $('<div />').addClass ('log').addClass (isOffline ? 'offline' : null).append (
           $('<img />').attr ('title', window.funcs.avatar (t.n)).attr ('src', window.funcs.avatar (t.f))).append (
           $('<span />').text (t.c)).append (
           isOffline ? $('<div />').text ('(不在線上)').addClass ('offline') : null).append (
@@ -190,7 +190,7 @@ $(function () {
               ga ('send', 'event', 'send', 'repick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + t.n + '(' + t.u + '/' + t.f + '):' + msg);
             }
           });
-      })).parents ('.popbox').addClass ('show');
+      }).reverse ()).parents ('.popbox').addClass ('show');
 
     },
     reCountNotification: function (first) {
