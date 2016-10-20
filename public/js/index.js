@@ -382,7 +382,7 @@ $(function () {
     
     window.vars.$.markerMenu.find ('.look_fb').click (function () {if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0) window.open ('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank');else  alert ('她未登入喔！'); });
     window.vars.$.markerMenu.find ('.pick_he').click (function () { 
-      return window.vars.$.login.find ('span').text ('').parents ('.popbox').addClass ('show');
+      if (!window.storages.user.get ()) return window.vars.$.login.find ('span').text ('').parents ('.popbox').addClass ('show');
       if (window.vars.tx) { alert ('您剛剛已使用過私訊了，30秒後再試試..'); return; } window.vars.tx = true;
 
       var me = { u: window.storages.uuid.get (), n: window.storages.user.get ().name, f: window.storages.user.get ().fbuid, };
