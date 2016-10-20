@@ -122,7 +122,7 @@
           <p>CRUD 的基本功能撰寫這邊也不做介紹，基本上<a href='https://firebase.google.com/docs/samples/?hl=zh-TW' target='_blank'>官網</a>都有範例以及說明囉，其中包含了 iOS、Android、JavaScript 的支援，所以更可以製作成 Mobile App，而下一階段我也將考量使用 iOS 來實作一次 LiveMaps。官方資源也不僅於 Sample，在官方 <a href='https://github.com/firebase/' target='_blank'>GitHub</a> 也可以看到多樣的 Library，其中常見的 <a href='https://github.com/firebase/firebaseui-web' target='_blank'>firebaseui-web</a>、<a href='https://github.com/firebase/?utf8=%E2%9C%93&query=geo' target='_blank'>GEO</a>.. 等，服務都是由官方維護的，所以在家接功能上會更加方便。</p>
           <p>以網頁版來說，登入系統可以由 <a href='https://github.com/firebase/firebaseui-web' target='_blank'>firebaseui-web</a> 來串接，在地圖上更可以用 <a href='https://github.com/firebase/geofire-js' target='_blank'>geofire-js</a> 來實作，geofire 就有豐富的經緯度範圍運算，可以快速的撈出範圍內的點，不過對於 Database 的 JSON 格式架構就要符合其規範，第一版的 LiveMaps 就是使用 geofire 實作，但是因為功能需求，所以暫時先捨棄；而 firebaseui 提供了各種不同的 OAuth 登入，可以配合 Authentication 製作登入系統，不過在第二版製作時也暫時拿掉，主要是因為想加快登入時間問題，所以暫時只使用 <a href='https://www.facebook.com' target='_blank'>Facebook</a> 的 SDK 實作 OAuth 登入。</p>
           <p>網頁的定位方式，是採用 <a href='https://developer.mozilla.org/zh-TW/docs/Using_geolocation' target='_blank'>navigator.geolocation</a> 的 <a href='https://developer.mozilla.org/zh-TW/docs/Web/API/Geolocation/watchPosition' target='_blank'>watchPosition</a> 取得使用者瀏覽器裝置位置，因為 Firebase 提供了 Https 的服務，故在 <a href='https://www.google.com.tw/chrome/browser/desktop/' target='_blank'>Chrome</a> 瀏覽器上就可以取得使用者位置，而且使用了 watchPosition 並且搭配使用 enableHighAccuracy，所以取的的位置會較為精準，但也可能會有誤差值，故使用上可能會有使用者發生位置不正確的狀況，待下一版本解決。</p>
-          <p>私訊通知是存取在 Client 客戶端，也就是瀏覽器內的 <a href='http://www.w3schools.com/html/html5_webstorage.asp' target='_blank'>Local Storage</a>，所以當清空紀錄時，就無法再救回來囉，刪除前請斟酌。</p>
+          <p>私訊通知是存取在 Client 客戶端，也就是瀏覽器內的 <a href='http://www.w3schools.com/html/html5_webstorage.asp' target='_blank'>Local Storage</a>，所以當清空紀錄時，就無法再救回來，刪除前請斟酌。</p>
 
         </section>
       </article>
@@ -135,6 +135,7 @@
         </header>
         <section>
           <ul>
+            <li>v 1.3.2 - 修正 私訊列表順序，調整版型、改字義、修正更新造成的問題。 - 2016-10-20 01:09:31</li>
             <li>v 1.3.1 - 修正 Youtube 正規規則，拿掉 log、Fix 私訊 bug。 - 2016-10-20 12:53:04</li>
             <li>v 1.3.0 - 調整私訊通知功能手機也能收、調整 Realtime Database 架構。 - 2016-10-20 12:30:02</li>
             <li>v 1.2.1 - 修正中文 Enter 發送問題，調整 css。 - 2016-10-20 02:45:22</li>

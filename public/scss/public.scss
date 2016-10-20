@@ -2204,7 +2204,7 @@ $logWidth: 400px;
   }
   &.sec {
     &:after {
-      content: '五秒後才可發文..';
+      content: '別急，讓系統休息一下吧！';
       color: rgba(255, 255, 255, 1.00);
       position: absolute;
       left: 0;
@@ -2337,6 +2337,14 @@ $logWidth: 400px;
     &::-webkit-scrollbar {
       background-color: rgba(236, 248, 249, 1.00);
       width: 10px;
+    }
+    &:empty {
+      &:before {
+        content: '目前沒有任何私訊喔！';
+        margin-top: 20px;
+        display: inline-block;
+        width: 100%;
+      }
     }
   }
   .btns {

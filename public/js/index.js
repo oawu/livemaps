@@ -175,7 +175,7 @@ $(function () {
         window.funcs.readNotification (t.i);
         var isOffline = typeof window.vars.points[t.u] == 'undefined';
 
-        return $('<div />').addClass ('log').addClass (isOffline ? 'offline' : null).append (
+        return $('<div />').addClass ('log').addClass (isOffline ? 'offline' : null).prepend (
           $('<img />').attr ('title', window.funcs.avatar (t.n)).attr ('src', window.funcs.avatar (t.f))).append (
           $('<span />').text (t.c)).append (
           isOffline ? $('<div />').text ('(不在線上)').addClass ('offline') : null).append (
@@ -288,7 +288,14 @@ $(function () {
     user: { key: 'firebase.maps.user', cacheTime: 1 * 60, get: function () { return window.oa ? window.oa : null; }, set: function (val) { window.oa = val; return this; } },
     inited: { key: 'firebase.maps.inited', get: function () {var inited = window.funcs.getStorage (this.key); return inited ? inited : 'no'; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     uuid: { key: 'firebase.maps.uuid', get: function () { var uuid = window.funcs.getStorage (this.key); if (!uuid) {uuid = window.funcs.uuid (); this.set (uuid); return uuid; } return uuid; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
-    version: { key: 'firebase.maps.version', get: function (v) {var version = window.funcs.getStorage (this.key);if (!version || version != v) window.funcs.clearStorage ();this.set (v);return v;}, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
+    version: { key: 'firebase.maps.version', get: function (v) {
+      var version = window.funcs.getStorage (this.key);
+      if (!version || version != v) {
+        var notifications = window.storages.notifications.get ();
+        window.funcs.clearStorage ();
+        window.storages.notifications.set (notifications);
+      }
+      this.set (v);return v;}, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     notificationStatus: { key: 'firebase.maps.notificationStatus', get: function () { var notificationStatus = window.funcs.getStorage (this.key); return notificationStatus ? notificationStatus : 'default'; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     audio: { key: 'firebase.maps.audio', get: function () { var audio = window.funcs.getStorage (this.key); return audio ? audio : 'on'; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     notifications: {
