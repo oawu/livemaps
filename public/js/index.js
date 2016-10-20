@@ -216,8 +216,8 @@ $(function () {
     initNotification: function () {
       window.funcs.reCountNotification (true);
 
-      if (typeof Notification == 'undefined' || !Notification) return window.storages.notificationStatus.set ('denied');
-      Notification.requestPermission (function (status) { window.storages.notificationStatus.set (status); if (window.storages.notificationStatus.get () === 'denied') window.vars.notification = false; if (window.storages.notificationStatus.get () === 'default') window.vars.notification = false; if (window.storages.notificationStatus.get () === 'granted') window.vars.notification = true; });
+      if (typeof Notification == 'undefined' || !Notification) window.storages.notificationStatus.set ('denied');
+      else Notification.requestPermission (function (status) { window.storages.notificationStatus.set (status); if (window.storages.notificationStatus.get () === 'denied') window.vars.notification = false; if (window.storages.notificationStatus.get () === 'default') window.vars.notification = false; if (window.storages.notificationStatus.get () === 'granted') window.vars.notification = true; });
 
       window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/').on ('value', function (snapshot) {
         if (!(snapshot.val () && typeof snapshot.val ().u != 'undefined' && typeof snapshot.val ().f != 'undefined' && typeof snapshot.val ().n != 'undefined' && typeof snapshot.val ().e != 'undefined' && typeof snapshot.val ().c != 'undefined' && snapshot.val ().e == 1 && snapshot.val ().u != window.storages.uuid.get ())) return;
