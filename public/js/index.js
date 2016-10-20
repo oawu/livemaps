@@ -321,7 +321,7 @@ $(function () {
     chat: new Audio('chat.mp3')};
 
 
-  window.funcs.initFirebase (window.storages.version.get (29));
+  window.funcs.initFirebase (window.storages.version.get (30));
   window.vars.$.popbox.find ('.cover, .cancel').click (function () { window.vars.$.popbox.removeClass ('show'); });
 
   google.maps.event.addDomListener (window, 'load', function () {
