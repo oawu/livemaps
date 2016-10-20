@@ -27,7 +27,7 @@ var imgLiquid=imgLiquid||{VER:"0.9.944"};imgLiquid.bgs_Available=!1,imgLiquid.bg
 function inherits(e,t){function i(){}i.prototype=t.prototype,e.superClass_=t.prototype,e.prototype=new i,e.prototype.constructor=e}function MarkerLabel_(e,t,i){this.marker_=e,this.handCursorURL_=e.handCursorURL,this.labelDiv_=document.createElement("div"),this.labelDiv_.style.cssText="position: absolute; overflow: hidden;",this.eventDiv_=document.createElement("div"),this.eventDiv_.style.cssText=this.labelDiv_.style.cssText,this.eventDiv_.setAttribute("onselectstart","return false;"),this.eventDiv_.setAttribute("ondragstart","return false;"),this.crossDiv_=MarkerLabel_.getSharedCross(t)}function MarkerWithLabel(e){e=e||{},e.labelContent=e.labelContent||"",e.initCallback=e.initCallback||function(){},e.labelAnchor=e.labelAnchor||new google.maps.Point(0,0),e.labelClass=e.labelClass||"markerLabels",e.labelStyle=e.labelStyle||{},e.labelInBackground=e.labelInBackground||!1,"undefined"==typeof e.labelVisible&&(e.labelVisible=!0),"undefined"==typeof e.raiseOnDrag&&(e.raiseOnDrag=!0),"undefined"==typeof e.clickable&&(e.clickable=!0),"undefined"==typeof e.draggable&&(e.draggable=!1),"undefined"==typeof e.optimized&&(e.optimized=!1),e.crossImage=e.crossImage||"http"+("https:"===document.location.protocol?"s":"")+"://maps.gstatic.com/intl/en_us/mapfiles/drag_cross_67_16.png",e.handCursor=e.handCursor||"http"+("https:"===document.location.protocol?"s":"")+"://maps.gstatic.com/intl/en_us/mapfiles/closedhand_8_8.cur",e.optimized=!1,this.label=new MarkerLabel_(this,e.crossImage,e.handCursor),google.maps.Marker.apply(this,arguments)}inherits(MarkerLabel_,google.maps.OverlayView),MarkerLabel_.getSharedCross=function(e){var t;return"undefined"==typeof MarkerLabel_.getSharedCross.crossDiv&&(t=document.createElement("img"),t.style.cssText="position: absolute; z-index: 1000002; display: none;",t.style.marginLeft="-8px",t.style.marginTop="-9px",t.src=e,MarkerLabel_.getSharedCross.crossDiv=t),MarkerLabel_.getSharedCross.crossDiv},MarkerLabel_.prototype.onAdd=function(){var e,t,i,s,a,r,o,n=this,l=!1,g=!1,p=20,_="url("+this.handCursorURL_+")",v=function(e){e.preventDefault&&e.preventDefault(),e.cancelBubble=!0,e.stopPropagation&&e.stopPropagation()},h=function(){n.marker_.setAnimation(null)};this.getPanes().overlayImage.appendChild(this.labelDiv_),this.getPanes().overlayMouseTarget.appendChild(this.eventDiv_),"undefined"==typeof MarkerLabel_.getSharedCross.processed&&(this.getPanes().overlayImage.appendChild(this.crossDiv_),MarkerLabel_.getSharedCross.processed=!0),this.listeners_=[google.maps.event.addDomListener(this.eventDiv_,"mouseover",function(e){(n.marker_.getDraggable()||n.marker_.getClickable())&&(this.style.cursor="pointer",google.maps.event.trigger(n.marker_,"mouseover",e))}),google.maps.event.addDomListener(this.eventDiv_,"mouseout",function(e){!n.marker_.getDraggable()&&!n.marker_.getClickable()||g||(this.style.cursor=n.marker_.getCursor(),google.maps.event.trigger(n.marker_,"mouseout",e))}),google.maps.event.addDomListener(this.eventDiv_,"mousedown",function(e){g=!1,n.marker_.getDraggable()&&(l=!0,this.style.cursor=_),(n.marker_.getDraggable()||n.marker_.getClickable())&&(google.maps.event.trigger(n.marker_,"mousedown",e),v(e))}),google.maps.event.addDomListener(document,"mouseup",function(t){var i;if(l&&(l=!1,n.eventDiv_.style.cursor="pointer",google.maps.event.trigger(n.marker_,"mouseup",t)),g){if(a){i=n.getProjection().fromLatLngToDivPixel(n.marker_.getPosition()),i.y+=p,n.marker_.setPosition(n.getProjection().fromDivPixelToLatLng(i));try{n.marker_.setAnimation(google.maps.Animation.BOUNCE),setTimeout(h,1406)}catch(r){}}n.crossDiv_.style.display="none",n.marker_.setZIndex(e),s=!0,g=!1,t.latLng=n.marker_.getPosition(),google.maps.event.trigger(n.marker_,"dragend",t)}}),google.maps.event.addListener(n.marker_.getMap(),"mousemove",function(s){var _;l&&(g?(s.latLng=new google.maps.LatLng(s.latLng.lat()-t,s.latLng.lng()-i),_=n.getProjection().fromLatLngToDivPixel(s.latLng),a&&(n.crossDiv_.style.left=_.x+"px",n.crossDiv_.style.top=_.y+"px",n.crossDiv_.style.display="",_.y-=p),n.marker_.setPosition(n.getProjection().fromDivPixelToLatLng(_)),a&&(n.eventDiv_.style.top=_.y+p+"px"),google.maps.event.trigger(n.marker_,"drag",s)):(t=s.latLng.lat()-n.marker_.getPosition().lat(),i=s.latLng.lng()-n.marker_.getPosition().lng(),e=n.marker_.getZIndex(),r=n.marker_.getPosition(),o=n.marker_.getMap().getCenter(),a=n.marker_.get("raiseOnDrag"),g=!0,n.marker_.setZIndex(1e6),s.latLng=n.marker_.getPosition(),google.maps.event.trigger(n.marker_,"dragstart",s)))}),google.maps.event.addDomListener(document,"keydown",function(e){g&&27===e.keyCode&&(a=!1,n.marker_.setPosition(r),n.marker_.getMap().setCenter(o),google.maps.event.trigger(document,"mouseup",e))}),google.maps.event.addDomListener(this.eventDiv_,"click",function(e){(n.marker_.getDraggable()||n.marker_.getClickable())&&(s?s=!1:(google.maps.event.trigger(n.marker_,"click",e),v(e)))}),google.maps.event.addDomListener(this.eventDiv_,"dblclick",function(e){(n.marker_.getDraggable()||n.marker_.getClickable())&&(google.maps.event.trigger(n.marker_,"dblclick",e),v(e))}),google.maps.event.addListener(this.marker_,"dragstart",function(e){g||(a=this.get("raiseOnDrag"))}),google.maps.event.addListener(this.marker_,"drag",function(e){g||a&&(n.setPosition(p),n.labelDiv_.style.zIndex=1e6+(this.get("labelInBackground")?-1:1))}),google.maps.event.addListener(this.marker_,"dragend",function(e){g||a&&n.setPosition(0)}),google.maps.event.addListener(this.marker_,"position_changed",function(){n.setPosition()}),google.maps.event.addListener(this.marker_,"zindex_changed",function(){n.setZIndex()}),google.maps.event.addListener(this.marker_,"visible_changed",function(){n.setVisible()}),google.maps.event.addListener(this.marker_,"labelvisible_changed",function(){n.setVisible()}),google.maps.event.addListener(this.marker_,"title_changed",function(){n.setTitle()}),google.maps.event.addListener(this.marker_,"labelcontent_changed",function(){n.setContent()}),google.maps.event.addListener(this.marker_,"labelanchor_changed",function(){n.setAnchor()}),google.maps.event.addListener(this.marker_,"labelclass_changed",function(){n.setStyles()}),google.maps.event.addListener(this.marker_,"labelstyle_changed",function(){n.setStyles()})]},MarkerLabel_.prototype.onRemove=function(){var e;for(this.labelDiv_.parentNode.removeChild(this.labelDiv_),this.eventDiv_.parentNode.removeChild(this.eventDiv_),e=0;e<this.listeners_.length;e++)google.maps.event.removeListener(this.listeners_[e])},MarkerLabel_.prototype.draw=function(){this.setContent(),this.setTitle(),this.setStyles()},MarkerLabel_.prototype.setContent=function(){var e=this.marker_.get("labelContent");"undefined"==typeof e.nodeType?(this.labelDiv_.innerHTML=e,this.eventDiv_.innerHTML=this.labelDiv_.innerHTML):(this.labelDiv_.innerHTML="",this.labelDiv_.appendChild(e),e=e.cloneNode(!0),this.eventDiv_.innerHTML="",this.eventDiv_.appendChild(e))},MarkerLabel_.prototype.setTitle=function(){this.eventDiv_.title=this.marker_.getTitle()||""},MarkerLabel_.prototype.setStyles=function(){var e,t;this.labelDiv_.className=this.marker_.get("labelClass"),this.eventDiv_.className=this.labelDiv_.className,this.labelDiv_.style.cssText="",this.eventDiv_.style.cssText="",t=this.marker_.get("labelStyle");for(e in t)t.hasOwnProperty(e)&&(this.labelDiv_.style[e]=t[e],this.eventDiv_.style[e]=t[e]);this.setMandatoryStyles()},MarkerLabel_.prototype.setMandatoryStyles=function(){this.labelDiv_.style.position="absolute",this.labelDiv_.style.overflow="","undefined"!=typeof this.labelDiv_.style.opacity&&""!==this.labelDiv_.style.opacity&&(this.labelDiv_.style.MsFilter='"progid:DXImageTransform.Microsoft.Alpha(opacity='+100*this.labelDiv_.style.opacity+')"',this.labelDiv_.style.filter="alpha(opacity="+100*this.labelDiv_.style.opacity+")"),this.eventDiv_.style.position=this.labelDiv_.style.position,this.eventDiv_.style.overflow=this.labelDiv_.style.overflow,this.eventDiv_.style.opacity=.01,this.eventDiv_.style.MsFilter='"progid:DXImageTransform.Microsoft.Alpha(opacity=1)"',this.eventDiv_.style.filter="alpha(opacity=1)",this.setAnchor(),this.setPosition(),this.setVisible()},MarkerLabel_.prototype.setAnchor=function(){var e=this.marker_.get("labelAnchor");this.labelDiv_.style.marginLeft=-e.x+"px",this.labelDiv_.style.marginTop=-e.y+"px",this.eventDiv_.style.marginLeft=-e.x+"px",this.eventDiv_.style.marginTop=-e.y+"px"},MarkerLabel_.prototype.setPosition=function(e){var t=this.getProjection().fromLatLngToDivPixel(this.marker_.getPosition());"undefined"==typeof e&&(e=0),this.labelDiv_.style.left=Math.round(t.x)+"px",this.labelDiv_.style.top=Math.round(t.y-e)+"px",this.eventDiv_.style.left=this.labelDiv_.style.left,this.eventDiv_.style.top=this.labelDiv_.style.top,this.setZIndex()},MarkerLabel_.prototype.setZIndex=function(){var e=this.marker_.get("labelInBackground")?-1:1;"undefined"==typeof this.marker_.getZIndex()?(this.labelDiv_.style.zIndex=parseInt(this.labelDiv_.style.top,10)+e,this.eventDiv_.style.zIndex=this.labelDiv_.style.zIndex):(this.labelDiv_.style.zIndex=this.marker_.getZIndex()+e,this.eventDiv_.style.zIndex=this.labelDiv_.style.zIndex)},MarkerLabel_.prototype.setVisible=function(){this.marker_.get("labelVisible")?this.labelDiv_.style.display=this.marker_.getVisible()?"block":"none":this.labelDiv_.style.display="none",this.eventDiv_.style.display=this.labelDiv_.style.display;var e=this.marker_.get("initCallback");e(this.labelDiv_)},inherits(MarkerWithLabel,google.maps.Marker),MarkerWithLabel.prototype.setMap=function(e){google.maps.Marker.prototype.setMap.apply(this,arguments),this.label.setMap(e)};
 
 $(function () {
-  window.vars = { $: { body: $('body'), media: $('#media'), donate: $('#donate'), logout: $('#logout'), markerMenu: $('#marker_menu'), logsBtn: $('#logs_btn'), logs: $('#logs'), loading: $('#loading'), maps: $('#maps'), send: $('#send'), myMessage: $('#my_message'), zoomIn: $('#zoom_in'), zoomOut: $('#zoom_out'), plus: $('#plus'), facebook: $('#facebook'), login: $('#login'), relogin: $('#relogin'), step1: $('#step1'), step2: $('#step2'), step3: $('#step3'), popbox: $('.popbox'), title: $('title'), form: $('#form'), gpson: $('#gpson'), myLocation: $('#my_location'), firebaseError: $('#firebase_error'), notification: $('#notification'), see_comments: $('#see_comments'), comments: $('#comments'), markerMenu: $('#marker_menu'), }, };
+  window.vars = { $: { body: $('body'), notificationList: $('#notification_list'), notifications: $('#notifications'), media: $('#media'), donate: $('#donate'), logout: $('#logout'), markerMenu: $('#marker_menu'), logsBtn: $('#logs_btn'), logs: $('#logs'), loading: $('#loading'), maps: $('#maps'), send: $('#send'), myMessage: $('#my_message'), zoomIn: $('#zoom_in'), zoomOut: $('#zoom_out'), plus: $('#plus'), facebook: $('#facebook'), login: $('#login'), relogin: $('#relogin'), step1: $('#step1'), step2: $('#step2'), step3: $('#step3'), popbox: $('.popbox'), title: $('title'), form: $('#form'), gpson: $('#gpson'), myLocation: $('#my_location'), firebaseError: $('#firebase_error'), notification: $('#notification'), see_comments: $('#see_comments'), comments: $('#comments'), markerMenu: $('#marker_menu'), }, };
 
   window.funcs = {
     ajaxError: function (result) { console.error (result.responseText); },
@@ -35,14 +35,20 @@ $(function () {
     setStorage: function (key, data) { try { if (typeof (Storage) !== 'undefined') { localStorage.setItem (key, JSON.stringify (data)); return true; } return false; } catch (err) { console.error ('Set storage failure.', error); return false; } },
     clearStorage: function (key, data) {if (typeof (Storage) !== 'undefined')localStorage.clear ();return true;},
     uuid: function () {function s4 () { return Math.floor ((1 + Math.random ()) * 0x10000).toString (16).substring (1); }var uuid = s4 () + s4 () + '-' + s4 () + '-' + s4 () + '-' + s4 () + '-' + s4 () + s4 () + s4 (); return uuid;},
-    initFirebase: function (version) { if (!window.firebaseConfig) { window.vars.$.firebaseError.addClass ('show'); throw new Error ("載入 Firebase 設定檔錯誤！"); } firebase.initializeApp (window.firebaseConfig); window.vars.firebaseDB = firebase.database (); window.vars.firebaseDB.ref ('version/').on ('value', function (snapshot) { if (version != snapshot.val ()) location.reload (); }); window.vars.firebaseUserRef = window.vars.firebaseDB.ref ('users/'); },
+    initFirebase: function (version) { 
+      if (!window.firebaseConfig) { 
+        window.vars.$.firebaseError.addClass ('show'); throw new Error ("載入 Firebase 設定檔錯誤！"); } 
+        firebase.initializeApp (window.firebaseConfig); 
+
+
+        window.vars.firebaseDB = firebase.database (); window.vars.firebaseDB.ref ('version/').on ('value', function (snapshot) { if (version != snapshot.val ()) location.reload (); }); window.vars.firebaseUserRef = window.vars.firebaseDB.ref ('users/'); },
     addZero: function (i) { return i < 10 ? '0' + i : i; },
     getDatetime: function () { var date = new Date (), year = date.getFullYear (), month = date.getMonth () + 1, day = date.getDate (), hour = date.getHours (), min = date.getMinutes (), sec = date.getSeconds (); return year + '-' + window.funcs.addZero (month) + '-' + window.funcs.addZero (day) + ' ' + window.funcs.addZero (hour) + ':' + window.funcs.addZero (min) + ':' + window.funcs.addZero (sec); },
     updateTitle: function (data) { window.vars.$.title.text ('' + Object.keys (window.vars.points).length + ' 位使用者在地圖上 - LiveMaps'); },
-    renderUser: function (obj, content) { return $('<div />').addClass ('user').append ($('<div />').addClass ('avatar').append ($('<img />').attr ('alt', obj.name).attr ('src', obj.fbuid ? 'https://graph.facebook.com/' + obj.fbuid + '/picture?width=50&height=50' : window.vars.src)).imgLiquid ({verticalAlign: 'center'})).append ($('<div />').addClass ('content').text (content = typeof content == 'undefined' ? '' : content)).html (); },
+    renderUser: function (obj, content) { return $('<div />').addClass ('user').append ($('<div />').addClass ('avatar').append ($('<img />').attr ('alt', obj.name).attr ('src', window.funcs.avatar (obj.fbuid))).imgLiquid ({verticalAlign: 'center'})).append ($('<div />').addClass ('content').text (content = typeof content == 'undefined' ? '' : content)).html (); },
     getPixelPosition: function (obj) { var scale = Math.pow (2, obj.map.getZoom ()), nw = new google.maps.LatLng (obj.map.getBounds ().getNorthEast ().lat (), obj.map.getBounds ().getSouthWest ().lng ()), worldCoordinateNW = obj.map.getProjection ().fromLatLngToPoint (nw), worldCoordinate = obj.map.getProjection ().fromLatLngToPoint (obj.getPosition ()); return new google.maps.Point ((worldCoordinate.x - worldCoordinateNW.x) * scale, (worldCoordinate.y - worldCoordinateNW.y) * scale); },
     showForm: function () { window.vars.$.plus.toggleClass ('open'); if (window.vars.$.plus.hasClass ('open')) window.vars.myMessageTimer =  setTimeout (function () { window.vars.$.myMessage.focus (); }, 500); else clearTimeout (window.vars.myMessageTimer); },
-    getFbData: function (cb) { FB.api('/me', function (response) { window.storages.user.set ({ fbuid: response.id, name: response.name }); window.funcs.removeSameUser (response.id);  window.vars.$.logout.click (function () {window.vars.$.loading.addClass ('show').find ('.txt').text ('登出中，請稍候..');FB.logout (function(response) {window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/enable/').set (0);window.storages.user.set (null);window.funcs.clearStorage ();window.vars.$.loading.removeClass ('show');location.reload ();});}).addClass ('show'); return cb && cb (response); }); },
+    getFbData: function (cb) { FB.api('/me', function (response) { window.storages.user.set ({ fbuid: response.id, name: response.name }); window.funcs.removeSameUser (response.id);  window.vars.$.notifications.addClass ('show'); window.vars.$.logout.click (function () {window.vars.$.loading.addClass ('show').find ('.txt').text ('登出中，請稍候..');FB.logout (function(response) {window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/enable/').set (0);window.storages.user.set (null);window.funcs.clearStorage ();window.vars.$.loading.removeClass ('show');location.reload ();});}).addClass ('show'); return cb && cb (response); }); },
     checkLoginState: function (cb, eb) { FB.getLoginStatus (function (response) { if (response.status != 'connected') return window.storages.user.set (null) && eb && eb (); return cb && cb (response); }); return eb && eb (); },
     initFB: function () { if (!window.storages.user.get ()) window.funcs.checkLoginState (function () { window.funcs.getFbData (); }, function () { window.vars.$.facebook.click (function () { window.vars.$.loading.addClass ('show').find ('.txt').text ('登入中，請稍候..'); FB.login (function (response) { if (response.status != 'connected') return window.vars.$.loading.removeClass ('show') && window.vars.$.facebook.prev ().text ('登入失敗..'); window.funcs.getFbData (function () { window.vars.$.loading.removeClass ('show'); window.vars.$.facebook.parents ('.popbox').removeClass ('show'); window.funcs.showForm (); }); }, {scope: 'public_profile,email'}); }); }); },
     setUserTime: function () {setInterval (function () { window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/time/').set (new Date ().getTime ()); }, 60 * 1000);},
@@ -111,7 +117,7 @@ $(function () {
           setTimeout (function () {
             window.vars.$.logs.prepend (
               $('<div />').addClass (links ? 'link' : '').addClass (admin ? 'admin' : (u1 ? 'u1' : (u1 ? u1 : (u3 ? u3 : '')))).append (
-                $('<img />').attr ('src', data.fbuid ? 'https://graph.facebook.com/' + data.fbuid + '/picture?width=50&height=50' : window.vars.src).click (function () {
+                $('<img />').attr ('src', window.funcs.avatar (data.fbuid)).click (function () {
                   if (!window.storages.user.get ()) return window.vars.$.login.find ('span').text ('').parents ('.popbox').addClass ('show');
                   window.open ('https://www.facebook.com/' + data.fbuid, '_blank');
                 })).append (
@@ -165,44 +171,96 @@ $(function () {
         
       if (data.uid != window.storages.uuid.get () && window.vars.hasAudio)  window.vars.audio.pop.play ();
     },
+    showNotificationList: function () {
+      if (!window.storages.user.get ()) return;
+      window.vars.$.notificationList.find ('.panel_content').empty ().prepend (window.storages.notifications.get ().map (function (t) {
+        window.funcs.readNotification (t.i);
+        var isOffline = typeof window.vars.points[t.u] == 'undefined';
+
+        return $('<div />').addClass ('log').addClass (isOffline ? 'offline' : null).append (
+          $('<img />').attr ('title', window.funcs.avatar (t.n)).attr ('src', window.funcs.avatar (t.f))).append (
+          $('<span />').text (t.c)).append (
+          isOffline ? $('<div />').text ('(不在線上)').addClass ('offline') : null).append (
+          $('<time />').text ($.timeago (t.t))).click (function () {
+            if (!window.storages.user.get ()) return;
+            if (isOffline) { alert (t.n + ' 目前不再線上喔！'); return; }
+            var me = {u: window.storages.uuid.get (), f: window.storages.user.get ().fbuid, n: window.storages.user.get ().name };
+            var msg = prompt (t.n + ": " + t.c + '，您要回他什麼？');
+            if (!msg.length) return;
+            window.vars.firebaseDB.ref ('users/' + t.u + '/pick/').set ({ c: msg.slice (0, 128), n: me.n, f: me.f, u: me.u, e: 1 });
+            ga ('send', 'event', 'send', 'repick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + t.n + '(' + t.u + '/' + t.f + '):' + msg);
+            console.error ('ga', 'send', 'repick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + t.n + '(' + t.u + '/' + t.f + '):' + msg);
+          });
+      })).parents ('.popbox').addClass ('show');
+
+    },
+    reCountNotification: function (first) {
+      var l = window.storages.notifications.get ().filter (function (t) { return t.e == 1; }).length;
+      window.vars.$.notifications.empty ().append ($('<span />').text (l ? l : ''));
+      if (first) {
+        window.vars.$.notificationList.find ('.clear').click (function () {
+          if (!confirm ('確定要清除嗎？')) return;
+          window.storages.notifications.cln ();
+          window.vars.$.notificationList.find ('.panel_content').empty ();
+          alert ('成功清除囉！')
+          window.funcs.reCountNotification ();
+          return window.vars.$.notificationList.removeClass ('show');
+        })
+        window.vars.$.notifications.click (function () { if (!window.storages.user.get ()) return window.vars.$.login.find ('span').text ('').parents ('.popbox').addClass ('show'); window.funcs.showNotificationList (); });
+      }
+    },
+    avatar: function (fbuid) {
+      return typeof fbuid != 'undefined' && fbuid ? 'https://graph.facebook.com/' + fbuid + '/picture?width=150&height=150' : window.vars.src;
+    },
+    readNotification: function (i) {
+      window.storages.notifications.read (i);
+      window.funcs.reCountNotification ();
+    },
     initNotification: function () {
+      window.funcs.reCountNotification (true);
+
       if (typeof Notification == 'undefined' || !Notification) return window.storages.notificationStatus.set ('denied');
-
-      var setNotification = function () {
-        if (window.storages.notificationStatus.get () === 'denied') window.vars.notification = false;
-        if (window.storages.notificationStatus.get () === 'default') window.vars.notification = false;
-        if (window.storages.notificationStatus.get () === 'granted') window.vars.notification = true;
-      };
-
-      Notification.requestPermission (function (status) {
-        window.storages.notificationStatus.set (status);
-        setNotification ();
-      });
+      Notification.requestPermission (function (status) { window.storages.notificationStatus.set (status); if (window.storages.notificationStatus.get () === 'denied') window.vars.notification = false; if (window.storages.notificationStatus.get () === 'default') window.vars.notification = false; if (window.storages.notificationStatus.get () === 'granted') window.vars.notification = true; });
 
       window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/').on ('value', function (snapshot) {
-        if (!(snapshot.val () && snapshot.val ().name && snapshot.val ().fbuid && snapshot.val ().uid && snapshot.val ().enable)) return;
-        if (!(snapshot.val ().uid != window.storages.uuid.get () && window.vars.hasAudio && window.vars.notification))return;
-        if (!(typeof window.vars.points[snapshot.val ().uid] != 'undefined')) return;
-        var content = (typeof snapshot.val ().msg && snapshot.val ().msg.length ? snapshot.val ().msg.slice (0, 255) : '戳了你一下！');
+        if (!(snapshot.val () && typeof snapshot.val ().u != 'undefined' && typeof snapshot.val ().f != 'undefined' && typeof snapshot.val ().n != 'undefined' && typeof snapshot.val ().e != 'undefined' && typeof snapshot.val ().c != 'undefined' && snapshot.val ().e == 1 && snapshot.val ().u != window.storages.uuid.get ())) return;
+        
+        var from = {
+          i: window.funcs.uuid (),
+          u: snapshot.val ().u,
+          f: snapshot.val ().f,
+          n: snapshot.val ().n,
+          c: (typeof snapshot.val ().c && snapshot.val ().c.length ? snapshot.val ().c.slice (0, 128) : '跟你打個招呼！'),
+          e: snapshot.val ().e,
+          t: window.funcs.getDatetime ()
+        };
+        var to = {
+          u: window.storages.uuid.get (),
+          f: window.storages.user.get ().fbuid,
+          n: window.storages.user.get ().name
+        };
 
-        var notification = new Notification (snapshot.val ().name, {dir: "ltr", lang: "utf-8", icon: snapshot.val ().fbuid ? 'https://graph.facebook.com/' + snapshot.val ().fbuid + '/picture?width=150&height=150' : window.vars.src, body: content});
+        window.storages.notifications.add (from);
+        ga ('send', 'event', 'get', 'pick', to.n + '(' + to.u + '/' + to.f + ')' + ' from ' + from.n + '(' + from.u + '/' + from.f + '):' + from.c);
+        console.error ('ga', 'get', 'pick', to.n + '(' + to.u + '/' + to.f + ')' + ' from ' + from.n + '(' + from.u + '/' + from.f + '):' + from.c);
+        window.funcs.reCountNotification ();
+        window.vars.firebaseDB.ref ('users/' + to.u + '/pick/e/').set (0);
+
+        if (window.vars.hasAudio) window.vars.audio.complete.play ();
+
+        if (!window.vars.notification) return;
+        var notification = new Notification (from.n, {dir: "ltr", lang: "utf-8", icon: window.funcs.avatar (from.f), body: from.c});
         notification.onclick = function() {
           notification.close ();
+          window.funcs.readNotification (from.i);
 
-          ga ('send', 'event', 'get', 'pick', window.storages.user.get ().name + '(' + window.storages.uuid.get () + '/' + window.storages.user.get ().fbuid + ')' + ' from' + snapshot.val ().name + '(' + snapshot.val ().uid + '/' + window.vars.points[snapshot.val ().uid].data.fbuid + '):' + content);
-          if (!snapshot.val ().msg.length) return window.vars.maps.setCenter (window.vars.points[snapshot.val ().uid].marker.position); window.vars.maps.setZoom (16);
-
-          var msg = prompt (snapshot.val ().name + ": " + content + '，您要回他什麼？');
+          var msg = prompt (from.n + ": " + from.c + '，您要回他什麼？');
           if (!msg.length) return;
 
-          window.vars.firebaseDB.ref ('users/' + snapshot.val ().uid + '/pick/').set ({
-            msg: msg.slice (0, 255), name: window.storages.user.get ().name, fbuid: window.storages.user.get ().fbuid, uid: window.storages.uuid.get (), enable: 1
-          });
-
-          ga ('send', 'event', 'send', 'repick', snapshot.val ().name + '(' + snapshot.val ().uid + '/' + window.vars.points[snapshot.val ().uid].data.fbuid + ')' + ' to ' + window.storages.user.get ().name + '(' + window.storages.uuid.get () + '/' + window.storages.user.get ().fbuid + '):' + msg.slice (0, 255));
-          alert ('回覆成功！');
-        };
-        window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/enable/').set (0);
+          window.vars.firebaseDB.ref ('users/' + from.u + '/pick/').set ({ c: msg.slice (0, 128), n: to.n, f: to.f, u: to.u, e: 1 });
+          ga ('send', 'event', 'send', 'repick', to.n + '(' + to.u + '/' + to.f + ')' + ' to ' + from.n + '(' + from.u + '/' + from.f + '):' + msg);
+          console.error ('ga', 'send', 'repick', to.n + '(' + to.u + '/' + to.f + ')' + ' to ' + from.n + '(' + from.u + '/' + from.f + '):' + msg);
+        }
       });
     },
     removeUser: function (snapshot) {
@@ -232,17 +290,20 @@ $(function () {
   window.storages = {
     mapsLastPosition: { key: 'firebase.maps.lastPosition', zoom: 14, lat: 25.056678157775092, lng: 121.53488159179688, get: function () {var last = window.funcs.getStorage (this.key); var zoom = last && last.zoom && !isNaN (last.zoom) ? last.zoom : this.zoom; var lat  = last && last.lat && !isNaN (last.lat)  ? last.lat : this.lat; var lng  = last && last.lng && !isNaN (last.lng)  ? last.lng : this.lng; return {zoom: zoom, lat: lat, lng: lng}; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     location: { key: 'firebase.maps.user.location', cacheTime: 10 * 60, get: function (callback) { var info = window.funcs.getStorage (this.key); if (info && info.t && (new Date ().getTime () - info.t < this.cacheTime * 1000)) callback (info.a, info.n); else this.getCurrentPosition (callback); }, getCurrentPosition: function (callback) { navigator.geolocation.getCurrentPosition (function (position) { window.funcs.setStorage (this.key, {t: new Date ().getTime (), a: position.coords.latitude, n: position.coords.longitude}); callback && callback (position.coords.latitude, position.coords.longitude); }.bind (this), function () { callback && callback (-1, -1); }.bind (this)); } },
-    user: { key: 'firebase.maps.user', cacheTime: 1 * 60, get: function () {
-      return window.oa ? window.oa : null;
-    },
-      set: function (val) {
-        window.oa = val;
-        return this; } },
+    user: { key: 'firebase.maps.user', cacheTime: 1 * 60, get: function () { return window.oa ? window.oa : null; }, set: function (val) { window.oa = val; return this; } },
     inited: { key: 'firebase.maps.inited', get: function () {var inited = window.funcs.getStorage (this.key); return inited ? inited : 'no'; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     uuid: { key: 'firebase.maps.uuid', get: function () { var uuid = window.funcs.getStorage (this.key); if (!uuid) {uuid = window.funcs.uuid (); this.set (uuid); return uuid; } return uuid; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     version: { key: 'firebase.maps.version', get: function (v) {var version = window.funcs.getStorage (this.key);if (!version || version != v) window.funcs.clearStorage ();this.set (v);return v;}, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     notificationStatus: { key: 'firebase.maps.notificationStatus', get: function () { var notificationStatus = window.funcs.getStorage (this.key); return notificationStatus ? notificationStatus : 'default'; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
     audio: { key: 'firebase.maps.audio', get: function () { var audio = window.funcs.getStorage (this.key); return audio ? audio : 'on'; }, set: function (val) { window.funcs.setStorage (this.key, val); return this; } },
+    notifications: {
+      key: 'firebase.maps.notifications',
+      get: function () { var list = window.funcs.getStorage (this.key); return list ? list : []; },
+      read: function (id) { var list = this.get (); list = list.map (function (t) { if (t.i == id) t.e = 0; return t; }); return this.set (list); },
+      set: function (val) { window.funcs.setStorage (this.key, val); return this; },
+      add: function (notification) { var notifications = this.get (); notifications.push (notification); return this.set (notifications); },
+      cln: function (notification) { return this.set ([]); }
+    },
   };
 
   window.vars.$.body.find ('> header a.icon-menu').click (function () { window.vars.$.body.toggleClass ('s'); });
@@ -259,7 +320,10 @@ $(function () {
   window.vars.rangeMsgMin = 1.5;
   window.vars.points = {};
   window.vars.z = 0;
-  window.vars.audio = { pop: new Audio('pop.mp3'), chat: new Audio('chat.mp3')};
+  window.vars.audio = {
+    pop: new Audio('pop.mp3'),
+    complete: new Audio('complete.mp3'),
+    chat: new Audio('chat.mp3')};
 
 
   window.funcs.initFirebase (window.storages.version.get (29));
@@ -285,15 +349,8 @@ $(function () {
     window.vars.$.donate.click (function () { window.open ('https://livemaps.ioa.tw/donate.html', '_blank'); }).addClass ('show');
     window.vars.$.zoomIn.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom + 1); }).addClass ('show');
     window.vars.$.zoomOut.click (function () { window.vars.maps.setZoom (window.vars.maps.zoom - 1); }).addClass ('show');
-    
-    // window.vars.$.send.click (function () {
-      
-    // });
     window.vars.$.relogin.find ('.cover, .ok').click (function () { location.reload (); });
     window.vars.$.media.find ('.cover, .cancel').click (function () { window.vars.$.media.find ('h4').empty ().next ().empty ().parents ('.popbox').removeClass ('show'); });
-    // window.vars.$.myMessage.keyup (function (e) {
-    //   if (e.keyCode == 13) window.vars.$.send.click ();
-    // });
     
     window.vars.$.form.submit (function () {
       if (window.vars.t) return false;
@@ -330,26 +387,21 @@ $(function () {
     
     window.vars.$.markerMenu.find ('.look_fb').click (function () {if (window.vars.$.markerMenu.get (0).point.data.fbuid != 0) window.open ('https://www.facebook.com/' + window.vars.$.markerMenu.get (0).point.data.fbuid, '_blank');else  alert ('她未登入喔！'); });
     window.vars.$.markerMenu.find ('.pick_he').click (function () { 
-      if (!window.storages.user.get ()) return;
-      if (window.vars.tx) {
-        alert ('您剛剛已使用過私訊了，30秒後再試試..')
-        return;
-      }
-      window.vars.tx = true;
+      return window.vars.$.login.find ('span').text ('').parents ('.popbox').addClass ('show');
+      if (window.vars.tx) { alert ('您剛剛已使用過私訊了，30秒後再試試..'); return; } window.vars.tx = true;
+
+      var me = { u: window.storages.uuid.get (), n: window.storages.user.get ().name, f: window.storages.user.get ().fbuid, };
+      var to = { u: window.vars.$.markerMenu.get (0).point.data.uid, f: window.vars.$.markerMenu.get (0).point.data.fbuid, n: window.vars.$.markerMenu.get (0).point.data.name, };
 
       var msg = prompt ('輸入您想跟他說的話吧！');
-      window.vars.firebaseDB.ref ('users/' + window.vars.$.markerMenu.get (0).point.data.uid + '/pick/').set ({
-        msg: msg.length ? msg.slice (0, 255) : '', name: window.storages.user.get ().name, fbuid: window.storages.user.get ().fbuid, uid: window.storages.uuid.get (), enable: 1
-      });
-      ga ('send', 'event', 'send', 'pick', window.storages.user.get ().name + '(' + window.storages.uuid.get () + '/' + window.storages.user.get ().fbuid + ') pick to ' + window.vars.$.markerMenu.get (0).point.data.name + '(' + window.vars.$.markerMenu.get (0).point.data.uid + '/' + window.vars.$.markerMenu.get (0).point.data.fbuid + '):' + msg.slice (0, 255));
+      window.vars.firebaseDB.ref ('users/' + to.u + '/pick/').set ({ c: msg.length ? msg.slice (0, 128) : '', n: me.n, f: me.f, u: me.u, e: 1 });
+
+      ga ('send', 'event', 'send', 'pick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + to.n + '(' + to.u + '/' + to.f + '):' + msg);
+      console.error ('ga', 'send', 'pick', me.n + '(' + me.u + '/' + me.f + ')' + ' to ' + to.n + '(' + to.u + '/' + to.f + '):' + msg);
 
       alert ('已經傳送囉！');
-
       window.vars.$.markerMenu.css ({ top: -100, left: -100 }).removeClass ('show');
-
-      setTimeout (function () {
-        window.vars.tx = false;
-      }, 30 * 1000);
+      setTimeout (function () { window.vars.tx = false; }, 30 * 1000);
     });
 
     window.vars.$.plus.click (function () {
@@ -373,16 +425,17 @@ $(function () {
     var audio = function () {
       if (!(window.vars.lat === null && window.vars.lng === null)) return;
 
+      window.vars.$.loading.removeClass ('show');
+
       window.vars.$.myLocation.click (function () {
         window.vars.maps.setOptions ({ zoom: 16, center: new google.maps.LatLng (window.vars.lat, window.vars.lng)});
       }).addClass ('show');
-      setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 2000);
+
+      setTimeout (function () { window.vars.hasAudio = window.storages.audio.get (); }, 3000);
     };
     window.funcs.initGeoFeature (audio);
 
     window.funcs.setUserTime ();
-
-    window.vars.$.loading.removeClass ('show');
     window.funcs.initNotification ();
   });
 });
