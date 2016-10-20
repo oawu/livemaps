@@ -9,7 +9,16 @@
 #msg {
   @include input;
 }
-
+#form {
+  display: inline-block;
+  width: 50px;
+  width: 500px;
+  position: relative;
+  @include opacity(1);
+  left: 0;
+  right: 0;
+  border: 1px solid rgba(255, 0, 0, .3);
+}
 #alogs {
   padding: 10px;
   margin-top: 10px;

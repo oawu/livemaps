@@ -150,10 +150,18 @@ $(function () {
             }, 3 * 60 * 1000);
           }, 500);
         }),
-        location: window.vars.firebaseDB.ref ('users/' + data.uid + '/location/').on ('value', function (snapshot) { window.vars.points[data.uid].data.location = snapshot.val (); window.vars.points[data.uid].marker.setPosition (new google.maps.LatLng (snapshot.val ().lat, snapshot.val ().lng)); }),
-        name: window.vars.firebaseDB.ref ('users/' + data.uid + '/name/').on ('value', function (snapshot) { window.vars.points[data.uid].data.name = snapshot.val (); window.vars.points[data.uid].marker.setOptions ({ labelContent: window.funcs.renderUser (window.vars.points[data.uid].data) }); }),
+        location: window.vars.firebaseDB.ref ('users/' + data.uid + '/location/').on ('value', function (snapshot) {
+          if (!(typeof snapshot.val ().lat != 'undefined' && typeof snapshot.val ().lng != 'undefined' && typeof snapshot.val ().lat >= -90 && typeof snapshot.val ().lat <= 90 && typeof snapshot.val ().lng >= -180 && typeof snapshot.val ().lng <= 180)) return;
+          window.vars.points[data.uid].data.location = snapshot.val ();
+          window.vars.points[data.uid].marker.setPosition (new google.maps.LatLng (snapshot.val ().lat, snapshot.val ().lng));
+        }),
+        name: window.vars.firebaseDB.ref ('users/' + data.uid + '/name/').on ('value', function (snapshot) {
+          window.vars.points[data.uid].data.name = snapshot.val ();
+          window.vars.points[data.uid].marker.setOptions ({ labelContent: window.funcs.renderUser (window.vars.points[data.uid].data) });
+        }),
         fbuid: window.vars.firebaseDB.ref ('users/' + data.uid + '/fbuid/').on ('value', function (snapshot) {
-          window.vars.points[data.uid].data.fbuid = snapshot.val (); window.vars.points[data.uid].marker.setOptions ({ labelContent: window.funcs.renderUser (window.vars.points[data.uid].data) }); }),
+          window.vars.points[data.uid].data.fbuid = snapshot.val (); window.vars.points[data.uid].marker.setOptions ({ labelContent: window.funcs.renderUser (window.vars.points[data.uid].data) });
+        }),
       };
 
       window.vars.points[data.uid].marker.addListener ('click', function (e) {
@@ -224,20 +232,7 @@ $(function () {
       window.vars.firebaseDB.ref ('users/' + window.storages.uuid.get () + '/pick/').on ('value', function (snapshot) {
         if (!(snapshot.val () && typeof snapshot.val ().u != 'undefined' && typeof snapshot.val ().f != 'undefined' && typeof snapshot.val ().n != 'undefined' && typeof snapshot.val ().e != 'undefined' && typeof snapshot.val ().c != 'undefined' && snapshot.val ().e == 1 && snapshot.val ().u != window.storages.uuid.get ())) return;
         
-        var from = {
-          i: window.funcs.uuid (),
-          u: snapshot.val ().u,
-          f: snapshot.val ().f,
-          n: snapshot.val ().n,
-          c: (typeof snapshot.val ().c && snapshot.val ().c.length ? snapshot.val ().c.slice (0, 128) : '跟你打個招呼！'),
-          e: snapshot.val ().e,
-          t: window.funcs.getDatetime ()
-        };
-        var to = {
-          u: window.storages.uuid.get (),
-          f: window.storages.user.get ().fbuid,
-          n: window.storages.user.get ().name
-        };
+        var from = { i: window.funcs.uuid (), u: snapshot.val ().u, f: snapshot.val ().f, n: snapshot.val ().n, c: (typeof snapshot.val ().c && snapshot.val ().c.length ? snapshot.val ().c.slice (0, 128) : '跟你打個招呼！'), e: snapshot.val ().e, t: window.funcs.getDatetime () }, to = { u: window.storages.uuid.get (), f: window.storages.user.get ().fbuid, n: window.storages.user.get ().name };
 
         window.storages.notifications.add (from);
         ga ('send', 'event', 'get', 'pick', to.n + '(' + to.u + '/' + to.f + ')' + ' from ' + from.n + '(' + from.u + '/' + from.f + '):' + from.c);
