@@ -10,11 +10,14 @@ LiveMaps 是一個即時地圖聊天室，讓你在世界上任何位置都可�
 
 
 <br/>
+
 ## 聲明
-本作品授權採用 **[姓名標示-非商業性 2.0 台灣 (CC BY-NC 2.0 TW) 授權](http://creativecommons.org/licenses/by-nc/2.0/tw/)**，詳見 [http://creativecommons.org/licenses/by-nc/2.0/tw/](http://creativecommons.org/licenses/by-nc/2.0/tw/)
+本作品授權採用 [姓名標示-非商業性 2.0 台灣 (CC BY-NC 2.0 TW) 授權](http://creativecommons.org/licenses/by-nc/2.0/tw/)
+，詳見 [http://creativecommons.org/licenses/by-nc/2.0/tw/](http://creativecommons.org/licenses/by-nc/2.0/tw/)
 
 
 <br/>
+
 ## DEMO
 * Demo：[https://livemaps.ioa.tw/](https://livemaps.ioa.tw/)
 * 更多作品：[http://www.ioa.tw/](http://www.ioa.tw/)
@@ -24,6 +27,7 @@ LiveMaps 是一個即時地圖聊天室，讓你在世界上任何位置都可�
 
 
 <br/>
+
 ## 簡介
 基本的 Google Maps JavaScript API 的應用這邊就不多介紹了，這次的練習主要著重在 Firebase 的應用，藉由 Hosting 來取得 Https 的協定，然後在建立起專案，並且利用 Realtime Database 來實作即時性的功能。
 
